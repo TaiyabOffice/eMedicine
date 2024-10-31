@@ -15,7 +15,6 @@ namespace eMedicine.Controllers
         public CompanyController(ICommonRepo repo)
         {
             this.repo = repo;
-
         }    
 
         [HttpGet("GetAllCompany")]

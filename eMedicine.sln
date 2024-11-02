@@ -5,7 +5,7 @@ VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eMedicine", "eMedicine\eMedicine.csproj", "{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedinineWeb", "eMedinineWeb\eMedinineWeb.csproj", "{F55667FA-65D1-4F82-8B3A-C4BFACC03EFA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eMedicineWeb", "eMedicineWeb\eMedicineWeb.csproj", "{32901061-C14B-4F7D-AF68-148B6221E420}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F55667FA-65D1-4F82-8B3A-C4BFACC03EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F55667FA-65D1-4F82-8B3A-C4BFACC03EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F55667FA-65D1-4F82-8B3A-C4BFACC03EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F55667FA-65D1-4F82-8B3A-C4BFACC03EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32901061-C14B-4F7D-AF68-148B6221E420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32901061-C14B-4F7D-AF68-148B6221E420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32901061-C14B-4F7D-AF68-148B6221E420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32901061-C14B-4F7D-AF68-148B6221E420}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

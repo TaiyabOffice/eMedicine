@@ -6,7 +6,7 @@ using System.Data;
 
 namespace eMedicine.Controllers
 {
-    [Route("api/[controller]/[Action]")]
+    [Route("api/[controller]/")]
     [ApiController]
     public class CompanyAPIController : ControllerBase
     {
@@ -47,7 +47,7 @@ namespace eMedicine.Controllers
         }
 
         [HttpPost("CreateCompany")]
-        public async Task<IActionResult> CreateCompany([FromBody] Company company)
+        public async Task<IActionResult> CreateCompany(Company company)
         {
             bool status = false;
             var ds = await this.repo.GetAll("", "sp_EntryCompany", "CREATECOMPANY", company.CompanyId, company.CompanyName, company.CompanyAddress,

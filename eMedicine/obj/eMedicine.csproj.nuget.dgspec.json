@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj": {}
+    "D:\\Projects\\eMedicine\\eMedicine\\eMedicine.csproj": {}
   },
   "projects": {
-    "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj": {
+    "D:\\Projects\\eMedicine\\eMedicine\\eMedicine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj",
+        "projectUniqueName": "D:\\Projects\\eMedicine\\eMedicine\\eMedicine.csproj",
         "projectName": "eMedicine",
-        "projectPath": "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj",
-        "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "E:\\OutProject\\eMedicine\\eMedicine\\obj\\",
+        "projectPath": "D:\\Projects\\eMedicine\\eMedicine\\eMedicine.csproj",
+        "packagesPath": "C:\\Users\\Tariqul Islam\\.nuget\\packages\\",
+        "outputPath": "D:\\Projects\\eMedicine\\eMedicine\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Tariqul Islam\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -82,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

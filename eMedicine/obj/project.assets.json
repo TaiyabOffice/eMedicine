@@ -2377,24 +2377,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\TEST\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Admin\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj",
+      "projectUniqueName": "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj",
       "projectName": "eMedicine",
-      "projectPath": "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj",
-      "packagesPath": "C:\\Users\\TEST\\.nuget\\packages\\",
-      "outputPath": "D:\\eMedicine\\eMedicine\\eMedicine\\obj\\",
+      "projectPath": "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj",
+      "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
+      "outputPath": "E:\\OutProject\\eMedicine\\eMedicine\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\TEST\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -2462,7 +2457,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303\\RuntimeIdentifierGraph.json"
       }
     }
   }

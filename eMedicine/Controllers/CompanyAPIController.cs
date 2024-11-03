@@ -47,7 +47,7 @@ namespace eMedicine.Controllers
         }
 
         [HttpPost("CreateCompany")]
-        public async Task<IActionResult> CreateCompany(Company company)
+        public async Task<IActionResult> CreateCompany([FromBody] Company company)
         {
             bool status = false;
             var ds = await this.repo.GetAll("", "sp_EntryCompany", "CREATECOMPANY", company.CompanyId, company.CompanyName, company.CompanyAddress,
@@ -61,6 +61,35 @@ namespace eMedicine.Controllers
                     status = true;
                 }
                 return Ok(status);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("GetCompanyById/{CompanyId}")]
+        public async Task<IActionResult> GetCompanyById(string CompanyId)
+        {
+            var ds = await this.repo.GetAll("", "sp_SelectCompany", "GETCOMPANYBYID", CompanyId);
+            var GetDashBoardDetails = (from DataRow dr in ds.Tables[0].Rows
+                                       select new Company()
+                                       {
+                                           CompanyId = dr["CompanyId"].ToString(),
+                                           CompanyName = dr["CompanyName"].ToString(),
+                                           CompanyAddress = dr["CompanyAddress"].ToString(),
+                                           CompanyDescription = dr["CompanyDescription"].ToString(),
+                                           CompanyPhone = dr["CompanyPhone"].ToString(),
+                                           CompanyCity = dr["CompanyCity"].ToString(),
+                                           CompanyRegion = dr["CompanyRegion"].ToString(),
+                                           CompanyPostalCode = dr["CompanyPostalCode"].ToString(),
+                                           CompanyCountry = dr["CompanyCountry"].ToString(),
+                                           IsActive = dr["IsActive"].ToString()
+                                       }).ToList();
+
+            if (ds != null)
+            {
+                return new JsonResult(GetDashBoardDetails);
             }
             else
             {

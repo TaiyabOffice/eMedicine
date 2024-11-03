@@ -157,3 +157,4 @@ D:\eMedicine\eMedicine\eMedicine\obj\Debug\net7.0\refint\eMedicine.dll
 D:\eMedicine\eMedicine\eMedicine\obj\Debug\net7.0\eMedicine.pdb
 D:\eMedicine\eMedicine\eMedicine\obj\Debug\net7.0\eMedicine.genruntimeconfig.cache
 D:\eMedicine\eMedicine\eMedicine\obj\Debug\net7.0\ref\eMedicine.dll
+E:\OutProject\eMedicine\eMedicine\obj\Debug\net7.0\eMedicine.sourcelink.json

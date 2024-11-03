@@ -32,7 +32,7 @@ namespace eMedicineWeb.Controllers
                 companyList = JsonConvert.DeserializeObject<List<CompanyViewModal>>(data);
             }
             return View(companyList);
-        }
+        }        
 
         public ActionResult CreateCompany()
         {
@@ -50,17 +50,19 @@ namespace eMedicineWeb.Controllers
             }
 
             return View();
-        }
-
-
-        public ActionResult DeleteCompany()
+        }    
+       
+        public ActionResult EditCompany(string companyId)
         {
-            return View();
-        }
-        public ActionResult EditCompany() 
-        {
-            return View();
+            string data = JsonConvert.SerializeObject(companyId);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/CreateCompany", content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return RedirectToAction("GetAllCompany");
+            }
 
+            return View();
         }
     }
 }

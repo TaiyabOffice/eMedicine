@@ -62,6 +62,11 @@ namespace eMedicineWeb.Controllers
         {
             return View();
         }
+
+        public ActionResult UIEntryCompany()
+        {
+            return View();
+        }
         [HttpPost]
         public async Task<ActionResult> CreateCompany(CompanyViewModal company)
         {

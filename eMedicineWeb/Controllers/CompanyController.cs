@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -14,7 +15,8 @@ namespace eMedicineWeb.Controllers
     public class CompanyController : Controller
     {
         // GET: Company
-        Uri baseAddress = new Uri("http://localhost:5041/api/CompanyAPI");
+        Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "CompanyAPI");
+        //static string _ServerURL = ConfigurationManager.AppSettings["ServerURL"];
         HttpClient client;
         public CompanyController()
         {

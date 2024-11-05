@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
+using System.Configuration;
 
 namespace eMedicineWeb.Controllers
 {
@@ -20,7 +21,7 @@ namespace eMedicineWeb.Controllers
         // GET: Company
         private DataSet ds;      
         public DataSet MenuData = new DataSet();
-        Uri baseAddress = new Uri("http://localhost:5041/api/LoginAPI");
+        Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "LoginAPI");
         HttpClient client;
         public LoginController()
         {

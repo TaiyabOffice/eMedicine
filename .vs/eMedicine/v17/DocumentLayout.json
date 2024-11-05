@@ -3,8 +3,20 @@
   "WorkspaceRootPath": "E:\\eMedicine\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|E:\\eMedicine\\emedicineweb\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|e:\\emedicine\\emedicine\\controllers\\companyapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\companyapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|e:\\emedicine\\emedicineweb\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|e:\\emedicine\\emedicineweb\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|E:\\eMedicine\\emedicineweb\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -13,14 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|E:\\eMedicine\\emedicineweb\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|E:\\eMedicine\\emedicineweb\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\companycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|e:\\emedicine\\emedicine\\controllers\\companyapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\companyapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|E:\\eMedicine\\emedicineweb\\models\\loginviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -62,11 +66,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
+              "Title": "Web.config",
+              "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Web.config",
+              "RelativeDocumentMoniker": "eMedicineWeb\\Web.config",
+              "ToolTip": "E:\\eMedicine\\eMedicineWeb\\Web.config",
+              "RelativeToolTip": "eMedicineWeb\\Web.config",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAA5AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2024-11-05T09:05:35.198Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "eMedicineWeb\\Views\\Shared\\_Layout.cshtml",
@@ -78,7 +95,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 5,
               "Title": "DashBoardController.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Controllers\\DashBoardController.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\DashBoardController.cs",
@@ -90,7 +107,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "DashBoard.cshtml",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Views\\DashBoard\\DashBoard.cshtml",
               "RelativeDocumentMoniker": "eMedicineWeb\\Views\\DashBoard\\DashBoard.cshtml",
@@ -102,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "LogIn.js",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Scripts\\LogIn\\LogIn.js",
               "RelativeDocumentMoniker": "eMedicineWeb\\Scripts\\LogIn\\LogIn.js",
@@ -114,7 +131,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Menu.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicine\\Models\\Menu.cs",
               "RelativeDocumentMoniker": "eMedicine\\Models\\Menu.cs",
@@ -126,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "Login.cshtml",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Views\\LogIn\\Login.cshtml",
               "RelativeDocumentMoniker": "eMedicineWeb\\Views\\LogIn\\Login.cshtml",
@@ -138,20 +155,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "LoginController.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Controllers\\LoginController.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\LoginController.cs",
               "ToolTip": "E:\\eMedicine\\eMedicineWeb\\Controllers\\LoginController.cs",
               "RelativeToolTip": "eMedicineWeb\\Controllers\\LoginController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACIAAAAJAAAA",
+              "ViewState": "AQIAABgAAAAAAAAAAAAkwEwAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-11-04T05:39:14.244Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "CompanyViewModal.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Models\\CompanyViewModal.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Models\\CompanyViewModal.cs",
@@ -163,19 +180,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "CompanyController.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Controllers\\CompanyController.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\CompanyController.cs",
               "ToolTip": "E:\\eMedicine\\eMedicineWeb\\Controllers\\CompanyController.cs",
               "RelativeToolTip": "eMedicineWeb\\Controllers\\CompanyController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAEAAAAWAAAA",
+              "ViewState": "AQIAAF4AAAAAAAAAAAAcwG0AAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-04T05:11:24.354Z"
+              "WhenOpened": "2024-11-04T05:11:24.354Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "LoginViewModel.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicineWeb\\Models\\LoginViewModel.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Models\\LoginViewModel.cs",
@@ -187,7 +205,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "Login.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicine\\Models\\Login.cs",
               "RelativeDocumentMoniker": "eMedicine\\Models\\Login.cs",
@@ -199,19 +217,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "CompanyAPIController.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicine\\Controllers\\CompanyAPIController.cs",
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\CompanyAPIController.cs",
               "ToolTip": "E:\\eMedicine\\eMedicine\\Controllers\\CompanyAPIController.cs",
               "RelativeToolTip": "eMedicine\\Controllers\\CompanyAPIController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAiAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-04T04:13:43.2Z"
+              "WhenOpened": "2024-11-04T04:13:43.2Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "LoginAPIController.cs",
               "DocumentMoniker": "E:\\eMedicine\\eMedicine\\Controllers\\LoginAPIController.cs",
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\LoginAPIController.cs",

@@ -1,0 +1,42 @@
+﻿@using System.Data
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Nucleus</title>
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+        sessionStorage.clear();
+    </script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <title>Nucleus</title>
+    <link rel="icon" href="~/Content/bower_components/Ionicons/png/512/concord.png" type="image/x-icon">
+    <link href="~/Content/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+
+    @{
+        try
+        {
+            Session["MenuData"] = null;
+            Session.Abandon();
+        }
+        catch
+        {
+
+        }
+    }
+
+</head>
+<body>
+    @RenderBody()
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

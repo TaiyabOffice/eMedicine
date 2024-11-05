@@ -2382,11 +2382,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj",
+      "projectUniqueName": "E:\\eMedicine\\eMedicine\\eMedicine.csproj",
       "projectName": "eMedicine",
-      "projectPath": "E:\\OutProject\\eMedicine\\eMedicine\\eMedicine.csproj",
+      "projectPath": "E:\\eMedicine\\eMedicine\\eMedicine.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "E:\\OutProject\\eMedicine\\eMedicine\\obj\\",
+      "outputPath": "E:\\eMedicine\\eMedicine\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

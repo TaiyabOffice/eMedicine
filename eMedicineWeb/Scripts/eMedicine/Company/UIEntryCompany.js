@@ -22,7 +22,7 @@ $(function () {
         $("#rdoDraft").prop("checked", true);
         MonthlyExpencesHelper.BuildtblExpDetails("");
     });
-
+    //this is push
     $("#cmbProjectId").on("change", function (e) {
         var projectid = $("#cmbProjectId").val();
         MonthlyExpencesHelper.GenerateCombo($("#cmbProjectType"), "%", "ERPRENTDB.dbo.SP_SELECT_SERVICE_CHARGE", "GETCATAGORYLIST", projectid, "", "", "", "S");

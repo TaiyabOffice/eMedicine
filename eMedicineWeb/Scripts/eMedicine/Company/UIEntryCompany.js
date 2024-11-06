@@ -16,6 +16,7 @@ $(document).ready(function () {
 
     UICompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "1", "2", "3", "4", "5");
     UICompanyHelper.BuildComanyTbl("");
+    UICompanyHelper.GetAllCompany();
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
@@ -53,6 +54,23 @@ var UICompanyHelper = {
             }
         });
     },
+    GetAllCompany: function () {
+        var serviceUrl = "/Company/GetAllCompany";
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            success: function (result) {
+                if (result.success) {
+                    UICompanyHelper.BuildComanyTbl(result.data);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                alert("Error retrieving companies.");
+            }
+        });
+    },
     SaveCollectionData: function () {
 
         var companyData = {
@@ -82,66 +100,13 @@ var UICompanyHelper = {
             success: function (response) {
                 // Success message
                 alert('Company saved successfully!');
-                var serviceUrl = "/Company/GetAllCompany";
-                jQuery.ajax({
-                    url: serviceUrl,
-                    type: "POST",
-                    success: function (data) {
-                        data = $.parseJSON(data);
-                        UICompanyHelper.BuildComanyTbl(data.Table);
-                    },
-                });
-                UICompanyHelper.BuildComanyTbl();
-                
+                UICompanyHelper.GetAllCompany();                
             },
             error: function (xhr, status, error) {
                 // Handle errors
                 alert('Error saving company: ' + error);
             }
         });
-    },
-    damageItemDetails: function (rowIndex) {
-        rowId = rowIndex;
-        var table = $('#tblItemDetails').DataTable();
-        var rowData = table.row(rowIndex).data();
-
-        $('#cmbSubcode').val(rowData.DESC1).trigger("change");
-        $('#txtItemDetailsModel').val(rowData.DESC4);
-        $('#txtItemDetailsBrand').val(rowData.DESC5);
-        $('#txtItemDetailsDsc').val(rowData.DESC6);
-        $('#txtItemDetailsSpec').val(rowData.DESC7);
-        $('#txtItemDetailsSN').val(rowData.DESC8);
-        $('#txtItemDetailsSize').val(rowData.DESC9);
-        $('#txtItemDetailsWarranty').val(rowData.DESC10);
-        $('#cmbItemDetailsStatus').val(rowData.DESC11).trigger("change");
-        $('#txtHdnMasterID').val(rowData.DESC17);
-        $('#txtHdnDetailsID').val(rowData.DESC3);
-        $('#txtItemDetailsID').val(rowData.DESC3);
-
-        $('#hdnIsDamaged').val(rowData.DESC14);
-        $('#txtDmgReason').val(rowData.DESC15);
-
-        $('#modalDamage').modal('show');
-    },
-    editDataTable: function (rowIndex) {
-        rowId = rowIndex;
-        var table = $('#tblItemDetails').DataTable();
-        var rowData = table.row(rowIndex).data();
-
-        $('#cmbSubcode').val(rowData.DESC1).trigger("change");
-        $('#txtItemDetailsModel').val(rowData.DESC4);
-        $('#txtItemDetailsBrand').val(rowData.DESC5);
-        $('#txtItemDetailsDsc').val(rowData.DESC6);
-        $('#txtItemDetailsSpec').val(rowData.DESC7);
-        $('#txtItemDetailsSN').val(rowData.DESC8);
-        $('#txtItemDetailsSize').val(rowData.DESC9);
-        $('#txtItemDetailsWarranty').val(rowData.DESC10);
-        $('#cmbItemDetailsStatus').val(rowData.DESC11).trigger("change");
-        $('#txtHdnMasterID').val(rowData.DESC17);
-        $('#txtHdnDetailsID').val(rowData.DESC3);
-        $('#txtItemDetailsID').val(rowData.DESC3);
-
-        $('#modalConfiguration').modal('show');
     },
     GetAssetByCategory: function () {
         var obj = {
@@ -165,21 +130,19 @@ var UICompanyHelper = {
             data: tbldata,
             "responsive": true,
             "bDestroy": true,
-            columns: [
-                        { data: 'CompanyId' },
-                        { data: 'CompanyName' },
-                        { data: 'CompanyAddress' },
-                        { data: 'CompanyDescription' },
-                        { data: 'CompanyPhone' },
-                        { data: 'CompanyCity' },
-                        { data: 'CompanyCountry' },
-                        { data: 'IsActive' },
-                        {
-                            data: null,
-                            render: function (data, type, row) {
-                                return '<button class="btn btn-info btn-sm">Edit</button>';
-                            }
-                        }
+            "columns": [
+                { "data": "SL" },//0
+                { data: 'CompanyId' },//1
+                { data: 'CompanyName' },//2
+                { data: 'CompanyAddress' },//3
+                { data: 'CompanyDescription' },//4
+                { data: 'CompanyPhone' },//5
+                { data: 'CompanyCity' },//6
+                { data: 'CompanyCountry' },//7
+                { data: 'IsActive' },//8
+                {
+                    data: null,//9
+                }
             ],
             "columnDefs": [
                 {
@@ -187,101 +150,58 @@ var UICompanyHelper = {
                     "width": "2%",
                     render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
                 },
-                {
-                    "targets": [15],
-                    "render": function (data, type, row, meta) {
-                        if (row.ACTIVITYSTATUS == "D") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
-
-                        } else if (row.ACTIVITYSTATUS == "M") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
-
-                        } else if (row.ACTIVITYSTATUS == "S") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
-                                '<button id="btnItemDamage" name="btnItemDamage" type="button" title="Damage" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.damageItem(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-trash" style="font-size:15px; padding:0px;"></i> </button>';
-
-                        } else if (row.ACTIVITYSTATUS == "A") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:25px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
-                                '<button id="btnItemDamage" name="btnItemDamage" type="button" title="Damage" style="margin-right:2px; width:20px; height:25px; padding:0px;" onclick="UICompanyHelper.damageItem(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-trash" style="font-size:15px; padding:0px;"></i> </button>';
-
-                        } else if (row.ACTIVITYSTATUS == 'N') {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
-                                '<button id="btnItemDamage" name="btnItemDamage" type="button" title="Damage" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.damageItem(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-trash" style="font-size:15px; padding:0px;"></i> </button>' +
-                                '<button id="btnAssign" name="btnAssign" type="button" title="Assign Item to Employee" style="margin-right:2px; width:20px; height:20px; padding: 0px;" onclick="UICompanyHelper.AssignItem(\'' + meta.row + '\')" class="btn btn-sm btn-info"> <i class="fa fa-user-plus" aria-hidden="true" style="font-size:15px; padding:0px;"></i> </button>';
-
-                        }
-                    }
-
-                },
 
                 {
-                    "targets": [13],
+                    "targets": [9],
                     "render": function (data, type, row, meta) {
-                        if (row.ACTIVITYSTATUS == "D") {
-                            return 'Damaged';
-                        }
-                        if (row.ACTIVITYSTATUS == "S") {
-                            return 'On Servicing';
-                        }
-                        if (row.ACTIVITYSTATUS == "M") {
-                            return 'Missing';
-                        }
-                        if (row.ACTIVITYSTATUS == "N") {
-                            return 'Nutral';
-                        }
-                        if (row.ACTIVITYSTATUS == "A") {
-                            return 'Assigned';
-                        }
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
+
                     }
                 },
-
-                {
-                    "targets": [0, 9, 11, 16, 17],
-                    "visible": false,
-                    "searchable": false
-                },
-                { "className": "dt-center", "targets": [0, 1, 5, 8, 9, 10, 11] },
-                { "className": "dt-left", "targets": [2, 3, 4, 6, 7] },
-
             ]
 
         });
 
-    },
-    GetItemByID: function (masterID) {
-        $('#txtItemModel, #txtItemBrand, #txtItemDesc, #txtItemSN, #txtItemVendor, #txtItemPurchaseDate, #txtItemMasterID, #txtItemDetailsID, #txtPONumber, #txtItemWarranty').val('');
-        $('#cmbItemStatus').val('0').select2();
 
-        UICompanyHelper.GenerateCombo($("#cmbSubcode"), "000", "SP_SELECT_ITASSET", "GETSUBCODE", "", "", "", "", "");
-        $('#txtItemMasterID').val(masterID);
-        var obj = {
-            COMC1: "000",
-            DESC1: masterID
-        };
-        var jsonParam = { Param: obj };
-        var serviceUrl = "/Common/GetItemDetailsByMasterID";
+
+    },
+    GetCompanyID: function (masterID) {
+        var jsonParam = { companyId: masterID };
+        var serviceUrl = "/Company/GetCompanyById";
+
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
             data: jsonParam,
-            success: function (data) {
-                UICompanyHelper.InitItemDetailsTbl(data.data02);
+            success: function (response) {
+                if (response.success && response.data01 && response.data01.length > 0) {
+                    var company = response.data01[0]; 
 
-                $('#txtItemMasterID').val(data.data01[0].DESC1);
-                $('#txtItemModel').val(data.data01[0].DESC2);
-                $('#txtItemBrand').val(data.data01[0].DESC3);
-                $('#txtItemDesc').val(data.data01[0].DESC4);
-                $('#txtItemSN').val(data.data01[0].DESC5);
-                $('#txtItemVendor').val(data.data01[0].DESC6);
-                $('#txtPONumber').val(data.data01[0].DESC7);
-                $('#txtItemPurchaseDate').val(data.data01[0].DESC8).datepicker({ format: "dd-M-yyyy", autoclose: true });
-                $('#cmbItemStatus').val(data.data01[0].DESC9).select2();
-                $('#txtInvoiceNO').val(data.data01[0].DESC10);
-                $('#txtItemWarranty').val(data.data01[0].DESC11);
-                $('#cmbItemCategory').val(data.data01[0].DESC12).select2();
+                    $('#CompanyId').val(company.CompanyId);
+                    $('#CompanyName').val(company.CompanyName);
+                    $('#CompanyAddress').val(company.CompanyAddress);
+                    $('#CompanyDescription').val(company.CompanyDescription);
+                    $('#CompanyPhone').val(company.CompanyPhone);
+                    $('#CompanyCity').val(company.CompanyCity);
+                    $('#CompanyRegion').val(company.CompanyRegion);
+                    $('#CompanyPostalCode').val(company.CompanyPostalCode);
+                    $('#CompanyCountry').val(company.CompanyCountry);
+                    $('#IsActive').val(company.IsActive);
+                    $('#CreatedBy').val(company.CreatedBy);
+                    $('#CreatedDate').val(company.CreatedDate);
+                    $('#UpdatedBy').val(company.UpdatedBy);
+                    $('#DeletedBy').val(company.DeletedBy);
+                    $('#DeletedDate').val(company.DeletedDate);
+                } else {
+                    alert("No company data found.");
+                }
+            },
+            error: function () {
+                alert("Error retrieving company data.");
             }
         });
-    },  
+    },
+
     getSelectionStart: function (o) {
         if (o.createTextRange) {
             var r = document.selection.createRange().duplicate();

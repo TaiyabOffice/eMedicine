@@ -120,10 +120,12 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\SalesPersonController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -7341,6 +7343,7 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Duplicate.js" />
     <Content Include="Scripts\eMedicine\Company\UIEntryCompany.js" />
+    <Content Include="Scripts\eMedicine\SalesPerson\UIEntrySalesPerson.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -7377,6 +7380,7 @@
     <Content Include="Views\LogIn\Login.cshtml" />
     <Content Include="Views\DashBoard\DashBoard.cshtml" />
     <Content Include="Views\Company\UIEntryCompany.cshtml" />
+    <Content Include="Views\SalesPerson\UIEntrySalesPerson.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

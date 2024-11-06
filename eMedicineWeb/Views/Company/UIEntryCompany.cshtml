@@ -2,183 +2,136 @@
     ViewBag.Title = "Monthly Expenses";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<style type="text/css">
-    label.error {
-        color: #F00;
-        /*background-color: #FFF;*/
-    }
-</style>
 <section class="content">
-
-    <!-- SELECT2 EXAMPLE -->
-    <div class="box box-default">
+    <div class="box box-solid box-primary">
         <div class="box-body">
-            <input type="hidden" id="hdnMemberCode" value="0" />
-            <input type="hidden" id="hdnUserId" value=@Request.RequestContext.HttpContext.Session["UserID"]>
-            <input type="hidden" id="hdnTermID" value=@Request.RequestContext.HttpContext.Session["TermID"]>
-            <input type="hidden" id="hdnSessionID" value=@Request.RequestContext.HttpContext.Session["SessionID"]>
-            <input type="hidden" id="txtExpNo">
-            <input type="hidden" id="hdnRadiobtn" value="N">
-            <input type="hidden" id="hdnTotal">
-
+            @*<input type="hidden" id="hdnUserId" value="@Request.RequestContext.HttpContext.Session['UserID']">
+            <input type="hidden" id="hdnTermID" value="@Request.RequestContext.HttpContext.Session['TermID']">
+            <input type="hidden" id="hdnSessionID" value="@Request.RequestContext.HttpContext.Session['SessionID']">*@
 
             <div class="modal-body">
                 <div class="row">
-
-                    <div class="col-md-12" id="divMaster">
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-sm-4">
-                                    <button id="btnNew" type="button" class="btn btn-sm btn-danger ">New</button>
-                                    <button id="btnSubmit" type="button" class="btn btn-sm btn-primary ">Save</button>
-                                    <button id="btnPrint" type="button" class="btn btn-sm btn-danger" style="visibility:hidden">Print</button>
-                                </div>
-
-                                <div class="col-sm-3">
-                                </div>
-                                <div class="col-sm-2">                                  
-                                    <div class="input-group date" id="" data-date-format="dd-mm-yyyy">
-                                        <input type="text" class="form-control input-sm" name="textExpDate" id="textExpDate" readonly style="text-align:center">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-3" id="srcbox">
-                                    <div class="input-group">
-                                        <input type="text" id="SrctxtExpno" placeholder="Exp No:" class="form-control input-sm" style="margin-right: 2px;" readonly="readonly">
-                                        <span class="input-group-btn">
-                                            <button style="Width: 55px" id="btnsrch" type="submit" class="btn btn-block btn-primary btn-sm">Search</button>
-                                        </span>
-                                    </div>
-
-                                </div>                               
-                            </div>
-                        </div>
-                        <br>
-                        <form id="validate">
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="col-sm-2">
-                                        <label id="UnitLbl"><a style="cursor: pointer;" onclick="MonthlyExpencesHelper.ChkProjctId()" class='btnTmpEdit'>Project No:</a></label>
-                                        <input type="text" id="txtProjectId" text="" class="form-control input-sm" placeholder="Project Name" autocomplete="off" />
-                                    </div>
-                                    <div class="col-sm-5" style="margin-top: 5px;">
-                                        <span></span><br>
-                                        <select id="cmbProjectId" name="cmbProjectId" class="form-control input-sm select2"></select>
-                                    </div>
-                                    <div class="col-sm-5">
-                                        <label>Project Address:</label>
-                                        <input type="text" id="txtProjectAddress" name="txtProjectAddress" class="form-control input-sm" placeholder="Address" autocomplete="off" readonly />
-                                    </div>
-                                   
-                                </div>
+                    <div class="col-sm-12">
+                        <div class="box box-solid box-primary" style="margin-top:15px;">
+                            <div class="box-header">
+                                <h3 class="box-title">Company Information</h3>
                             </div>
 
-                            <div class="row">
-                                <div class="col-sm-12">
+                            <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
+                                <form id="validateCompany">
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-sm-2">
-                                                <label>Project Type:</label>
-                                                <select id="cmbProjectType" name="cmbProjectType" class="form-control input-sm select2"></select>
-                                            </div>
-                                            <div class="col-sm-4">
-                                                <label> Note :</label>
-                                                <input type="text" id="textNote" name="textNote" maxlength="198" class="form-control input-sm" placeholder="Note" autocomplete="off" />
-                                            </div>
-                                            <div class="col-sm-2" id="rdobtn" style="margin-top:25px">
-
-                                                <input type="radio" id="rdoDraft" class="radioBtnClass" name="numbers" value="N" />&nbsp; Draft &nbsp;
-                                                <input type="radio" id="rdoFinal" class="radioBtnClass" name="numbers" value="Y" />&nbsp;Final
+                                                <label for="CompanyId">Company ID</label>
+                                                <input type="text" id="CompanyId" name="CompanyId" class="form-control input-sm" autocomplete="off">
                                             </div>
                                             <div class="col-sm-2">
-                                                <label> Total Client :</label>
-                                                <input type="text" id="txtttlClint" name="txtttlClint" maxlength="198" class="form-control input-sm" placeholder="" readonly/>
+                                                <label for="CompanyName">Company Name</label>
+                                                <input type="text" id="CompanyName" name="CompanyName" class="form-control input-sm" autocomplete="off">
                                             </div>
                                             <div class="col-sm-2">
-                                                <label> Total Size :</label>
-                                                <input type="text" id="txtttlSize" name="txtttlSize" maxlength="198" class="form-control input-sm" placeholder="" readonly />
+                                                <label for="CompanyAddress">Company Address</label>
+                                                <input type="text" id="CompanyAddress" name="CompanyAddress" class="form-control input-sm" autocomplete="off">
                                             </div>
-
+                                            <div class="col-sm-2">
+                                                <label for="CompanyDescription">Company Dsc</label>
+                                                <input type="text" id="CompanyDescription" name="CompanyDescription" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CompanyPhone">Company Phone</label>
+                                                <input type="text" id="CompanyPhone" name="CompanyPhone" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CompanyCity">Company City</label>
+                                                <input type="text" id="CompanyCity" name="CompanyCity" class="form-control input-sm" autocomplete="off">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>                           
-                        </form>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-sm-1">
 
-                                </div>
+                                    <br />
 
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-2">
+                                                <label for="CompanyRegion">Company Region</label>
+                                                <input type="text" id="CompanyRegion" name="CompanyRegion" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CompanyPostalCode">Postal Code</label>
+                                                <input type="text" id="CompanyPostalCode" name="CompanyPostalCode" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CompanyCountry">Division</label>
+                                                <select id="cmbDivisionId" name="cmbDivisionId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="IsActive">Is Active</label>
+                                                <select id="IsActive" name="IsActive" class="form-control input-sm">
+                                                    <option value="true">Yes</option>
+                                                    <option value="false">No</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CreatedBy">Created By</label>
+                                                <input type="text" id="CreatedBy" name="CreatedBy" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CreatedDate">Created Date</label>
+                                                <input type="text" id="CreatedDate" name="CreatedDate" class="form-control input-sm" autocomplete="off" >
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br />
+
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-2">
+                                                <label for="UpdatedBy">Updated By</label>
+                                                <input type="text" id="UpdatedBy" name="UpdatedBy" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="DeletedBy">Deleted By</label>
+                                                <input type="text" id="DeletedBy" name="DeletedBy" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="DeletedDate">Deleted Date</label>
+                                                <input type="text" id="DeletedDate" name="DeletedDate" class="form-control input-sm" autocomplete="off" >
+                                            </div>
+                                            <div class="col-sm-4" style="margin-top: 25px;">
+                                                <button id="btnSave" type="button" class="btn btn-success">Save Company Info</button>
+                                                <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="box">
-                                <div class="box-header">
-                                    <h3 class="box-title">Expenses Details</h3>
-                                </div>
-                                <!-- /.box-header -->
-                                <table id="tblExpencesDetails" class="display responsive nowrap" style="width: 100%; font-size: 10px">
+                        <div class="box box-solid box-primary">
+                            <div class="box-header">
+                                <h3 class="box-title">Company List</h3>
+                            </div>
+                            <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
+                                <table id="tblCompany" class="table table-striped table-bordered" cellspacing="0" style="width: 100%; font-size: 10px;">
                                     <thead>
                                         <tr>
-                                            <th>Sl</th>
-                                            <th>Expenses Code</th>
-                                            <th>Expenses Name</th>
-                                            <th>Status</th>
-                                            <th>Amount</th>
-                                            <th>Remarks</th>
+                                            <th>SL</th>
+                                            <th>Company ID</th>
+                                            <th>Company Name</th>
+                                            <th>Address</th>
+                                            <th>Description</th>
+                                            <th>Phone</th>
+                                            <th>City</th>
+                                            <th>Country</th>
+                                            <th>Is Active</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th></th>
-                                            <th></th>
-                                            <th>Total Amount:</th>
-                                            <th></th>
-                                            <th></th>
-                                            <th id=""></th>
-                                            <th id=""></th>
-                                        </tr>
-                                    </tfoot>
+                                    <tbody>
+                                        <!-- Data will be populated here dynamically using jQuery or other data fetching methods -->
+                                    </tbody>
                                 </table>
-                                <div class="row" style="padding-top: 5px; padding-bottom: 5px">
-                                    <div class="form-group">
-                                        <div class="col-sm-5" style="text-align: right">
-                                            Service Charge:(%)
-                                        </div>
-                                        <div class="col-sm-1">
-                                            <input style="text-align: right" type="text" id="txtper" text="" value="" class="form-control input-sm" placeholder="%" autocomplete="off" onkeypress="return ESDEstimationHelper.isDeciaml(this, event, 2)" />
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <input style="text-align: right" type="text" id="txtttlCharge" text="" class="form-control input-sm" placeholder="" autocomplete="off" readonly="readonly" />
-                                        </div> 
-                                    </div>
-                                </div>
-                                <div class="row" style="padding-top: 5px; padding-bottom: 5px">
-                                    <div class="form-group">
-                                        <div class="col-sm-6" style="text-align: right">
-                                            Total:
-                                        </div>
-                                        <div class="col-sm-2">
-                                            <input style="text-align: right" type="text" id="txttotal" text="" class="form-control input-sm" placeholder="" autocomplete="off" readonly="readonly" />
-                                        </div>
-                                        <div class="col-sm-2" style="text-align: right">
-                                            <label>Individual Exp.:</label>
-                                        </div>
-                                        <div class="col-sm-2">                                           
-                                            <input style="text-align: right" type="text" id="txtIndvExp" text="" class="form-control input-sm" placeholder="" autocomplete="off" readonly="readonly" />
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -188,100 +141,7 @@
     </div>
 </section>
 
-
 @section Scripts {
     @Scripts.Render("~/Scripts/eMedicine/Company/UIEntryCompany.js")
     <script src="~/Scripts/jquery.validate.min.js"></script>
 }
-
-<div class="modal fade" id="modal-default-Search">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title"> Expenses List</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-sm-2" style="text-align:right">
-                                    <label> From Date :</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="input-group date" id="" data-date-format="dd-mm-yyyy">
-
-                                        <input type="text" class="form-control input-sm" name="txtStartDate" id="txtStartDate" style="text-align:center" readonly>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-2" style="text-align:right">
-                                    <label> To Date :</label>
-                                </div>
-                                <div class="col-sm-3">
-                                    <div class="input-group date" id="" data-date-format="dd-mm-yyyy">
-
-                                        <input type="text" class="form-control input-sm" name="txtEndDate" id="txtEndDate" style="text-align:center" readonly>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-sm-1">
-
-                                    <button id="btnSearch" type="button" class="btn  btn-primary btn-sm">Search</button>
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-sm-1">
-                                </div>                                
-                            </div>
-
-                        </div>
-
-                        <div class="row" id="SrcTable" hidden="">
-                            <div class="form-group">
-                                <div class="box">
-                                    <div class="box-body">
-                                        <table id="tblExpSrcDetails" class="display responsive nowrap" style="width: 100%; font-size: 10px">
-                                            <thead>
-                                                <tr>
-                                                    <th>SL</th>
-                                                    <th>Exp No</th>
-                                                    <th>Project</th>
-                                                    <th>Expenses No</th>
-                                                    <th>Expenses Date</th>
-                                                    <th>Approved</th>
-                                                    <th>AMOUNT</th>
-                                                    <th>NOTE</th>
-                                                    <th>Action</th>
-                                                    <th>COMCID</th>
-                                                    <th>CATAGORY</th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">               
-                <button type="button" class="btn btn-danger " data-dismiss="modal">Close</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-

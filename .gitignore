@@ -39,6 +39,14 @@ wwwroot/vendor/
 *.snupkg
 packages/
 
+# Ignore compiled assemblies
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
+
+
 # Environment and Configuration Files
 .env
 appsettings.Development.json

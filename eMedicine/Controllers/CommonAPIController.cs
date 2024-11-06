@@ -12,11 +12,12 @@ namespace eMedicine.Controllers
     {
         DataSet ds = new DataSet();
         private readonly ICommonRepo repo;
+
         public CommonAPIController(ICommonRepo repo)
         {
             this.repo = repo;
         }
-        [HttpPost("GetDropdownList")]
+        [HttpGet("GetDropdownList")]
         public async Task<IActionResult> GetDropdownList(string ProcedureName, string CallName, string Param1, string Param2, string Param3, string Param4, string Param5)
         {
             try

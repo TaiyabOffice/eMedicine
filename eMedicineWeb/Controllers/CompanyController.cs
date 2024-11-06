@@ -58,11 +58,7 @@ namespace eMedicineWeb.Controllers
             // Return the view with either the retrieved list or an empty one in case of failure
             return View(companyList);
         }
-        public ActionResult CreateCompany()
-        {
-            return View();
-        }
-
+       
         public ActionResult UIEntryCompany()
         {
             return View();

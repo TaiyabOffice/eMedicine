@@ -14,33 +14,45 @@ $(document).ready(function () {
         }
     });
 
-    //UICompanyHelper.GenerateCombo($("#cmbItemCategory"), "000", "SP_SELECT_ITASSET", "GETCATEGORIESFORITASSET", "", "", "", "", "");
-    UICompanyHelper.BuildAssetTbl("");
+    UICompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "1", "2", "3", "4", "5");
+    UICompanyHelper.BuildComanyTbl("");
 });
-
-
 $("#btnSave").click(function (event) {
     event.preventDefault();
-
         UICompanyHelper.SaveCollectionData();
-    //else {
-    //    swal({
-    //        title: 'Sorry!',
-    //        text: 'Invalid Data for Save',
-    //        type: "error",
-    //        icon: 'error',
-    //        closeOnConfirm: false
-
-    //    });
-    //}
 });
-
 $("#btnClear").click(function (event) {
     event.preventDefault();
     location.reload();
 });
 
 var UICompanyHelper = {
+    GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
+
+        objcmb.empty();
+        var json = { ProcedureName: proName, CallName: callName, Param1: param1, Param2: param2, Param3: param3, Param4: param4, Param5: param5 };
+        jQuery.ajax({
+            type: "POST",
+            url: "/Common/GenerateCombo",
+            data: json,
+            success: function (data) {
+                if (data.length == 1) {
+                    $.each(data, function (key, item) {
+                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                    });
+                }
+                else {
+                    objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
+                    $.each(data, function (key, item) {
+                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                    });
+
+                }
+                // this is for to work onchange event when only one data is returned
+                objcmb.change();
+            }
+        });
+    },
     SaveCollectionData: function () {
 
         var companyData = {
@@ -76,83 +88,17 @@ var UICompanyHelper = {
                     type: "POST",
                     success: function (data) {
                         data = $.parseJSON(data);
-                        UICompanyHelper.BuildAssetTbl(data.Table);
+                        UICompanyHelper.BuildComanyTbl(data.Table);
                     },
                 });
-                UICompanyHelper.BuildAssetTbl();
-
-
-                //// Reload the DataTable to reflect new data
-                //companyTable.ajax.reload();
-
-                //// Optionally clear the form after saving
-                //$('#validateCompany')[0].reset();
+                UICompanyHelper.BuildComanyTbl();
+                
             },
             error: function (xhr, status, error) {
                 // Handle errors
                 alert('Error saving company: ' + error);
             }
         });
-
-
-
-        //if ($("#validate").valid() && $("#cmbItemCategory").val() != "0" && $("#cmbItemStatus").val() != "0") {
-
-        //    var objDetails = JSON.stringify(obj);
-        //    var newItemList = JSON.stringify(listitem);
-        //    var jsonParam = "objDetails:" + objDetails + ',newItemList:' + newItemList;
-        //    console.log(jsonParam);
-
-        //    var serviceUrl = "/UIITAsset/SaveLaptopOrPC";
-        //    jQuery.ajax({
-        //        url: serviceUrl,
-        //        type: "POST",
-        //        data: "{" + jsonParam + "}",
-        //        dataType: "json",
-        //        contentType: "application/json; charset=utf-8",
-        //        success: function (data) {
-        //            if (data.status) {
-        //                $('#txtItemModel, #txtItemBrand, #txtItemDesc, #txtItemSN, #txtItemVendor, #txtItemPurchaseDate, #txtItemMasterID, #txtItemDetailsID, #txtItemMasterID, #txtItemWarranty').val('');
-        //                $("#cmbItemStatus").val("0").select2();
-
-        //                if ($.fn.DataTable.isDataTable('#tblItemDetails')) {
-        //                    $('#tblItemDetails').DataTable().clear().destroy();
-        //                }
-        //                UICompanyHelper.InitItemDetailsTbl();
-
-        //                swal({
-        //                    title: "Congratulation!!",
-        //                    text: "Save Successfully",
-        //                    type: "success",
-        //                    closeOnConfirm: false,
-        //                });
-        //                UICompanyHelper.GetAssetByCategory();
-        //            } else {
-        //                swal({
-        //                    title: "Sorry!",
-        //                    text: "Failed to save!",
-        //                    type: "error",
-        //                    closeOnConfirm: false,
-        //                });
-        //            }
-        //        },
-        //        error: function (data) {
-        //            swal({
-        //                title: "Sorry!",
-        //                text: "Something Went Wrong !!! \n" + data.statusText,
-        //                type: "error",
-        //                closeOnConfirm: false
-        //            });
-        //        }
-        //    });
-        //} else {
-        //    swal({
-        //        title: "Sorry!",
-        //        text: "Please Fill all the fields!",
-        //        type: "error",
-        //        closeOnConfirm: false
-        //    });
-        //}
     },
     damageItemDetails: function (rowIndex) {
         rowId = rowIndex;
@@ -214,7 +160,7 @@ var UICompanyHelper = {
             },
         });
     },
-    BuildAssetTbl: function (tbldata) {
+    BuildComanyTbl: function (tbldata) {
         $('#tblCompany').DataTable({
             data: tbldata,
             "responsive": true,
@@ -313,7 +259,7 @@ var UICompanyHelper = {
             DESC1: masterID
         };
         var jsonParam = { Param: obj };
-        var serviceUrl = "/UIITAsset/GetItemDetailsByMasterID";
+        var serviceUrl = "/Common/GetItemDetailsByMasterID";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
@@ -335,32 +281,7 @@ var UICompanyHelper = {
                 $('#cmbItemCategory').val(data.data01[0].DESC12).select2();
             }
         });
-    },
-    GenerateCombo: function (objcmb, Com, proName, callName, param1, param2, param3, param4, param5) {
-        objcmb.empty();
-        var json = { procedureName: proName, com: Com, callName: callName, Param1: param1, Param2: param2, Param3: param3, Param4: param4, Param5: param5 };
-        jQuery.ajax({
-            type: "POST",
-            url: "/Common/GenerateCombo",
-            data: json,
-            success: function (data) {
-                if (data.length == 1) {
-                    $.each(data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
-                    });
-                }
-                else {
-                    objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
-                    $.each(data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
-                    });
-
-                }
-                // this is for to work onchange event when only one data is returned
-                objcmb.change();
-            }
-        });
-    },
+    },  
     getSelectionStart: function (o) {
         if (o.createTextRange) {
             var r = document.selection.createRange().duplicate();
@@ -392,80 +313,5 @@ var UICompanyHelper = {
         if (code > 31 && (code < 48 || code > 57)) {
             e.preventDefault();
         }
-    },
+    }
 };
-
-//$(document).ready(function () {
-//    // Initialize the DataTable to load existing companies
-//    var companyTable = $('#tblCompany').DataTable({
-//        ajax: {
-//            url: '/Company/GetAllCompany', // Controller action to fetch company data
-//            dataSrc: '' // Adjust based on your API response structure
-//        },
-//        columns: [
-//            { data: 'CompanyId' },
-//            { data: 'CompanyName' },
-//            { data: 'CompanyAddress' },
-//            { data: 'CompanyDescription' },
-//            { data: 'CompanyPhone' },
-//            { data: 'CompanyCity' },
-//            { data: 'CompanyCountry' },
-//            { data: 'IsActive' },
-//            {
-//                data: null,
-//                render: function (data, type, row) {
-//                    return '<button class="btn btn-info btn-sm">Edit</button>';
-//                }
-//            }
-//        ]
-//    });
-
-//    // Click event handler for the Save button
-//    $('#btnSave').click(function () {
-//        // Collect form data
-//        var companyData = {
-//            CompanyId: $('#CompanyId').val(),
-//            CompanyName: $('#CompanyName').val(),
-//            CompanyAddress: $('#CompanyAddress').val(),
-//            CompanyDescription: $('#CompanyDescription').val(),
-//            CompanyPhone: $('#CompanyPhone').val(),
-//            CompanyCity: $('#CompanyCity').val(),
-//            CompanyRegion: $('#CompanyRegion').val(),
-//            CompanyPostalCode: $('#CompanyPostalCode').val(),
-//            CompanyCountry: $('#CompanyCountry').val(),
-//            IsActive: $('#IsActive').val(),
-//            CreatedBy: $('#CreatedBy').val(),
-//            CreatedDate: $('#CreatedDate').val(),
-//            UpdatedBy: $('#UpdatedBy').val(),
-//            DeletedBy: $('#DeletedBy').val(),
-//            DeletedDate: $('#DeletedDate').val()
-//        };
-
-//        // Send the form data to the CreateCompany action via AJAX
-//        $.ajax({
-//            url: '/Company/CreateCompany', // Your controller action
-//            type: 'POST',
-//            contentType: 'application/json',
-//            data: JSON.stringify(companyData), // Send as JSON
-//            success: function (response) {
-//                // Success message
-//                alert('Company saved successfully!');
-
-//                // Reload the DataTable to reflect new data
-//                companyTable.ajax.reload();
-
-//                // Optionally clear the form after saving
-//                $('#validateCompany')[0].reset();
-//            },
-//            error: function (xhr, status, error) {
-//                // Handle errors
-//                alert('Error saving company: ' + error);
-//            }
-//        });
-//    });
-
-//    // Clear button functionality to reset the form fields
-//    $('#btnClear').click(function () {
-//        $('#validateCompany')[0].reset();
-//    });
-//});

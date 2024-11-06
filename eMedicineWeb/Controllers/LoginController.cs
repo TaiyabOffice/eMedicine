@@ -74,18 +74,16 @@ namespace eMedicineWeb.Controllers
         }
 
         public void GetMenuById(string UserId)
-        {
-            List<MenuViewModal> menuList = new List<MenuViewModal>();
+        {         
             try
             {  
-                //string requestUrl = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + "sadf7").Result;
+               HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetMenuById/" + UserId).Result;
 
-                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetMenuById/" + UserId).Result;
-
-                if (response.IsSuccessStatusCode)                {
+                if (response.IsSuccessStatusCode)                
+                {
                    
                     string data = response.Content.ReadAsStringAsync().Result;
-                    var menuLists = JsonConvert.DeserializeObject<List<MenuViewModal>>(data);
+                    var menuLists = JsonConvert.DeserializeObject<List<MenuViewModel>>(data);
 
                     DataTable menuTable = ConvertListToDataTable(menuLists);
 

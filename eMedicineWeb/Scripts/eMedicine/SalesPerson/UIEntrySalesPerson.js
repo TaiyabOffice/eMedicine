@@ -1,32 +1,30 @@
 ﻿let rowId = "";
 $(document).ready(function () {
+    alert();
     $(".select2").select2();
 
     jQuery.ajax({
         url: "/Common/GetCurrentDate",
         type: "POST",
         success: function (result) {
-            $("#CreatedDate").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#CreatedDate").datepicker('setDate', new Date(result));
-
-            $("#DeletedDate").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#DeletedDate").datepicker('setDate', new Date(result));
+            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
+            $("#hdnDateToday").datepicker('setDate', new Date(result));            
         }
     });
 
-    UICompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "1", "2", "3", "4", "5");
-    UICompanyHelper.BuildComanyTbl("");
+    SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "1", "2", "3", "4", "5");
+    SalesPersonHelper.BuildTbl("");
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
-        UICompanyHelper.SaveCollectionData();
+        SalesPersonHelper.SaveCollectionData();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
     location.reload();
 });
 
-var UICompanyHelper = {
+var SalesPersonHelper = {
     GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
         objcmb.empty();
@@ -53,46 +51,71 @@ var UICompanyHelper = {
             }
         });
     },
+    BuildTbl: function (tbldata) {
+        $('#tblCompany').DataTable({
+            data: tbldata,
+            "responsive": true,
+            "bDestroy": true,
+            columns: [
+                { data: 'SalesPersonId' },
+                { data: 'SalesPersonName' },
+                { data: 'SalesPersonDescription' },
+                { data: 'SalesPersonPhone' },
+                { data: 'CompanyId' },
+                { data: 'CompanyName' },                
+                { data: 'IsActive' },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return '<button class="btn btn-info btn-sm">Edit</button>';
+                    }
+                }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "width": "2%",
+                    render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
+                },                
+                { "className": "dt-center", "targets": [] },
+                { "className": "dt-left", "targets": [] },
+
+            ]
+
+        });
+
+    },
     SaveCollectionData: function () {
 
         var companyData = {
-            CompanyId: $('#CompanyId').val(),
-            CompanyName: $('#CompanyName').val(),
-            CompanyAddress: $('#CompanyAddress').val(),
-            CompanyDescription: $('#CompanyDescription').val(),
-            CompanyPhone: $('#CompanyPhone').val(),
-            CompanyCity: $('#CompanyCity').val(),
-            CompanyRegion: $('#CompanyRegion').val(),
-            CompanyPostalCode: $('#CompanyPostalCode').val(),
-            CompanyCountry: $('#CompanyCountry').val(),
-            IsActive: $('#IsActive').val(),
-            CreatedBy: $('#CreatedBy').val(),
-            CreatedDate: $('#CreatedDate').val(),
-            UpdatedBy: $('#UpdatedBy').val(),
-            DeletedBy: $('#DeletedBy').val(),
-            DeletedDate: $('#DeletedDate').val()
+            SalesPersonId: $('#txtSalesPersonId').val(),
+            SalesPersonName: $('#txtSalesPersonName').val(),
+            SalesPersonDescription: $('#txtDescription').val(),
+            SalesPersonPhone: $('#txtPhone').val(),
+            CompanyId: $('#cmbCompanyId').val(),
+            IsActive: $('#CmbIsActive').val(),            
+            CreatedBy: $('#hdnUserId').val(),
+            CreatedDate: $('#hdnDateToday').val(),
+            UpdatedBy: $('#hdnUserId').val(),
+            UpdatedDate: $('#hdnDateToday').val()
         };
 
         // Send the form data to the CreateCompany action via AJAX
         $.ajax({
-            url: '/Company/CreateCompany', // Your controller action
+            url: '/SalesPerson/CreateSalesPerson', // Your controller action
             type: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(companyData), // Send as JSON
             success: function (response) {
-                // Success message
-                alert('Company saved successfully!');
-                var serviceUrl = "/Company/GetAllCompany";
-                jQuery.ajax({
-                    url: serviceUrl,
-                    type: "POST",
-                    success: function (data) {
-                        data = $.parseJSON(data);
-                        UICompanyHelper.BuildComanyTbl(data.Table);
-                    },
+                // Success message               
+                swal({
+                    title: "Congratulations",
+                    text: "saved successfully!",
+                    type: "success",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    timer: 2000
                 });
-                UICompanyHelper.BuildComanyTbl();
-                
             },
             error: function (xhr, status, error) {
                 // Handle errors
@@ -156,103 +179,15 @@ var UICompanyHelper = {
             data: jsonParam,
             success: function (data) {
                 data = $.parseJSON(data);
-                UICompanyHelper.BuildAssetTbl(data.Table);
+                SalesPersonHelper.BuildAssetTbl(data.Table);
             },
         });
-    },
-    BuildComanyTbl: function (tbldata) {
-        $('#tblCompany').DataTable({
-            data: tbldata,
-            "responsive": true,
-            "bDestroy": true,
-            columns: [
-                        { data: 'CompanyId' },
-                        { data: 'CompanyName' },
-                        { data: 'CompanyAddress' },
-                        { data: 'CompanyDescription' },
-                        { data: 'CompanyPhone' },
-                        { data: 'CompanyCity' },
-                        { data: 'CompanyCountry' },
-                        { data: 'IsActive' },
-                        {
-                            data: null,
-                            render: function (data, type, row) {
-                                return '<button class="btn btn-info btn-sm">Edit</button>';
-                            }
-                        }
-            ],
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "width": "2%",
-                    render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
-                },
-                {
-                    "targets": [15],
-                    "render": function (data, type, row, meta) {
-                        if (row.ACTIVITYSTATUS == "D") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
-
-                        } else if (row.ACTIVITYSTATUS == "M") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
-
-                        } else if (row.ACTIVITYSTATUS == "S") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
-                                '<button id="btnItemDamage" name="btnItemDamage" type="button" title="Damage" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.damageItem(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-trash" style="font-size:15px; padding:0px;"></i> </button>';
-
-                        } else if (row.ACTIVITYSTATUS == "A") {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:25px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
-                                '<button id="btnItemDamage" name="btnItemDamage" type="button" title="Damage" style="margin-right:2px; width:20px; height:25px; padding:0px;" onclick="UICompanyHelper.damageItem(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-trash" style="font-size:15px; padding:0px;"></i> </button>';
-
-                        } else if (row.ACTIVITYSTATUS == 'N') {
-                            return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetItemByID(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
-                                '<button id="btnItemDamage" name="btnItemDamage" type="button" title="Damage" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.damageItem(\'' + row.ITEMMASTERID + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-trash" style="font-size:15px; padding:0px;"></i> </button>' +
-                                '<button id="btnAssign" name="btnAssign" type="button" title="Assign Item to Employee" style="margin-right:2px; width:20px; height:20px; padding: 0px;" onclick="UICompanyHelper.AssignItem(\'' + meta.row + '\')" class="btn btn-sm btn-info"> <i class="fa fa-user-plus" aria-hidden="true" style="font-size:15px; padding:0px;"></i> </button>';
-
-                        }
-                    }
-
-                },
-
-                {
-                    "targets": [13],
-                    "render": function (data, type, row, meta) {
-                        if (row.ACTIVITYSTATUS == "D") {
-                            return 'Damaged';
-                        }
-                        if (row.ACTIVITYSTATUS == "S") {
-                            return 'On Servicing';
-                        }
-                        if (row.ACTIVITYSTATUS == "M") {
-                            return 'Missing';
-                        }
-                        if (row.ACTIVITYSTATUS == "N") {
-                            return 'Nutral';
-                        }
-                        if (row.ACTIVITYSTATUS == "A") {
-                            return 'Assigned';
-                        }
-                    }
-                },
-
-                {
-                    "targets": [0, 9, 11, 16, 17],
-                    "visible": false,
-                    "searchable": false
-                },
-                { "className": "dt-center", "targets": [0, 1, 5, 8, 9, 10, 11] },
-                { "className": "dt-left", "targets": [2, 3, 4, 6, 7] },
-
-            ]
-
-        });
-
-    },
+    },   
     GetItemByID: function (masterID) {
         $('#txtItemModel, #txtItemBrand, #txtItemDesc, #txtItemSN, #txtItemVendor, #txtItemPurchaseDate, #txtItemMasterID, #txtItemDetailsID, #txtPONumber, #txtItemWarranty').val('');
         $('#cmbItemStatus').val('0').select2();
 
-        UICompanyHelper.GenerateCombo($("#cmbSubcode"), "000", "SP_SELECT_ITASSET", "GETSUBCODE", "", "", "", "", "");
+        SalesPersonHelper.GenerateCombo($("#cmbSubcode"), "000", "SP_SELECT_ITASSET", "GETSUBCODE", "", "", "", "", "");
         $('#txtItemMasterID').val(masterID);
         var obj = {
             COMC1: "000",
@@ -265,7 +200,7 @@ var UICompanyHelper = {
             type: "POST",
             data: jsonParam,
             success: function (data) {
-                UICompanyHelper.InitItemDetailsTbl(data.data02);
+                SalesPersonHelper.InitItemDetailsTbl(data.data02);
 
                 $('#txtItemMasterID').val(data.data01[0].DESC1);
                 $('#txtItemModel').val(data.data01[0].DESC2);
@@ -301,7 +236,7 @@ var UICompanyHelper = {
             return false;
         }
         //get the carat position
-        var caratPos = UICompanyHelper.getSelectionStart(el);
+        var caratPos = SalesPersonHelper.getSelectionStart(el);
         var dotPos = el.value.indexOf(".");
         if (caratPos > dotPos && dotPos > -1 && (number[1].length > deci_point - 1)) {
             return false;

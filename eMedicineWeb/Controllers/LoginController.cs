@@ -77,9 +77,7 @@ namespace eMedicineWeb.Controllers
         {         
             try
             {  
-                //string requestUrl = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + "sadf7").Result;
-
-                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetMenuById/" + UserId).Result;
+               HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetMenuById/" + UserId).Result;
 
                 if (response.IsSuccessStatusCode)                
                 {

@@ -15,30 +15,27 @@ namespace eMedicineWeb.Controllers
     public class CompanyController : Controller
     {
         // GET: Company
-        Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "CompanyAPI");
-        //static string _ServerURL = ConfigurationManager.AppSettings["ServerURL"];
-        HttpClient client;
+        Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "CompanyAPI");        
+        HttpClient client;        
         public CompanyController()
         {
             client = new HttpClient();
             client.BaseAddress = baseAddress;
-
+        }
+        public ActionResult UIEntryCompany()
+        {
+            return View();
         }
         public async Task<ActionResult> GetAllCompany()
         {
             List<CompanyViewModel> companyList = new List<CompanyViewModel>();
-
             try
-            {
-                // Make the API call asynchronously
-                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllCompany");
-
-                // Check if the response is successful
+            {               
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllCompany");                
                 if (response.IsSuccessStatusCode)
                 {
                     string data = await response.Content.ReadAsStringAsync();
-
-                    // Deserialize data if it's not null or empty
+                    
                     if (!string.IsNullOrEmpty(data))
                     {
                         companyList = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
@@ -50,27 +47,18 @@ namespace eMedicineWeb.Controllers
                 }
             }
             catch (Exception ex)
-            {
-                // Log the exception (implement your logging mechanism here)
+            {               
                 ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
-            }
-
-            // Return the view with either the retrieved list or an empty one in case of failure
+            }            
             return View(companyList);
-        }
-       
-        public ActionResult UIEntryCompany()
-        {
-            return View();
-        }
+        }            
         [HttpPost]
         public async Task<ActionResult> CreateCompany(CompanyViewModel company)
         {
             if (!ModelState.IsValid)
             {
-                return View(company); // Return the view with validation errors
+                return View(company);
             }
-
             string data = JsonConvert.SerializeObject(company);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
@@ -78,11 +66,9 @@ namespace eMedicineWeb.Controllers
             if (response.IsSuccessStatusCode)
             {
                 return RedirectToAction("GetAllCompany");
-            }
-
-            // Optionally log the error response
+            }            
             ModelState.AddModelError("", "Unable to create company. Please try again.");
-            return View(company); // Return the view with an error message
+            return View(company);
         }
         public ActionResult GetCompanyById(string companyId)
         {
@@ -91,35 +77,26 @@ namespace eMedicineWeb.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                string data = response.Content.ReadAsStringAsync().Result;
-
-                // Try to deserialize as a single object first
+                string data = response.Content.ReadAsStringAsync().Result;                
                 try
                 {
                     company = JsonConvert.DeserializeObject<CompanyViewModel>(data);
                 }
                 catch (JsonSerializationException)
-                {
-                    // If it fails, try to deserialize as a list
+                {                    
                     var companies = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
                     company = companies.FirstOrDefault();
                 }
             }
-
             return View(company);
-        }
-        public ActionResult UpdateCompanyById()
-        {
-            return View();
-        }
+        }       
         [HttpPost]
         public async Task<ActionResult> UpdateCompanyById(CompanyViewModel company)
         {
             if (!ModelState.IsValid)
             {
-                return View(company); // Return the view with validation errors
+                return View(company);
             }
-
             string data = JsonConvert.SerializeObject(company);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
@@ -131,6 +108,5 @@ namespace eMedicineWeb.Controllers
             ModelState.AddModelError("", "Unable to create company. Please try again.");
             return View(company);
         }
-
     }
 }

@@ -29,7 +29,7 @@ namespace eMedicine.Controllers
                 {
                     return Ok(new { Success = true, Data = new List<Company>(), Message = "No companies found." });
                 }
-                var GetDashBoardDetails = (from DataRow dr in ds.Tables[0].Rows
+                var GetCompanyDetails = (from DataRow dr in ds.Tables[0].Rows
                                            select new Company()
                                            {
                                                CompanyId = dr["CompanyId"].ToString(),
@@ -43,7 +43,7 @@ namespace eMedicine.Controllers
                                                CompanyCountry = dr["CompanyCountry"].ToString(),
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();
-                return new JsonResult(GetDashBoardDetails);
+                return new JsonResult(GetCompanyDetails);
             }
             catch (Exception ex)
             {
@@ -101,7 +101,7 @@ namespace eMedicine.Controllers
                 {
                     return Ok(new { Success = true, Data = new List<Company>(), Message = "No companies found." });
                 }
-                var GetDashBoardDetails = (from DataRow dr in ds.Tables[0].Rows
+                var GetCompanyDetails = (from DataRow dr in ds.Tables[0].Rows
                                            select new Company()
                                            {
                                                CompanyId = dr["CompanyId"].ToString(),
@@ -116,7 +116,7 @@ namespace eMedicine.Controllers
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();
 
-                return new JsonResult(GetDashBoardDetails);
+                return new JsonResult(GetCompanyDetails);
 
             }
             catch (Exception ex)
@@ -167,9 +167,5 @@ namespace eMedicine.Controllers
                 });
             }
         }
-
-
-
-
     }
 }

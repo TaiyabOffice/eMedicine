@@ -28,7 +28,7 @@ namespace eMedicineWeb.Controllers
         {
             bool status = false;
             DropdownListViewModel dropdownList = null;
-            string requestUrl = $"{client.BaseAddress}/GetDropdownList?ProcedureName={Uri.EscapeDataString(ProcedureName)}&CallName={Uri.EscapeDataString(CallName)}&Param1={Uri.EscapeDataString(Param1)}&Param2={Uri.EscapeDataString(Param2)}&Param3={Uri.EscapeDataString(Param3)}&Param4={Uri.EscapeDataString(Param4)}&Param5={Uri.EscapeDataString(Param5)}";
+            string requestUrl = $"{client.BaseAddress}/GetDropdownList?ProcedureName={ProcedureName}&CallName={CallName}&Param1={Param1}&Param2={Param2}&Param3={Param3}&Param4={Param4}&Param5={Param5}";
 
             HttpResponseMessage response = client.GetAsync(requestUrl).Result;
 

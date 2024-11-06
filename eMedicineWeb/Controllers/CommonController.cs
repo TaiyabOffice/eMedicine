@@ -27,7 +27,7 @@ namespace eMedicineWeb.Controllers
         public ActionResult GenerateCombo(string ProcedureName, string CallName, string Param1, string Param2, string Param3, string Param4, string Param5)
         {
             bool status = false;
-            DropdownListViewModal dropdownList = null;
+            DropdownListViewModel dropdownList = null;
             string requestUrl = $"{client.BaseAddress}/GetDropdownList?ProcedureName={Uri.EscapeDataString(ProcedureName)}&CallName={Uri.EscapeDataString(CallName)}&Param1={Uri.EscapeDataString(Param1)}&Param2={Uri.EscapeDataString(Param2)}&Param3={Uri.EscapeDataString(Param3)}&Param4={Uri.EscapeDataString(Param4)}&Param5={Uri.EscapeDataString(Param5)}";
 
             HttpResponseMessage response = client.GetAsync(requestUrl).Result;
@@ -37,12 +37,12 @@ namespace eMedicineWeb.Controllers
                 string data = response.Content.ReadAsStringAsync().Result;
                 try
                 {
-                    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModal>>(data);                   
+                    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);                   
                     return Json(dropdownModal, JsonRequestBehavior.AllowGet);
                 }
                 catch (JsonSerializationException)
                 {
-                    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModal>>(data);
+                    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);
                     dropdownList = dropdownModal.FirstOrDefault();
                 }
             }

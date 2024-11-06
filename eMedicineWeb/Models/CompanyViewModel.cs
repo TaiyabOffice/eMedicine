@@ -5,7 +5,7 @@ using System.Web;
 
 namespace eMedicineWeb.Models
 {
-    public class CompanyViewModal
+    public class CompanyViewModel
     {
         public string CompanyId { get; set; }
         public string CompanyName { get; set; }

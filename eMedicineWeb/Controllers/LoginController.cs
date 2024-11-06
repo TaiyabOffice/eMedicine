@@ -85,7 +85,7 @@ namespace eMedicineWeb.Controllers
                 {
                    
                     string data = response.Content.ReadAsStringAsync().Result;
-                    var menuLists = JsonConvert.DeserializeObject<List<MenuViewModal>>(data);
+                    var menuLists = JsonConvert.DeserializeObject<List<MenuViewModel>>(data);
 
                     DataTable menuTable = ConvertListToDataTable(menuLists);
 

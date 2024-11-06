@@ -5,7 +5,7 @@ using System.Web;
 
 namespace eMedicineWeb.Models
 {
-    public class DropdownListViewModal
+    public class DropdownListViewModel
     {
         public string procedureName { get; set; }
         public string callName { get; set; }

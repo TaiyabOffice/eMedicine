@@ -26,7 +26,7 @@ namespace eMedicineWeb.Controllers
         }
         public async Task<ActionResult> GetAllCompany()
         {
-            List<CompanyViewModal> companyList = new List<CompanyViewModal>();
+            List<CompanyViewModel> companyList = new List<CompanyViewModel>();
 
             try
             {
@@ -41,7 +41,7 @@ namespace eMedicineWeb.Controllers
                     // Deserialize data if it's not null or empty
                     if (!string.IsNullOrEmpty(data))
                     {
-                        companyList = JsonConvert.DeserializeObject<List<CompanyViewModal>>(data);
+                        companyList = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
                     }
                 }
                 else
@@ -64,7 +64,7 @@ namespace eMedicineWeb.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> CreateCompany(CompanyViewModal company)
+        public async Task<ActionResult> CreateCompany(CompanyViewModel company)
         {
             if (!ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace eMedicineWeb.Controllers
         }
         public ActionResult GetCompanyById(string companyId)
         {
-            CompanyViewModal company = null;
+            CompanyViewModel company = null;
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + companyId).Result;
 
             if (response.IsSuccessStatusCode)
@@ -96,12 +96,12 @@ namespace eMedicineWeb.Controllers
                 // Try to deserialize as a single object first
                 try
                 {
-                    company = JsonConvert.DeserializeObject<CompanyViewModal>(data);
+                    company = JsonConvert.DeserializeObject<CompanyViewModel>(data);
                 }
                 catch (JsonSerializationException)
                 {
                     // If it fails, try to deserialize as a list
-                    var companies = JsonConvert.DeserializeObject<List<CompanyViewModal>>(data);
+                    var companies = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
                     company = companies.FirstOrDefault();
                 }
             }
@@ -113,7 +113,7 @@ namespace eMedicineWeb.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> UpdateCompanyById(CompanyViewModal company)
+        public async Task<ActionResult> UpdateCompanyById(CompanyViewModel company)
         {
             if (!ModelState.IsValid)
             {

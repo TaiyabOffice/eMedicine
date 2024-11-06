@@ -5,7 +5,7 @@ using System.Web;
 
 namespace eMedicineWeb.Models
 {
-    public class MenuViewModal
+    public class MenuViewModel
     {
         public string MenuID { get; set; }
         public string ParentID { get; set; }

@@ -91,7 +91,7 @@ namespace eMedicineWeb.Controllers
         public ActionResult GetCompanyById(string companyId)
         {
             CompanyViewModal company = null;
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + "sadf7").Result;
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + companyId).Result;
 
             if (response.IsSuccessStatusCode)
             {

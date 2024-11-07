@@ -26,16 +26,16 @@ namespace eMedicineWeb.Controllers
         {
             return View();
         }
-        public async Task<ActionResult> GetAllCompany()
+        public async Task<JsonResult> GetAllCompany()
         {
             List<CompanyViewModel> companyList = new List<CompanyViewModel>();
             try
-            {               
-                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllCompany");                
+            {
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllCompany");
                 if (response.IsSuccessStatusCode)
                 {
                     string data = await response.Content.ReadAsStringAsync();
-                    
+
                     if (!string.IsNullOrEmpty(data))
                     {
                         companyList = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
@@ -43,15 +43,17 @@ namespace eMedicineWeb.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Failed to retrieve companies. Please try again later.");
+                    return Json(new { success = false, message = "Failed to retrieve companies. Please try again later." });
                 }
             }
             catch (Exception ex)
-            {               
-                ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
-            }            
-            return View(companyList);
-        }            
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+
+            return Json(new { success = true, data = companyList }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateCompany(CompanyViewModel company)
         {
@@ -70,26 +72,45 @@ namespace eMedicineWeb.Controllers
             ModelState.AddModelError("", "Unable to create company. Please try again.");
             return View(company);
         }
-        public ActionResult GetCompanyById(string companyId)
+        [HttpPost] 
+        public async Task<JsonResult> GetCompanyById(string companyId)
         {
             CompanyViewModel company = null;
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + companyId).Result;
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string data = response.Content.ReadAsStringAsync().Result;                
-                try
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetCompanyById/" + companyId);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    company = JsonConvert.DeserializeObject<CompanyViewModel>(data);
+                    string data = await response.Content.ReadAsStringAsync();
+
+                    try
+                    {
+                        // Attempt to deserialize the single company object
+                        company = JsonConvert.DeserializeObject<CompanyViewModel>(data);
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        // If deserialization fails, try to handle as a list and get the first one
+                        var companies = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
+                        company = companies.FirstOrDefault();
+                    }
+
+                    if (company != null)
+                    {
+                        return Json(new { success = true, data01 = new List<CompanyViewModel> { company } });
+                    }
                 }
-                catch (JsonSerializationException)
-                {                    
-                    var companies = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
-                    company = companies.FirstOrDefault();
-                }
+
+                // If the request was unsuccessful or no company was found
+                return Json(new { success = false, message = "Failed to retrieve company details." });
             }
-            return View(company);
-        }       
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> UpdateCompanyById(CompanyViewModel company)
         {

@@ -58,6 +58,7 @@ namespace eMedicineWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateSalesPerson(SalesPersonViewModel salesPerson)
         {
+            bool Satus = false;
             if (!ModelState.IsValid)
             {
                 return View(salesPerson);
@@ -68,12 +69,11 @@ namespace eMedicineWeb.Controllers
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateSalesPerson", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("GetAllSalesPerson");
+                return View(Satus = true);
             }            
             ModelState.AddModelError("", "Unable to create sales Person. Please try again.");
             return View(salesPerson); 
         }
-
         [HttpPost]
         public async Task<JsonResult> GetSalesPersonById(string salesPersonId)
         {
@@ -106,11 +106,10 @@ namespace eMedicineWeb.Controllers
                 return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
         }
-
-
         [HttpPost]
         public async Task<ActionResult> UpdateSalesPersonById(SalesPersonViewModel salesPerson)
         {
+            bool Satus = false;
             if (!ModelState.IsValid)
             {
                 return View(salesPerson);
@@ -121,7 +120,7 @@ namespace eMedicineWeb.Controllers
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateSalesPersonById", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("GetAllSalesPerson");
+                return View(Satus = true);
             }
             ModelState.AddModelError("", "Unable to create sales Person. Please try again.");
             return View(salesPerson);

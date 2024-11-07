@@ -45,15 +45,15 @@ namespace eMedicineWeb.Controllers
                     }
                 }
                 else
-                {
-                    ModelState.AddModelError(string.Empty, "Failed to retrieve sales Person. Please try again later.");
+                {  
+                    return Json(new { success = false, message = "Failed to retrieve sales Person. Please try again later." });
                 }
             }
             catch (Exception ex)
-            {                
-                ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
-            }            
-            return View(salesPersonList);
+            {  
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+            return Json(new { success = true, data = salesPersonList }, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public async Task<ActionResult> CreateSalesPerson(SalesPersonViewModel salesPerson)
@@ -73,26 +73,41 @@ namespace eMedicineWeb.Controllers
             ModelState.AddModelError("", "Unable to create sales Person. Please try again.");
             return View(salesPerson); 
         }
-        public ActionResult GetSalesPersonById(string salesPersonId)
+
+        [HttpPost]
+        public async Task<JsonResult> GetSalesPersonById(string salesPersonId)
         {
             SalesPersonViewModel salesPerson = null;
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetSalesPersonById/" + salesPersonId).Result;
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string data = response.Content.ReadAsStringAsync().Result;                
-                try
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetSalesPersonById/" + salesPersonId).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    salesPerson = JsonConvert.DeserializeObject<SalesPersonViewModel>(data);
+                    string data = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        salesPerson = JsonConvert.DeserializeObject<SalesPersonViewModel>(data);
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        var salesPersons = JsonConvert.DeserializeObject<List<SalesPersonViewModel>>(data);
+                        salesPerson = salesPersons.FirstOrDefault();
+                    }
+
+                    if (salesPerson != null)
+                    {
+                        return Json(new { success = true, data01 = new List<SalesPersonViewModel> { salesPerson } });
+                    }
                 }
-                catch (JsonSerializationException)
-                {                    
-                    var salesPersons = JsonConvert.DeserializeObject<List<SalesPersonViewModel>>(data);
-                    salesPerson = salesPersons.FirstOrDefault();
-                }
+                return Json(new { success = false, message = "Failed to retrieve Sales Person details." });
             }
-            return View(salesPerson);
-        }        
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+
         [HttpPost]
         public async Task<ActionResult> UpdateSalesPersonById(SalesPersonViewModel salesPerson)
         {

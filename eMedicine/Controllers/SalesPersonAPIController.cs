@@ -33,7 +33,10 @@ namespace eMedicine.Controllers
                                            {
                                                SalesPersonId = dr["SalesPersonId"].ToString(),
                                                SalesPersonName = dr["SalesPersonName"].ToString(),
-                                               CompanyId = dr["CompanyId"].ToString(),                                               
+                                               SalesPersonDescription = dr["SalesPersonDescription"].ToString(),
+                                               SalesPersonPhone = dr["SalesPersonPhone"].ToString(),
+                                               CompanyId = dr["CompanyId"].ToString(),
+                                               CompanyName = dr["CompanyName"].ToString(),
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();
                 return new JsonResult(GetSalesPersonDetails);
@@ -55,7 +58,7 @@ namespace eMedicine.Controllers
             {  
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "CREATESALESPERSON", salesPerson.SalesPersonId, salesPerson.SalesPersonName, salesPerson.SalesPersonDescription,
-                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive);
+                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId);
                 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -95,10 +98,8 @@ namespace eMedicine.Controllers
                                                SalesPersonName = dr["SalesPersonName"].ToString(),
                                                SalesPersonDescription = dr["SalesPersonDescription"].ToString(),
                                                SalesPersonPhone = dr["SalesPersonPhone"].ToString(),
-                                               CreatedBy = dr["CreatedBy"].ToString(),
-                                               CreatedDate = dr["CreatedDate"].ToString(),
-                                               UpdatedBy = dr["UpdatedBy"].ToString(),
-                                               UpdatedDate = dr["UpdatedDate"].ToString(),                                               
+                                               CompanyId = dr["CompanyId"].ToString(),
+                                               CompanyName = dr["CompanyName"].ToString(),                                                                                            
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();
 
@@ -123,9 +124,9 @@ namespace eMedicine.Controllers
             {
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "UPDATESALESPERSONBYID", salesPerson.SalesPersonId, salesPerson.SalesPersonName, salesPerson.SalesPersonDescription,
-                 salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive);
+                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId);
 
-                
+
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
                     return NotFound();

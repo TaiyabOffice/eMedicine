@@ -24,14 +24,10 @@
                                                 <label for="txtSalesPersonId">Sales Person Id</label>
                                                 <input type="text" id="txtSalesPersonId" name="txtSalesPersonId" class="form-control input-sm" autocomplete="off">
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-4">
                                                 <label for="txtSalesPersonName">Name</label>
                                                 <input type="text" id="txtSalesPersonName" name="txtSalesPersonName" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="txtDescription">Description</label>
-                                                <input type="text" id="txtDescription" name="txtDescription" class="form-control input-sm" autocomplete="off">
-                                            </div>
+                                            </div>                                            
                                             <div class="col-sm-2">
                                                 <label for="txtPhone">Phone</label>
                                                 <input type="text" id="txtPhone" name="txtPhone" class="form-control input-sm" autocomplete="off">
@@ -43,9 +39,22 @@
                                             <div class="col-sm-2">
                                                 <label for="CmbIsActive">Is Active</label>
                                                 <select id="CmbIsActive" name="CmbIsActive" class="form-control input-sm">
-                                                    <option value="true">Yes</option>
-                                                    <option value="false">No</option>
+                                                    <option value="1">Yes</option>
+                                                    <option value="0">No</option>
                                                 </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label for="txtDescription">Description</label>
+                                                <input type="text" id="txtDescription" name="txtDescription" class="form-control input-sm" autocomplete="off">
+                                            </div> 
+                                            <div class="col-sm-4" style="margin-top: 25px;">
+                                                <button id="btnSave" type="button" class="btn btn-success" >Save Info</button>
+                                                <button id="btnUpdate" type="button" class="btn btn-success" >Update Info</button>
+                                                <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
                                             </div>
                                         </div>
                                     </div>

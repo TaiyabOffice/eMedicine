@@ -14,7 +14,7 @@ $(document).ready(function () {
         }
     });
 
-    UICompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "1", "2", "3", "4", "5");
+    UICompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "0", "0", "0", "0", "0");
     UICompanyHelper.BuildComanyTbl("");
     UICompanyHelper.GetAllCompany();
 });
@@ -63,11 +63,23 @@ var UICompanyHelper = {
                 if (result.success) {
                     UICompanyHelper.BuildComanyTbl(result.data);
                 } else {
-                    alert(result.message);
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving companies.!" + result.message,
+                        type: "error",
+                        closeOnConfirm: false,
+                        timer: 2000
+                    });                  
                 }
             },
             error: function () {
-                alert("Error retrieving companies.");
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving companies.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    timer: 2000
+                });                
             }
         });
     },
@@ -99,12 +111,26 @@ var UICompanyHelper = {
             data: JSON.stringify(companyData), // Send as JSON
             success: function (response) {
                 // Success message
-                alert('Company saved successfully!');
+                swal({
+                    title: "Congratulations",
+                    text: "saved successfully!",
+                    type: "success",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    timer: 2000
+                });
                 UICompanyHelper.GetAllCompany();                
             },
             error: function (xhr, status, error) {
                 // Handle errors
-                alert('Error saving company: ' + error);
+
+                swal({
+                    title: "Sorry!",
+                    text: "Error saving company!" + error,
+                    type: "error",
+                    closeOnConfirm: false,
+                    timer: 2000
+                });                
             }
         });
     },
@@ -150,7 +176,6 @@ var UICompanyHelper = {
                     "width": "2%",
                     render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
                 },
-
                 {
                     "targets": [9],
                     "render": function (data, type, row, meta) {
@@ -165,8 +190,8 @@ var UICompanyHelper = {
 
 
     },
-    GetCompanyID: function (masterID) {
-        var jsonParam = { companyId: masterID };
+    GetCompanyID: function (CompanyId) {
+        var jsonParam = { companyId: CompanyId };
         var serviceUrl = "/Company/GetCompanyById";
 
         jQuery.ajax({
@@ -192,8 +217,14 @@ var UICompanyHelper = {
                     $('#UpdatedBy').val(company.UpdatedBy);
                     $('#DeletedBy').val(company.DeletedBy);
                     $('#DeletedDate').val(company.DeletedDate);
-                } else {
-                    alert("No company data found.");
+                } else { 
+                    swal({
+                        title: "Sorry!",
+                        text: "No company data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        timer: 2000
+                    });
                 }
             },
             error: function () {
@@ -201,7 +232,6 @@ var UICompanyHelper = {
             }
         });
     },
-
     getSelectionStart: function (o) {
         if (o.createTextRange) {
             var r = document.selection.createRange().duplicate();

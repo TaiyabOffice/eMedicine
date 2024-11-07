@@ -1,8 +1,9 @@
 ﻿let rowId = "";
 $(document).ready(function () {
-    alert();
+  
     $(".select2").select2();
-
+    $("#btnSave").show();
+    $("#btnUpdate").hide();
     jQuery.ajax({
         url: "/Common/GetCurrentDate",
         type: "POST",
@@ -12,12 +13,21 @@ $(document).ready(function () {
         }
     });
 
-    SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "1", "2", "3", "4", "5");
+    SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
     SalesPersonHelper.BuildTbl("");
+    SalesPersonHelper.GetAllSalesPerson();
+
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
-        SalesPersonHelper.SaveCollectionData();
+    SalesPersonHelper.SaveCollectionData();
+    location.reload();
+});
+
+$("#btnUpdate").click(function (event) {
+    event.preventDefault();
+    SalesPersonHelper.UpdateCollectionData();
+    location.reload();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
@@ -52,11 +62,12 @@ var SalesPersonHelper = {
         });
     },
     BuildTbl: function (tbldata) {
-        $('#tblCompany').DataTable({
+        $('#tblSalesPerson').DataTable({
             data: tbldata,
             "responsive": true,
             "bDestroy": true,
             columns: [
+                { "data": "SL" },
                 { data: 'SalesPersonId' },
                 { data: 'SalesPersonName' },
                 { data: 'SalesPersonDescription' },
@@ -67,7 +78,7 @@ var SalesPersonHelper = {
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button class="btn btn-info btn-sm">Edit</button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="SalesPersonHelper.GetSalesPersonID(\'' + row.SalesPersonId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -93,6 +104,7 @@ var SalesPersonHelper = {
             SalesPersonDescription: $('#txtDescription').val(),
             SalesPersonPhone: $('#txtPhone').val(),
             CompanyId: $('#cmbCompanyId').val(),
+            CompanyName: $('#cmbCompanyId').val(),
             IsActive: $('#CmbIsActive').val(),            
             CreatedBy: $('#hdnUserId').val(),
             CreatedDate: $('#hdnDateToday').val(),
@@ -116,6 +128,7 @@ var SalesPersonHelper = {
                     allowOutsideClick: false,
                     timer: 2000
                 });
+                SalesPersonHelper.GetAllSalesPerson();
             },
             error: function (xhr, status, error) {
                 // Handle errors
@@ -123,97 +136,115 @@ var SalesPersonHelper = {
             }
         });
     },
-    damageItemDetails: function (rowIndex) {
-        rowId = rowIndex;
-        var table = $('#tblItemDetails').DataTable();
-        var rowData = table.row(rowIndex).data();
+    UpdateCollectionData: function () {
 
-        $('#cmbSubcode').val(rowData.DESC1).trigger("change");
-        $('#txtItemDetailsModel').val(rowData.DESC4);
-        $('#txtItemDetailsBrand').val(rowData.DESC5);
-        $('#txtItemDetailsDsc').val(rowData.DESC6);
-        $('#txtItemDetailsSpec').val(rowData.DESC7);
-        $('#txtItemDetailsSN').val(rowData.DESC8);
-        $('#txtItemDetailsSize').val(rowData.DESC9);
-        $('#txtItemDetailsWarranty').val(rowData.DESC10);
-        $('#cmbItemDetailsStatus').val(rowData.DESC11).trigger("change");
-        $('#txtHdnMasterID').val(rowData.DESC17);
-        $('#txtHdnDetailsID').val(rowData.DESC3);
-        $('#txtItemDetailsID').val(rowData.DESC3);
-
-        $('#hdnIsDamaged').val(rowData.DESC14);
-        $('#txtDmgReason').val(rowData.DESC15);
-
-        $('#modalDamage').modal('show');
-    },
-    editDataTable: function (rowIndex) {
-        rowId = rowIndex;
-        var table = $('#tblItemDetails').DataTable();
-        var rowData = table.row(rowIndex).data();
-
-        $('#cmbSubcode').val(rowData.DESC1).trigger("change");
-        $('#txtItemDetailsModel').val(rowData.DESC4);
-        $('#txtItemDetailsBrand').val(rowData.DESC5);
-        $('#txtItemDetailsDsc').val(rowData.DESC6);
-        $('#txtItemDetailsSpec').val(rowData.DESC7);
-        $('#txtItemDetailsSN').val(rowData.DESC8);
-        $('#txtItemDetailsSize').val(rowData.DESC9);
-        $('#txtItemDetailsWarranty').val(rowData.DESC10);
-        $('#cmbItemDetailsStatus').val(rowData.DESC11).trigger("change");
-        $('#txtHdnMasterID').val(rowData.DESC17);
-        $('#txtHdnDetailsID').val(rowData.DESC3);
-        $('#txtItemDetailsID').val(rowData.DESC3);
-
-        $('#modalConfiguration').modal('show');
-    },
-    GetAssetByCategory: function () {
-        var obj = {
-            COMC1: "000",
-            DESC1: $("#cmbItemCategory option:selected").val()
+        var SalesPersonData = {
+            SalesPersonId: $('#txtSalesPersonId').val(),
+            SalesPersonName: $('#txtSalesPersonName').val(),
+            SalesPersonDescription: $('#txtDescription').val(),
+            SalesPersonPhone: $('#txtPhone').val(),
+            CompanyId: $('#cmbCompanyId').val(),
+            CompanyName: $('#cmbCompanyId').val(),
+            IsActive: $('#CmbIsActive').val(),
+            CreatedBy: $('#hdnUserId').val(),
+            CreatedDate: $('#hdnDateToday').val(),
+            UpdatedBy: $('#hdnUserId').val(),
+            UpdatedDate: $('#hdnDateToday').val()
         };
-        var jsonParam = { Param: obj };
-        var serviceUrl = "/UIITAsset/GetAssetByCategory";
-        jQuery.ajax({
-            url: serviceUrl,
-            type: "POST",
-            data: jsonParam,
-            success: function (data) {
-                data = $.parseJSON(data);
-                SalesPersonHelper.BuildAssetTbl(data.Table);
+
+        // Send the form data to the CreateCompany action via AJAX
+        $.ajax({
+            url: '/SalesPerson/UpdateSalesPersonById', // Your controller action
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(SalesPersonData), // Send as JSON
+            success: function (response) {
+                // Success message               
+                swal({
+                    title: "Congratulations",
+                    text: "saved successfully!",
+                    type: "success",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    timer: 2000
+                });
+                SalesPersonHelper.GetAllSalesPerson();
             },
+            error: function (xhr, status, error) {
+                // Handle errors
+                alert('Error saving Sales Person Data: ' + error);
+            }
         });
-    },   
-    GetItemByID: function (masterID) {
-        $('#txtItemModel, #txtItemBrand, #txtItemDesc, #txtItemSN, #txtItemVendor, #txtItemPurchaseDate, #txtItemMasterID, #txtItemDetailsID, #txtPONumber, #txtItemWarranty').val('');
-        $('#cmbItemStatus').val('0').select2();
+    },
+    GetAllSalesPerson: function () {
+        var serviceUrl = "/SalesPerson/GetAllSalesPerson";
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            success: function (result) {
+                if (result.success) {
+                    console.log(result.data);
+                    SalesPersonHelper.BuildTbl(result.data);
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving companies.!" + result.message,
+                        type: "error",
+                        closeOnConfirm: false,
+                        timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving companies.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    timer: 2000
+                });
+            }
+        });
+    },
+    GetSalesPersonID: function (SalesPersonId) {
+        $("#btnSave").hide();
+        $("#btnUpdate").show();
+        var jsonParam = { salesPersonId: SalesPersonId };
+        var serviceUrl = "/SalesPerson/GetSalesPersonById";
 
-        SalesPersonHelper.GenerateCombo($("#cmbSubcode"), "000", "SP_SELECT_ITASSET", "GETSUBCODE", "", "", "", "", "");
-        $('#txtItemMasterID').val(masterID);
-        var obj = {
-            COMC1: "000",
-            DESC1: masterID
-        };
-        var jsonParam = { Param: obj };
-        var serviceUrl = "/Common/GetItemDetailsByMasterID";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
             data: jsonParam,
-            success: function (data) {
-                SalesPersonHelper.InitItemDetailsTbl(data.data02);
-
-                $('#txtItemMasterID').val(data.data01[0].DESC1);
-                $('#txtItemModel').val(data.data01[0].DESC2);
-                $('#txtItemBrand').val(data.data01[0].DESC3);
-                $('#txtItemDesc').val(data.data01[0].DESC4);
-                $('#txtItemSN').val(data.data01[0].DESC5);
-                $('#txtItemVendor').val(data.data01[0].DESC6);
-                $('#txtPONumber').val(data.data01[0].DESC7);
-                $('#txtItemPurchaseDate').val(data.data01[0].DESC8).datepicker({ format: "dd-M-yyyy", autoclose: true });
-                $('#cmbItemStatus').val(data.data01[0].DESC9).select2();
-                $('#txtInvoiceNO').val(data.data01[0].DESC10);
-                $('#txtItemWarranty').val(data.data01[0].DESC11);
-                $('#cmbItemCategory').val(data.data01[0].DESC12).select2();
+            success: function (response) {
+                if (response.success && response.data01 && response.data01.length > 0) {
+                    var SalesPerson = response.data01[0];
+                    $("#cmbCompanyId").empty();
+                    $('#txtSalesPersonId').val(SalesPerson.SalesPersonId);
+                    $('#txtSalesPersonName').val(SalesPerson.SalesPersonName);
+                    $('#txtDescription').val(SalesPerson.SalesPersonDescription);
+                    $('#txtPhone').val(SalesPerson.SalesPersonPhone);
+                    $('#CompanyPhone').val(SalesPerson.CompanyPhone);
+                    $("#cmbCompanyId").append($("<option></option>").attr("value", SalesPerson.CompanyId).text(SalesPerson.CompanyName));
+                    $('#CmbIsActive').val(SalesPerson.IsActive);                                    
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "No Sales Person data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "No Sales Person data found.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    timer: 2000
+                });
             }
         });
     },  

@@ -7,16 +7,11 @@
         public string CompanyAddress { get; set; } = string.Empty;
         public string CompanyDescription { get; set; } = string.Empty;
         public string CompanyPhone { get; set; } = string.Empty;
-        public string CompanyCity { get; set; } = string.Empty;
-        public string CompanyRegion { get; set; } = string.Empty;
-        public string CompanyPostalCode { get; set; } = string.Empty;
-        public string CompanyCountry { get; set; } = string.Empty;
         public string IsActive { get; set; } = string.Empty;
-        public string CreatedBy { get; set; } = string.Empty;
-        public string CreatedDate { get; set; } = string.Empty;
-        public string Updatedby { get; set; } = string.Empty;
-        public string DeletedBy { get; set; } = string.Empty;
-        public string DeletedDate { get; set; } = string.Empty;
+        public string CreatedBy { get; set; } = "000000";
+        public string CreatedDate { get; set; } = DateTime.Now.ToString("dd-MMM-yy");
+        public string Updatedby { get; set; } = "000000";
+        public string UpdatedDate { get; set; } = DateTime.Now.ToString("dd-MMM-yy");
 
 
     }

@@ -63,6 +63,23 @@ var UICompanyHelper = {
                 if (result.success) {
                     UICompanyHelper.BuildComanyTbl(result.data);
                 } else {
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                alert("Error retrieving companies.");
+            }
+        });
+    },
+    GetAllCompany: function () {
+        var serviceUrl = "/Company/GetAllCompany";
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            success: function (result) {
+                if (result.success) {
+                    UICompanyHelper.BuildComanyTbl(result.data);
+                } else {
                     swal({
                         title: "Sorry!",
                         text: "Error retrieving companies.!" + result.message,
@@ -176,6 +193,7 @@ var UICompanyHelper = {
                     "width": "2%",
                     render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
                 },
+
                 {
                     "targets": [9],
                     "render": function (data, type, row, meta) {

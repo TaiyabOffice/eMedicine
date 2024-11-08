@@ -13,13 +13,19 @@ namespace eMedicineWeb.Models
         public string SupplierPhone { get; set; }
         public string CompanyId { get; set; }
         public string CompanyName { get; set; }
-        public string Email { get; set; }
-        public string CompanyCity { get; set; }        
+        public string Email { get; set; }               
         public string IsActive { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }
         public string Updatedby { get; set; }
         public string UpdatedDate { get; set; }
        
+    }
+
+    public class SupplierResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public List<SupplierViewModel> Data { get; set; }
     }
 }

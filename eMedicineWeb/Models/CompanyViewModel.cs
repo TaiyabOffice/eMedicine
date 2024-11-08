@@ -8,19 +8,20 @@ namespace eMedicineWeb.Models
     public class CompanyViewModel
     {
         public string CompanyId { get; set; }
-        public string CompanyName { get; set; }
-        public string CompanyAddress { get; set; }
-        public string CompanyDescription { get; set; }
-        public string CompanyPhone { get; set; }
-        public string CompanyCity { get; set; }
-        public string CompanyRegion { get; set; }
-        public string CompanyPostalCode { get; set; }
-        public string CompanyCountry { get; set; }
-        public string IsActive { get; set; }
-        public string CreatedBy { get; set; }
-        public string CreatedDate { get; set; }
-        public string Updatedby { get; set; }
-        public string DeletedBy { get; set; }
-        public string DeletedDate { get; set; }
+        public string CompanyName { get; set; } = string.Empty;
+        public string CompanyAddress { get; set; } = string.Empty;
+        public string CompanyDescription { get; set; } = string.Empty;
+        public string CompanyPhone { get; set; } = string.Empty;
+        public string IsActive { get; set; } = string.Empty;
+        public string CreatedBy { get; set; } = string.Empty;
+        public string CreatedDate { get; set; } = string.Empty;
+        public string Updatedby { get; set; } = string.Empty;
+        public string UpdatedDate { get; set; } = string.Empty;
+    }
+    public class CompanyResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public List<CompanyViewModel> Data { get; set; }
     }
 }

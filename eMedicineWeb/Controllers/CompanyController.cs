@@ -35,23 +35,26 @@ namespace eMedicineWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string data = await response.Content.ReadAsStringAsync();
-
-                    if (!string.IsNullOrEmpty(data))
+                    var Response = JsonConvert.DeserializeObject<CompanyResponse>(data);
+                    if (Response.Success)
                     {
-                        companyList = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            companyList = Response?.Data ?? new List<CompanyViewModel>();
+                        }
                     }
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Failed to retrieve companies. Please try again later." });
+                    return Json(new { Success = false, message = "Failed to retrieve Company. Please try again later." }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+                return Json(new { Success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
 
-            return Json(new { success = true, data = companyList }, JsonRequestBehavior.AllowGet);
+            return Json(new { Success = true, data = companyList }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -67,10 +70,10 @@ namespace eMedicineWeb.Controllers
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
             if (response.IsSuccessStatusCode)
             {
-                return View(Satus = true);
-            }            
-            ModelState.AddModelError("", "Unable to create company. Please try again.");
-            return View(company);
+                return Json(new { success = true, message = "Company create Successfully" });
+            }
+            ModelState.AddModelError("", "Unable to create Company. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Company details." });
         }
         [HttpPost] 
         public async Task<JsonResult> GetCompanyById(string companyId)
@@ -83,37 +86,44 @@ namespace eMedicineWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<CompanyResponse>(data);
+                    if (Response.Success)
+                    {
+                        try
+                        {
 
-                    try
-                    {
-                        // Attempt to deserialize the single company object
-                        company = JsonConvert.DeserializeObject<CompanyViewModel>(data);
+                            var Comapnys = Response?.Data ?? new List<CompanyViewModel>();
+                            company = Comapnys.FirstOrDefault();
+                        }
+                        catch (JsonSerializationException)
+                        {
+                            var Comapnys = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
+                            company = Comapnys.FirstOrDefault();
+                        }
                     }
-                    catch (JsonSerializationException)
+                    else
                     {
-                        // If deserialization fails, try to handle as a list and get the first one
-                        var companies = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
-                        company = companies.FirstOrDefault();
+                        return Json(new { success = false, message = "Failed to retrieve Comapny details." }, JsonRequestBehavior.AllowGet);
                     }
 
                     if (company != null)
                     {
-                        return Json(new { success = true, data01 = new List<CompanyViewModel> { company } });
+                        return Json(new { Success = true, data = company }, JsonRequestBehavior.AllowGet);
                     }
                 }
 
-                // If the request was unsuccessful or no company was found
-                return Json(new { success = false, message = "Failed to retrieve company details." });
+                return Json(new { Success = false, message = "Failed to retrieve Comapny details." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+                return Json(new { Success = false, message = $"An error occurred: {ex.Message}" });
             }
         }
 
         [HttpPost]
         public async Task<ActionResult> UpdateCompanyById(CompanyViewModel company)
         {
+            bool Satus = false;
             if (!ModelState.IsValid)
             {
                 return View(company);
@@ -121,13 +131,13 @@ namespace eMedicineWeb.Controllers
             string data = JsonConvert.SerializeObject(company);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("GetAllCompany");
+                return Json(new { success = true, message = "Update Successfully" });
             }
-            ModelState.AddModelError("", "Unable to create company. Please try again.");
-            return View(company);
+            ModelState.AddModelError("", "Unable to Update Company. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Update details." });
         }
     }
 }

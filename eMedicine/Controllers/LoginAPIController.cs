@@ -35,7 +35,7 @@ namespace eMedicine.Controllers
                 // Check if dataset is valid and contains data
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return Ok(new { Success = false, Message = "No user found." });
+                    return new JsonResult(new { Success = false, Message = "No user found.", Data = new List<Login>() });
                 } 
                 var GetLoginDetails = (from DataRow dr in ds.Tables[0].Rows
                                            select new Login()
@@ -47,12 +47,12 @@ namespace eMedicine.Controllers
                                                LocationId = dr["LocationId"].ToString(),
                                                CityId = dr["CityId"].ToString()                                               
                                            }).ToList();
-                return new JsonResult(GetLoginDetails);
+                return new JsonResult(new { Success = true, Data = GetLoginDetails });
             }
             catch (Exception ex)
             {
                 // Log the exception (implement your logging mechanism here)
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the login.",
@@ -70,7 +70,7 @@ namespace eMedicine.Controllers
                 var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETMENUBYID", UserId);
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return Ok(new { Success = false, Message = "No Menu found." });
+                    return new JsonResult(new { Success = false, Message = "No Menu found.", Data = new List<Menu>() });
                 }
                 var GetMenuDetails = (from DataRow dr in ds.Tables[0].Rows
                                            select new Menu()
@@ -81,15 +81,14 @@ namespace eMedicine.Controllers
                                                PageName = dr["PageName"].ToString(),
                                                PageUrl = dr["PageUrl"].ToString(),
                                                MenuSequenceNo = dr["MenuSequenceNo"].ToString()                                              
-                                           }).ToList();
-
-                return new JsonResult(GetMenuDetails);
+                                           }).ToList();              
+                return new JsonResult(new { Success = true, Data = GetMenuDetails });
 
             }
             catch (Exception ex)
             {
                 // Log the exception (implement your logging mechanism here)
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Menu.",

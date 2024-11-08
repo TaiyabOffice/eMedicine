@@ -13,20 +13,20 @@ $(document).ready(function () {
         }
     });
 
-    SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
-    SalesPersonHelper.BuildTbl("");
-    SalesPersonHelper.GetAllSalesPerson();
+    SupplierHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
+    SupplierHelper.BuildTbl("");
+    SupplierHelper.GetAllSupplier();
 
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
-    SalesPersonHelper.SaveCollectionData();
+    SupplierHelper.SaveCollectionData();
     location.reload();
 });
 
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
-    SalesPersonHelper.UpdateCollectionData();
+    SupplierHelper.UpdateCollectionData();
     location.reload();
 });
 $("#btnClear").click(function (event) {
@@ -34,7 +34,7 @@ $("#btnClear").click(function (event) {
     location.reload();
 });
 
-var SalesPersonHelper = {
+var SupplierHelper = {
     GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
         objcmb.empty();
@@ -62,23 +62,24 @@ var SalesPersonHelper = {
         });
     },
     BuildTbl: function (tbldata) {
-        $('#tblSalesPerson').DataTable({
+        $('#tblSupplier').DataTable({
             data: tbldata,
             "responsive": true,
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'SalesPersonId' },
-                { data: 'SalesPersonName' },
-                { data: 'SalesPersonDescription' },
-                { data: 'SalesPersonPhone' },
+                { data: 'SupplierId' },
+                { data: 'SupplierName' },
+                { data: 'ContactPerson' },
+                { data: 'SupplierPhone' },
                 { data: 'CompanyId' },
                 { data: 'CompanyName' },                
+                { data: 'Email' },                
                 { data: 'IsActive' },
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="SalesPersonHelper.GetSalesPersonID(\'' + row.SalesPersonId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="SupplierHelper.GetSupplierID(\'' + row.SupplierId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -98,66 +99,83 @@ var SalesPersonHelper = {
     },
     SaveCollectionData: function () {
 
-        var companyData = {
-            SalesPersonId: $('#txtSalesPersonId').val(),
-            SalesPersonName: $('#txtSalesPersonName').val(),
-            SalesPersonDescription: $('#txtDescription').val(),
-            SalesPersonPhone: $('#txtPhone').val(),
+        var SupplierData = {
+            SupplierId: $('#txtSupplierId').val(),
+            SupplierName: $('#txtSupplierName').val(),
+            ContactPerson: $('#txtContactPerson').val(),
+            SupplierPhone: $('#txtPhone').val(),
             CompanyId: $('#cmbCompanyId').val(),
             CompanyName: $('#cmbCompanyId').val(),
+            Email: $('#txtEmail').val(),
             IsActive: $('#CmbIsActive').val(),            
             CreatedBy: $('#hdnUserId').val(),
             CreatedDate: $('#hdnDateToday').val(),
             UpdatedBy: $('#hdnUserId').val(),
             UpdatedDate: $('#hdnDateToday').val()
-        };
-
-        // Send the form data to the CreateCompany action via AJAX
+        };       
         $.ajax({
-            url: '/SalesPerson/CreateSalesPerson', // Your controller action
+            url: '/Supplier/CreateSupplier', // Your controller action
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(companyData), // Send as JSON
+            data: JSON.stringify(SupplierData), // Send as JSON
             success: function (response) {
-                // Success message               
-                swal({
-                    title: "Congratulations",
-                    text: "saved successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                SalesPersonHelper.GetAllSalesPerson();
+                // Success message
+                //console.log(response);
+                if (response.success) {
+                    swal({
+                        title: "Congratulations",
+                        text: "Saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    SupplierHelper.GetAllSupplier()
+                } else
+                {
+                    swal({
+                        title: "Sorry!",
+                        text: "Saved Failde!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+                
             },
             error: function (xhr, status, error) {
                 // Handle errors
-                alert('Error saving company: ' + error);
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving supplier.!" + error,
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
             }
         });
     },
     UpdateCollectionData: function () {
 
-        var SalesPersonData = {
-            SalesPersonId: $('#txtSalesPersonId').val(),
-            SalesPersonName: $('#txtSalesPersonName').val(),
-            SalesPersonDescription: $('#txtDescription').val(),
-            SalesPersonPhone: $('#txtPhone').val(),
+        var SupplierData = {
+            SupplierId: $('#txtSupplierId').val(),
+            SupplierName: $('#txtSupplierName').val(),
+            ContactPerson: $('#txtContactPerson').val(),
+            SupplierPhone: $('#txtPhone').val(),
             CompanyId: $('#cmbCompanyId').val(),
             CompanyName: $('#cmbCompanyId').val(),
+            Email: $('#txtEmail').val(),
             IsActive: $('#CmbIsActive').val(),
             CreatedBy: $('#hdnUserId').val(),
             CreatedDate: $('#hdnDateToday').val(),
             UpdatedBy: $('#hdnUserId').val(),
             UpdatedDate: $('#hdnDateToday').val()
-        };
-
-        // Send the form data to the CreateCompany action via AJAX
+        };         
         $.ajax({
-            url: '/SalesPerson/UpdateSalesPersonById', // Your controller action
+            url: '/Supplier/UpdateSupplierById', // Your controller action
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(SalesPersonData), // Send as JSON
+            data: JSON.stringify(SupplierData), // Send as JSON
             success: function (response) {
                 // Success message               
                 swal({
@@ -168,82 +186,89 @@ var SalesPersonHelper = {
                     allowOutsideClick: false,
                     timer: 2000
                 });
-                SalesPersonHelper.GetAllSalesPerson();
+                SupplierHelper.GetAllSupplier();
             },
-            error: function (xhr, status, error) {
-                // Handle errors
-                alert('Error saving Sales Person Data: ' + error);
+            error: function (xhr, status, error) { 
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving supplier.!" + error,
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
             }
         });
     },
-    GetAllSalesPerson: function () {
-        var serviceUrl = "/SalesPerson/GetAllSalesPerson";
+    GetAllSupplier: function () {
+        var serviceUrl = "/Supplier/GetAllSupplier";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
             success: function (result) {
-                if (result.success) {
-                    console.log(result.data);
-                    SalesPersonHelper.BuildTbl(result.data);
+                if (result.success) {                 
+                    SupplierHelper.BuildTbl(result.data);
                 } else {
                     swal({
                         title: "Sorry!",
-                        text: "Error retrieving companies.!" + result.message,
+                        text: "Error retrieving Suppliers.!" + result.message,
                         type: "error",
                         closeOnConfirm: false,
-                        timer: 2000
+                        //timer: 2000
                     });
                 }
             },
             error: function () {
                 swal({
                     title: "Sorry!",
-                    text: "Error retrieving companies.!",
+                    text: "Error retrieving Suppliers.!",
                     type: "error",
                     closeOnConfirm: false,
-                    timer: 2000
+                    //timer: 2000
                 });
             }
         });
     },
-    GetSalesPersonID: function (SalesPersonId) {
+    GetSupplierID: function (SupplierId) {
         $("#btnSave").hide();
         $("#btnUpdate").show();
-        var jsonParam = { salesPersonId: SalesPersonId };
-        var serviceUrl = "/SalesPerson/GetSalesPersonById";
+        var jsonParam = { SupplierId: SupplierId };
+        var serviceUrl = "/Supplier/GetSupplierById";
 
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
             data: jsonParam,
             success: function (response) {
-                if (response.success && response.data01 && response.data01.length > 0) {
-                    var SalesPerson = response.data01[0];
+                //console.log(response.data);
+                if (response.Success)
+                {
+                    var Supplier = response.data;                    
                     $("#cmbCompanyId").empty();
-                    $('#txtSalesPersonId').val(SalesPerson.SalesPersonId);
-                    $('#txtSalesPersonName').val(SalesPerson.SalesPersonName);
-                    $('#txtDescription').val(SalesPerson.SalesPersonDescription);
-                    $('#txtPhone').val(SalesPerson.SalesPersonPhone);
-                    $('#CompanyPhone').val(SalesPerson.CompanyPhone);
-                    $("#cmbCompanyId").append($("<option></option>").attr("value", SalesPerson.CompanyId).text(SalesPerson.CompanyName));
-                    $('#CmbIsActive').val(SalesPerson.IsActive);                                    
+                    $('#txtSupplierId').val(Supplier.SupplierId);
+                    $('#txtSupplierName').val(Supplier.SupplierName);
+                    $('#txtContactPerson').val(Supplier.ContactPerson);
+                    $('#txtPhone').val(Supplier.SupplierPhone);
+                    $('#CompanyPhone').val(Supplier.SupplierPhone);
+                    $("#cmbCompanyId").append($("<option></option>").attr("value", Supplier.CompanyId).text(Supplier.CompanyName));
+                    $('#txtEmail').val(Supplier.Email);                                    
+                    $('#CmbIsActive').val(Supplier.IsActive);                                    
                 } else {
                     swal({
                         title: "Sorry!",
-                        text: "No Sales Person data found.!",
+                        text: "No Supplier data found.!",
                         type: "error",
                         closeOnConfirm: false,
-                        timer: 2000
+                        //timer: 2000
                     });
                 }
             },
             error: function () {
                 swal({
                     title: "Sorry!",
-                    text: "No Sales Person data found.!",
+                    text: "No Supplier data found.!",
                     type: "error",
                     closeOnConfirm: false,
-                    timer: 2000
+                    //timer: 2000
                 });
             }
         });
@@ -267,7 +292,7 @@ var SalesPersonHelper = {
             return false;
         }
         //get the carat position
-        var caratPos = SalesPersonHelper.getSelectionStart(el);
+        var caratPos = SupplierHelper.getSelectionStart(el);
         var dotPos = el.value.indexOf(".");
         if (caratPos > dotPos && dotPos > -1 && (number[1].length > deci_point - 1)) {
             return false;

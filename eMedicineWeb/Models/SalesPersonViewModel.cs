@@ -19,4 +19,11 @@ namespace eMedicineWeb.Models
         public string UpdatedDate { get; set; }
         public string UpdatedBy { get; set; }
     }
+
+    public class SalesPersonResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public List<SalesPersonViewModel> Data { get; set; }
+    }
 }

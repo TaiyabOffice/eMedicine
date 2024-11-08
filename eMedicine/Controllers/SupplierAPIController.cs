@@ -26,7 +26,7 @@ namespace eMedicine.Controllers
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return Ok(new { Success = true, Data = new List<Supplier>(), Message = "No Supplier found." });
+                    return new JsonResult(new { Success = false, Data = new List<Supplier>(), Message = "No Supplier found." });
                 }
                 var GetSupplierDetails = (from DataRow dr in ds.Tables[0].Rows
                                              select new Supplier()
@@ -39,12 +39,12 @@ namespace eMedicine.Controllers
                                                  CompanyName = dr["CompanyName"].ToString(),
                                                  Email = dr["Email"].ToString(),
                                                  IsActive = dr["IsActive"].ToString()
-                                             }).ToList();
-                return new JsonResult(GetSupplierDetails);
+                                             }).ToList();                
+                return new JsonResult(new { Success = true, Data = GetSupplierDetails });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Supplier.",
@@ -57,24 +57,23 @@ namespace eMedicine.Controllers
         {
             try
             {
-                bool status = false;
-                var ds = await this.repo.GetAll("", "sp_EntrySupplier", "UPDATESUPPLIERBYID", Supplier.SupplierId, Supplier.SupplierName, Supplier.ContactPerson,
+                
+                var ds = await this.repo.GetAll("", "sp_EntrySupplier", "CREATESUPPLIER", Supplier.SupplierId, Supplier.SupplierName, Supplier.ContactPerson,
                     Supplier.SupplierPhone, Supplier.Email, Supplier.CompanyId, Supplier.IsActive, Supplier.CreatedBy, Supplier.CreatedDate, Supplier.UpdatedBy, Supplier.UpdatedDate);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return NotFound();
+                    return new JsonResult(new { Success = false, Data = new List<Supplier>(), Message = "Supplier Create Failed." });
                 }
                 else
                 {
-                    status = true;
-                    return Ok(status);
+                    return new JsonResult(new { Success = true, Data = new List<Supplier>(), Message = "Supplier Create Successfully." });
                 }
 
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Supplier.",
@@ -90,7 +89,7 @@ namespace eMedicine.Controllers
                 var ds = await this.repo.GetAll("", "sp_SelectSupplier", "GETSUPPLIERBYID", SupplierId);
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return Ok(new { Success = true, Data = new List<Supplier>(), Message = "No Supplier found." });
+                    return new JsonResult(new { Success = false, Data = new List<Supplier>(), Message = "No Supplier found." });
                 }
                 var GetSupplierDetails = (from DataRow dr in ds.Tables[0].Rows
                                              select new Supplier()
@@ -105,12 +104,12 @@ namespace eMedicine.Controllers
                                                  IsActive = dr["IsActive"].ToString()
                                              }).ToList();
 
-                return new JsonResult(GetSupplierDetails);
+                return new JsonResult(new { Success = true, Data = GetSupplierDetails });
 
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Supplier.",
@@ -124,24 +123,24 @@ namespace eMedicine.Controllers
         {
             try
             {
-                bool status = false;
+                
                 var ds = await this.repo.GetAll("", "sp_EntrySupplier", "UPDATESUPPLIERBYID", Supplier.SupplierId, Supplier.SupplierName, Supplier.ContactPerson,
                     Supplier.SupplierPhone, Supplier.Email, Supplier.CompanyId, Supplier.IsActive, Supplier.CreatedBy, Supplier.CreatedDate, Supplier.UpdatedBy, Supplier.UpdatedDate);
 
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
-                {
-                    return NotFound();
+                {                    
+                    return new JsonResult(new { Success = false, Data = new List<Supplier>(), Message = "Supplier Update Failed." });
                 }
                 else
                 {
-                    status = true;
-                    return Ok(status);
+                                     
+                    return new JsonResult(new { Success = true, Data = new List<Supplier>(), Message = "Supplier Update Successfully." });
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Supplier.",

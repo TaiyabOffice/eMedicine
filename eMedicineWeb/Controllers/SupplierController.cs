@@ -15,11 +15,6 @@ namespace eMedicineWeb.Controllers
     public class SupplierController : Controller
     {
         // GET: Supplier
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"] + "SupplierAPI");
         HttpClient client;
         public SupplierController()
@@ -43,20 +38,23 @@ namespace eMedicineWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string data = await response.Content.ReadAsStringAsync();
-
-                    if (!string.IsNullOrEmpty(data))
+                    var Response = JsonConvert.DeserializeObject<SupplierResponse>(data);                   
+                    if (Response.Success)
                     {
-                        SupplierList = JsonConvert.DeserializeObject<List<SupplierViewModel>>(data);
+                        if (!string.IsNullOrEmpty(data))
+                        {                          
+                            SupplierList = Response?.Data ?? new List<SupplierViewModel>();
+                        }
                     }
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Failed to retrieve sales Person. Please try again later." });
+                    return Json(new { success = false, message = "Failed to retrieve sales Person. Please try again later." }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { success = true, data = SupplierList }, JsonRequestBehavior.AllowGet);
         }
@@ -66,18 +64,19 @@ namespace eMedicineWeb.Controllers
             bool Satus = false;
             if (!ModelState.IsValid)
             {
-                return View(Supplier);
+                return Json(new { success = false, message = "Failed Insert Supplier details." });
             }
             string data = JsonConvert.SerializeObject(Supplier);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateSupplier", content);
+
             if (response.IsSuccessStatusCode)
             {
-                return View(Satus = true);
+                return Json(new { success = true, message = "Supplier create Successfully" });
             }
             ModelState.AddModelError("", "Unable to create Supplier. Please try again.");
-            return View(Supplier);
+            return Json(new { success = false, message = "Failed to retrieve Supplier details." });
         }
         [HttpPost]
         public async Task<JsonResult> GetSupplierById(string SupplierId)
@@ -89,26 +88,38 @@ namespace eMedicineWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string data = await response.Content.ReadAsStringAsync();
-                    try
+                    var Response = JsonConvert.DeserializeObject<SupplierResponse>(data);                   
+                    if (Response.Success)
                     {
-                        Supplier = JsonConvert.DeserializeObject<SupplierViewModel>(data);
+                        try
+                        {
+                            //Supplier = JsonConvert.DeserializeObject<SupplierViewModel>(data);
+                            //Supplier = Response?.Data ?? new SupplierViewModel();
+
+                            var Suppliers = Response?.Data ?? new List<SupplierViewModel>();
+                            Supplier = Suppliers.FirstOrDefault();
+                        }
+                        catch (JsonSerializationException)
+                        {
+                            var Suppliers = JsonConvert.DeserializeObject<List<SupplierViewModel>>(data);
+                            Supplier = Suppliers.FirstOrDefault();
+                        }
                     }
-                    catch (JsonSerializationException)
+                    else
                     {
-                        var Suppliers = JsonConvert.DeserializeObject<List<SupplierViewModel>>(data);
-                        Supplier = Suppliers.FirstOrDefault();
+                        return Json(new { success = false, message = "Failed to retrieve Supplier details." }, JsonRequestBehavior.AllowGet);
                     }
 
                     if (Supplier != null)
-                    {
-                        return Json(new { success = true, data01 = new List<SupplierViewModel> { Supplier } });
+                    {                     
+                        return Json(new { Success = true, data = Supplier }, JsonRequestBehavior.AllowGet);
                     }
                 }
-                return Json(new { success = false, message = "Failed to retrieve Supplier details." });
+                return Json(new { Success = false, message = "Failed to retrieve Supplier details." }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+                return Json(new { Success = false, message = $"An error occurred: {ex.Message}" });
             }
         }
         [HttpPost]

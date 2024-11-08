@@ -25,8 +25,8 @@ namespace eMedicine.Controllers
 
                 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
-                {
-                    return Ok(new { Success = true, Data = new List<SalesPerson>(), Message = "No Sales Person found." });
+                {                   
+                    return new JsonResult(new { Success = false, Data = new List<SalesPerson>(), Message = "SNo Sales Person found." });
                 }
                 var GetSalesPersonDetails = (from DataRow dr in ds.Tables[0].Rows
                                            select new SalesPerson()
@@ -38,12 +38,12 @@ namespace eMedicine.Controllers
                                                CompanyId = dr["CompanyId"].ToString(),
                                                CompanyName = dr["CompanyName"].ToString(),
                                                IsActive = dr["IsActive"].ToString()
-                                           }).ToList();
-                return new JsonResult(GetSalesPersonDetails);
+                                           }).ToList();               
+                return new JsonResult(new { Success = true, Data = GetSalesPersonDetails });
             }
             catch (Exception ex)
             {              
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Sales Person.",
@@ -59,21 +59,20 @@ namespace eMedicine.Controllers
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "CREATESALESPERSON", salesPerson.SalesPersonId, salesPerson.SalesPersonName, salesPerson.SalesPersonDescription,
                 salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId);
-                
+
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return NotFound();
+                    return new JsonResult(new { Success = false, Data = new List<SalesPerson>(), Message = "sales Person Create Failed." });
                 }
                 else
                 {
-                    status = true;
-                    return Ok(status);
+                    return new JsonResult(new { Success = true, Data = new List<SalesPerson>(), Message = "sales Person Create Successfully." });
                 }
 
             }
             catch (Exception ex)
             {             
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Sales Person.",
@@ -129,17 +128,16 @@ namespace eMedicine.Controllers
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return NotFound();
+                    return new JsonResult(new { Success = false, Data = new List<SalesPerson>(), Message = "sales Person Update Failed." });
                 }
                 else
                 {
-                    status = true;
-                    return Ok(status);
+                    return new JsonResult(new { Success = true, Data = new List<SalesPerson>(), Message = "sales Person Update Successfully." });
                 }
             }
             catch (Exception ex)
             {               
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Sales Person.",

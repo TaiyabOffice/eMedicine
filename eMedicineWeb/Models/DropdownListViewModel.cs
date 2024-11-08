@@ -17,4 +17,10 @@ namespace eMedicineWeb.Models
         public string Id { get; set; }
         public string Name { get; set; }
     }
+    public class ApiResponse<T>
+    {
+        public bool Success { get; set; }
+        public List<T> Data { get; set; }
+        public string Message { get; set; }
+    }
 }

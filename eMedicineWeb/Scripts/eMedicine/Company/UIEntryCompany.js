@@ -1,33 +1,37 @@
 ﻿let rowId = "";
 $(document).ready(function () {
     $(".select2").select2();
-
+    $("#btnSave").show();
+    $("#btnUpdate").hide();
     jQuery.ajax({
         url: "/Common/GetCurrentDate",
         type: "POST",
         success: function (result) {
-            $("#CreatedDate").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#CreatedDate").datepicker('setDate', new Date(result));
-
-            $("#DeletedDate").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#DeletedDate").datepicker('setDate', new Date(result));
+            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
+            $("#hdnDateToday").datepicker('setDate', new Date(result)); 
         }
     });
 
-    UICompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "0", "0", "0", "0", "0");
-    UICompanyHelper.BuildComanyTbl("");
-    UICompanyHelper.GetAllCompany();
+    CompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "0", "0", "0", "0", "0");
+    CompanyHelper.BuildComanyTbl("");
+    CompanyHelper.GetAllCompany();
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
-        UICompanyHelper.SaveCollectionData();
+    CompanyHelper.SaveCollectionData();
+    location.reload();
+});
+$("#btnUpdate").click(function (event) {
+    event.preventDefault();
+    CompanyHelper.UpdateCollectionData();
+    location.reload();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
     location.reload();
 });
 
-var UICompanyHelper = {
+var CompanyHelper = {
     GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
         objcmb.empty();
@@ -54,14 +58,47 @@ var UICompanyHelper = {
             }
         });
     },
+    BuildComanyTbl: function (tbldata) {
+        $('#tblCompany').DataTable({
+            data: tbldata,
+            "responsive": true,
+            "bDestroy": true,
+            "columns": [
+                { "data": "SL" },//0
+                { data: 'CompanyId' },//1
+                { data: 'CompanyName' },//2
+                { data: 'CompanyAddress' },//3
+                { data: 'CompanyDescription' },//4
+                { data: 'CompanyPhone' },//5               
+                { data: 'IsActive' },//6
+                {
+                    data: null,//7
+                    render: function (data, type, row) {
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
+                    }
+                }
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "width": "2%",
+                    render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
+                }
+            ]
+
+        });
+
+
+
+    },
     GetAllCompany: function () {
         var serviceUrl = "/Company/GetAllCompany";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
             success: function (result) {
-                if (result.success) {
-                    UICompanyHelper.BuildComanyTbl(result.data);
+                if (result.Success) {
+                    CompanyHelper.BuildComanyTbl(result.data);
                 } else {
                     alert(result.message);
                 }
@@ -70,36 +107,7 @@ var UICompanyHelper = {
                 alert("Error retrieving companies.");
             }
         });
-    },
-    GetAllCompany: function () {
-        var serviceUrl = "/Company/GetAllCompany";
-        jQuery.ajax({
-            url: serviceUrl,
-            type: "POST",
-            success: function (result) {
-                if (result.success) {
-                    UICompanyHelper.BuildComanyTbl(result.data);
-                } else {
-                    swal({
-                        title: "Sorry!",
-                        text: "Error retrieving companies.!" + result.message,
-                        type: "error",
-                        closeOnConfirm: false,
-                        timer: 2000
-                    });                  
-                }
-            },
-            error: function () {
-                swal({
-                    title: "Sorry!",
-                    text: "Error retrieving companies.!",
-                    type: "error",
-                    closeOnConfirm: false,
-                    timer: 2000
-                });                
-            }
-        });
-    },
+    },  
     SaveCollectionData: function () {
 
         var companyData = {
@@ -108,16 +116,11 @@ var UICompanyHelper = {
             CompanyAddress: $('#CompanyAddress').val(),
             CompanyDescription: $('#CompanyDescription').val(),
             CompanyPhone: $('#CompanyPhone').val(),
-            CompanyCity: $('#CompanyCity').val(),
-            CompanyRegion: $('#CompanyRegion').val(),
-            CompanyPostalCode: $('#CompanyPostalCode').val(),
-            CompanyCountry: $('#CompanyCountry').val(),
             IsActive: $('#IsActive').val(),
-            CreatedBy: $('#CreatedBy').val(),
-            CreatedDate: $('#CreatedDate').val(),
-            UpdatedBy: $('#UpdatedBy').val(),
-            DeletedBy: $('#DeletedBy').val(),
-            DeletedDate: $('#DeletedDate').val()
+            CreatedBy: $('#hdnUserId').val(),
+            CreatedDate: $('#hdnDateToday').val(),
+            UpdatedBy: $('#hdnUserId').val(),
+            UpdatedDate: $('#hdnDateToday').val()
         };
 
         // Send the form data to the CreateCompany action via AJAX
@@ -136,7 +139,7 @@ var UICompanyHelper = {
                     allowOutsideClick: false,
                     timer: 2000
                 });
-                UICompanyHelper.GetAllCompany();                
+                CompanyHelper.GetAllCompany();                
             },
             error: function (xhr, status, error) {
                 // Handle errors
@@ -151,64 +154,57 @@ var UICompanyHelper = {
             }
         });
     },
-    GetAssetByCategory: function () {
-        var obj = {
-            COMC1: "000",
-            DESC1: $("#cmbItemCategory option:selected").val()
+
+    UpdateCollectionData: function () {
+
+        var companyData = {
+            CompanyId: $('#CompanyId').val(),
+            CompanyName: $('#CompanyName').val(),
+            CompanyAddress: $('#CompanyAddress').val(),
+            CompanyDescription: $('#CompanyDescription').val(),
+            CompanyPhone: $('#CompanyPhone').val(),            
+            IsActive: $('#IsActive').val(),
+            CreatedBy: $('#hdnUserId').val(),
+            CreatedDate: $('#hdnDateToday').val(),
+            UpdatedBy: $('#hdnUserId').val(),
+            UpdatedDate: $('#hdnDateToday').val()
+           
         };
-        var jsonParam = { Param: obj };
-        var serviceUrl = "/UIITAsset/GetAssetByCategory";
-        jQuery.ajax({
-            url: serviceUrl,
-            type: "POST",
-            data: jsonParam,
-            success: function (data) {
-                data = $.parseJSON(data);
-                UICompanyHelper.BuildAssetTbl(data.Table);
+
+        // Send the form data to the CreateCompany action via AJAX
+        $.ajax({
+            url: '/Company/UpdateCompanyById', // Your controller action
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(companyData), // Send as JSON
+            success: function (response) {
+                // Success message
+                swal({
+                    title: "Congratulations",
+                    text: "Update successfully!",
+                    type: "success",
+                    showConfirmButton: false,
+                    allowOutsideClick: false,
+                    timer: 2000
+                });
+                CompanyHelper.GetAllCompany();
             },
+            error: function (xhr, status, error) {
+                // Handle errors
+
+                swal({
+                    title: "Sorry!",
+                    text: "Error Update company!" + error,
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
+            }
         });
-    },
-    BuildComanyTbl: function (tbldata) {
-        $('#tblCompany').DataTable({
-            data: tbldata,
-            "responsive": true,
-            "bDestroy": true,
-            "columns": [
-                { "data": "SL" },//0
-                { data: 'CompanyId' },//1
-                { data: 'CompanyName' },//2
-                { data: 'CompanyAddress' },//3
-                { data: 'CompanyDescription' },//4
-                { data: 'CompanyPhone' },//5
-                { data: 'CompanyCity' },//6
-                { data: 'CompanyCountry' },//7
-                { data: 'IsActive' },//8
-                {
-                    data: null,//9
-                }
-            ],
-            "columnDefs": [
-                {
-                    "targets": [0],
-                    "width": "2%",
-                    render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
-                },
-
-                {
-                    "targets": [9],
-                    "render": function (data, type, row, meta) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="UICompanyHelper.GetCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
-
-                    }
-                },
-            ]
-
-        });
-
-
-
     },
     GetCompanyID: function (CompanyId) {
+        $("#btnSave").hide();
+        $("#btnUpdate").show();
         var jsonParam = { companyId: CompanyId };
         var serviceUrl = "/Company/GetCompanyById";
 
@@ -217,36 +213,32 @@ var UICompanyHelper = {
             type: "POST",
             data: jsonParam,
             success: function (response) {
-                if (response.success && response.data01 && response.data01.length > 0) {
-                    var company = response.data01[0]; 
-
+                if (response.Success) {
+                    var company = response.data;
                     $('#CompanyId').val(company.CompanyId);
                     $('#CompanyName').val(company.CompanyName);
                     $('#CompanyAddress').val(company.CompanyAddress);
                     $('#CompanyDescription').val(company.CompanyDescription);
-                    $('#CompanyPhone').val(company.CompanyPhone);
-                    $('#CompanyCity').val(company.CompanyCity);
-                    $('#CompanyRegion').val(company.CompanyRegion);
-                    $('#CompanyPostalCode').val(company.CompanyPostalCode);
-                    $('#CompanyCountry').val(company.CompanyCountry);
-                    $('#IsActive').val(company.IsActive);
-                    $('#CreatedBy').val(company.CreatedBy);
-                    $('#CreatedDate').val(company.CreatedDate);
-                    $('#UpdatedBy').val(company.UpdatedBy);
-                    $('#DeletedBy').val(company.DeletedBy);
-                    $('#DeletedDate').val(company.DeletedDate);
+                    $('#CompanyPhone').val(company.CompanyPhone);                   
+                    $('#IsActive').val(company.IsActive);                   
                 } else { 
                     swal({
                         title: "Sorry!",
                         text: "No company data found.!",
                         type: "error",
                         closeOnConfirm: false,
-                        timer: 2000
+                        //timer: 2000
                     });
                 }
             },
             error: function () {
-                alert("Error retrieving company data.");
+                swal({
+                    title: "Sorry!",
+                    text: "No company data found.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
             }
         });
     },
@@ -269,7 +261,7 @@ var UICompanyHelper = {
             return false;
         }
         //get the carat position
-        var caratPos = UICompanyHelper.getSelectionStart(el);
+        var caratPos = CompanyHelper.getSelectionStart(el);
         var dotPos = el.value.indexOf(".");
         if (caratPos > dotPos && dotPos > -1 && (number[1].length > deci_point - 1)) {
             return false;

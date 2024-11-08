@@ -48,24 +48,32 @@ namespace eMedicineWeb.Controllers
             if (response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
+                var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(data);
                 try
-                {                   
-                    var loginViewModels = JsonConvert.DeserializeObject<List<LoginViewModel>>(data);
-                    loginModel = loginViewModels.FirstOrDefault();
-                    Session["UserID"] = loginModel.UserId;
-                    Session["UserName"] = loginModel.UserName;
-                    Session["Email"] = loginModel.Email;
-                    Session["PhoneNumber"] = loginModel.PhoneNumber;
-                    Session["LocationId"] = loginModel.LocationId;
-                    Session["TerminalId"] = b.ToUpper();
-                    Session["UserIPc"] = a.ToString();                    
-                    GetMenuById(loginModel.UserId);
-                    status = true;
+                {                                     
+                    if (loginResponse.Success)
+                    {                        
+                        List<LoginViewModel> loginViewModels = loginResponse?.Data ?? new List<LoginViewModel>();
+                        loginModel = loginViewModels.FirstOrDefault();                        
+                        Session["UserID"] = loginModel.UserId;
+                        Session["UserName"] = loginModel.UserName;
+                        Session["Email"] = loginModel.Email;
+                        Session["PhoneNumber"] = loginModel.PhoneNumber;
+                        Session["LocationId"] = loginModel.LocationId;
+                        Session["TerminalId"] = b.ToUpper();
+                        Session["UserIPc"] = a.ToString();
+                        GetMenuById(loginModel.UserId);
+                        status = true;
+                    }
+                    else
+                    {
+                        status = false;
+                    }
                 }
                 catch (JsonSerializationException)
                 {
-                    
-                    var loginViewModels = JsonConvert.DeserializeObject<List<LoginViewModel>>(data);
+
+                    List<LoginViewModel> loginViewModels = loginResponse?.Data ?? new List<LoginViewModel>();
                     loginModel = loginViewModels.FirstOrDefault();                    
                 }
             }
@@ -83,15 +91,23 @@ namespace eMedicineWeb.Controllers
                 {
                     Session["MenuData"] = null;
                     string data = response.Content.ReadAsStringAsync().Result;
-                    var menuLists = JsonConvert.DeserializeObject<List<MenuViewModel>>(data);
+                    var menuResponse = JsonConvert.DeserializeObject<MenuResponse>(data);                    
+                    if (menuResponse.Success)
+                    {
+                        List<MenuViewModel> menuLists = menuResponse?.Data ?? new List<MenuViewModel>();
+                        //var menuLists = JsonConvert.DeserializeObject<List<MenuViewModel>>(data);
+                        DataTable menuTable = ConvertListToDataTable(menuLists);
 
-                    DataTable menuTable = ConvertListToDataTable(menuLists);
+                        // Add the DataTable to a DataSet
+                        DataSet ds = new DataSet();
+                        ds.Tables.Add(menuTable);
 
-                    // Add the DataTable to a DataSet
-                    DataSet ds = new DataSet();
-                    ds.Tables.Add(menuTable);
-
-                    Session["MenuData"]= ds;
+                        Session["MenuData"] = ds;
+                    }
+                    else
+                    {
+                        Session["MenuData"] = null;
+                    }
                 }                
             }
             catch (Exception ex)

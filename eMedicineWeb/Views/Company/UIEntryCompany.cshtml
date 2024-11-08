@@ -25,11 +25,11 @@
                                                 <label for="CompanyId">Company ID</label>
                                                 <input type="text" id="CompanyId" name="CompanyId" class="form-control input-sm" autocomplete="off">
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label for="CompanyName">Company Name</label>
                                                 <input type="text" id="CompanyName" name="CompanyName" class="form-control input-sm" autocomplete="off">
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label for="CompanyAddress">Company Address</label>
                                                 <input type="text" id="CompanyAddress" name="CompanyAddress" class="form-control input-sm" autocomplete="off">
                                             </div>
@@ -40,66 +40,23 @@
                                             <div class="col-sm-2">
                                                 <label for="CompanyPhone">Company Phone</label>
                                                 <input type="text" id="CompanyPhone" name="CompanyPhone" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="CompanyCity">Company City</label>
-                                                <input type="text" id="CompanyCity" name="CompanyCity" class="form-control input-sm" autocomplete="off">
-                                            </div>
+                                            </div>                                           
                                         </div>
                                     </div>
 
-                                    <br />
 
                                     <div class="row">
                                         <div class="form-group">
-                                            <div class="col-sm-2">
-                                                <label for="CompanyRegion">Company Region</label>
-                                                <input type="text" id="CompanyRegion" name="CompanyRegion" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="CompanyPostalCode">Postal Code</label>
-                                                <input type="text" id="CompanyPostalCode" name="CompanyPostalCode" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="CompanyCountry">Division</label>
-                                                <select id="cmbDivisionId" name="cmbDivisionId" class="form-control input-sm select2" style="width:100%"></select>
-                                            </div>
                                             <div class="col-sm-2">
                                                 <label for="IsActive">Is Active</label>
                                                 <select id="IsActive" name="IsActive" class="form-control input-sm">
                                                     <option value="1">Yes</option>
                                                     <option value="0">No</option>
                                                 </select>
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="CreatedBy">Created By</label>
-                                                <input type="text" id="CreatedBy" name="CreatedBy" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="CreatedDate">Created Date</label>
-                                                <input type="text" id="CreatedDate" name="CreatedDate" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <br />
-
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <div class="col-sm-2">
-                                                <label for="UpdatedBy">Updated By</label>
-                                                <input type="text" id="UpdatedBy" name="UpdatedBy" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="DeletedBy">Deleted By</label>
-                                                <input type="text" id="DeletedBy" name="DeletedBy" class="form-control input-sm" autocomplete="off">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="DeletedDate">Deleted Date</label>
-                                                <input type="text" id="DeletedDate" name="DeletedDate" class="form-control input-sm" autocomplete="off">
-                                            </div>
+                                            </div>                                           
                                             <div class="col-sm-4" style="margin-top: 25px;">
-                                                <button id="btnSave" type="button" class="btn btn-success">Save Company Info</button>
+                                                <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
+                                                <button id="btnUpdate" type="button" class="btn btn-success">Update Info</button>
                                                 <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
                                             </div>
                                         </div>
@@ -123,9 +80,7 @@
                                             <th>Company Name</th>
                                             <th>Address</th>
                                             <th>Description</th>
-                                            <th>Phone</th>
-                                            <th>City</th>
-                                            <th>Country</th>
+                                            <th>Phone</th>                                           
                                             <th>Is Active</th>
                                             <th>Action</th>
                                         </tr>

@@ -38,20 +38,23 @@ namespace eMedicineWeb.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string data = await response.Content.ReadAsStringAsync();
-                    
-                    if (!string.IsNullOrEmpty(data))
+                    var Response = JsonConvert.DeserializeObject<SalesPersonResponse>(data);
+                    if (Response.Success)
                     {
-                        salesPersonList = JsonConvert.DeserializeObject<List<SalesPersonViewModel>>(data);
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            salesPersonList = Response?.Data ?? new List<SalesPersonViewModel>();
+                        }
                     }
                 }
                 else
                 {  
-                    return Json(new { success = false, message = "Failed to retrieve sales Person. Please try again later." });
+                    return Json(new { success = false, message = "Failed to retrieve sales Person. Please try again later." }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {  
-                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { success = true, data = salesPersonList }, JsonRequestBehavior.AllowGet);
         }
@@ -67,12 +70,13 @@ namespace eMedicineWeb.Controllers
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateSalesPerson", content);
+
             if (response.IsSuccessStatusCode)
             {
-                return View(Satus = true);
-            }            
-            ModelState.AddModelError("", "Unable to create sales Person. Please try again.");
-            return View(salesPerson); 
+                return Json(new { success = true, message = "Sales Person create Successfully" });
+            }
+            ModelState.AddModelError("", "Unable to create Sales Person. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Sales Person details." });
         }
         [HttpPost]
         public async Task<JsonResult> GetSalesPersonById(string salesPersonId)
@@ -120,10 +124,10 @@ namespace eMedicineWeb.Controllers
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateSalesPersonById", content);
             if (response.IsSuccessStatusCode)
             {
-                return View(Satus = true);
+                return Json(new { success = true, message = "Sales Person Update Successfully" });
             }
-            ModelState.AddModelError("", "Unable to create sales Person. Please try again.");
-            return View(salesPerson);
+            ModelState.AddModelError("", "Unable to Update Sales Person. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Sales Person details." });
         }
     }
 }

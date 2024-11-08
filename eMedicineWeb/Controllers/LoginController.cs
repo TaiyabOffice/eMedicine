@@ -81,7 +81,7 @@ namespace eMedicineWeb.Controllers
 
                 if (response.IsSuccessStatusCode)                
                 {
-                   
+                    Session["MenuData"] = null;
                     string data = response.Content.ReadAsStringAsync().Result;
                     var menuLists = JsonConvert.DeserializeObject<List<MenuViewModel>>(data);
 

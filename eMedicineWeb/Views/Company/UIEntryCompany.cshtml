@@ -5,9 +5,9 @@
 <section class="content">
     <div class="box box-solid box-primary">
         <div class="box-body">
-            @*<input type="hidden" id="hdnUserId" value="@Request.RequestContext.HttpContext.Session['UserID']">
-            <input type="hidden" id="hdnTermID" value="@Request.RequestContext.HttpContext.Session['TermID']">
-            <input type="hidden" id="hdnSessionID" value="@Request.RequestContext.HttpContext.Session['SessionID']">*@
+            <input type="hidden" id="hdnUserId" value="@Request.RequestContext.HttpContext.Session["UserID"]">
+            <input type="hidden" id="hdnTermID" value="@Request.RequestContext.HttpContext.Session["TerminalId"]">
+            <input type="hidden" id="hdnDateToday" value="">
 
             <div class="modal-body">
                 <div class="row">
@@ -67,8 +67,8 @@
                                             <div class="col-sm-2">
                                                 <label for="IsActive">Is Active</label>
                                                 <select id="IsActive" name="IsActive" class="form-control input-sm">
-                                                    <option value="true">Yes</option>
-                                                    <option value="false">No</option>
+                                                    <option value="1">Yes</option>
+                                                    <option value="0">No</option>
                                                 </select>
                                             </div>
                                             <div class="col-sm-2">

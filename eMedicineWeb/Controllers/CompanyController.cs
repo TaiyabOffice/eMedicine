@@ -56,7 +56,7 @@ namespace eMedicineWeb.Controllers
 
         [HttpPost]
         public async Task<ActionResult> CreateCompany(CompanyViewModel company)
-        {
+        {   bool Satus = false;
             if (!ModelState.IsValid)
             {
                 return View(company);
@@ -67,7 +67,7 @@ namespace eMedicineWeb.Controllers
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
             if (response.IsSuccessStatusCode)
             {
-                return RedirectToAction("GetAllCompany");
+                return View(Satus = true);
             }            
             ModelState.AddModelError("", "Unable to create company. Please try again.");
             return View(company);

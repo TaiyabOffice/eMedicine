@@ -27,27 +27,46 @@ namespace eMedicineWeb.Controllers
         public ActionResult GenerateCombo(string ProcedureName, string CallName, string Param1, string Param2, string Param3, string Param4, string Param5)
         {
             bool status = false;
-            DropdownListViewModel dropdownList = null;
-            string requestUrl = $"{client.BaseAddress}/GetDropdownList?ProcedureName={ProcedureName}&CallName={CallName}&Param1={Param1}&Param2={Param2}&Param3={Param3}&Param4={Param4}&Param5={Param5}";
-
-            HttpResponseMessage response = client.GetAsync(requestUrl).Result;
-
-            if (response.IsSuccessStatusCode)
+            List<DropdownListViewModel> dropdownList = new List<DropdownListViewModel>();
+            try
             {
-                string data = response.Content.ReadAsStringAsync().Result;
-                try
+                string requestUrl = $"{client.BaseAddress}/GetDropdownList?ProcedureName={ProcedureName}&CallName={CallName}&Param1={Param1}&Param2={Param2}&Param3={Param3}&Param4={Param4}&Param5={Param5}";
+
+                HttpResponseMessage response = client.GetAsync(requestUrl).Result;
+
+                if (response.IsSuccessStatusCode)
                 {
-                    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);                   
-                    return Json(dropdownModal, JsonRequestBehavior.AllowGet);
+                    string data = response.Content.ReadAsStringAsync().Result;
+                    var Response = JsonConvert.DeserializeObject<DropdownListResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            dropdownList = Response?.Data ?? new List<DropdownListViewModel>();
+                        }
+                    }
+                    //try
+                    //{
+                    //    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);                   
+                    //    return Json(dropdownModal, JsonRequestBehavior.AllowGet);
+                    //}
+                    //catch (JsonSerializationException)
+                    //{
+                    //    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);
+                    //    dropdownList = dropdownModal.FirstOrDefault();
+                    //}
                 }
-                catch (JsonSerializationException)
+                else
                 {
-                    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);
-                    dropdownList = dropdownModal.FirstOrDefault();
+                    return Json(new { Success = false, message = "Failed to retrieve dropdown List. Please try again later." }, JsonRequestBehavior.AllowGet);
                 }
             }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
 
-            return Json(status, JsonRequestBehavior.AllowGet);
+            return Json(new { Success = true, data = dropdownList }, JsonRequestBehavior.AllowGet);
         }
 
         public string GetCurrentDate()

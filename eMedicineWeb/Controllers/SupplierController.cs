@@ -128,18 +128,19 @@ namespace eMedicineWeb.Controllers
             bool Satus = false;
             if (!ModelState.IsValid)
             {
-                return View(Supplier);
+                return Json(new { success = false, message = "Failed Insert Supplier details." });
             }
             string data = JsonConvert.SerializeObject(Supplier);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateSupplierById", content);
+
             if (response.IsSuccessStatusCode)
             {
-                return View(Satus = true);
+                return Json(new { success = true, message = "Supplier update Successfully" });
             }
-            ModelState.AddModelError("", "Unable to create Supplier. Please try again.");
-            return View(Supplier);
+            ModelState.AddModelError("", "Unable to update Supplier. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Supplier details." });
         }
     }
 }

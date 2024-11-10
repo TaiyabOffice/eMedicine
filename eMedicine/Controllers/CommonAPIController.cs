@@ -28,7 +28,7 @@ namespace eMedicine.Controllers
                 // Check if dataset is valid and contains data
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return Ok(new { Success = false, Message = "No List found." });
+                    return new JsonResult(new { Success = false, Data = new List<DropdownList>(), Message = "No List found." });
                 }
                 var GetDropdownList = (from DataRow dr in ds.Tables[0].Rows
                                        select new DropdownList()
@@ -36,12 +36,12 @@ namespace eMedicine.Controllers
                                            Id = dr["Id"].ToString(),
                                            Name = dr["Name"].ToString()
                                        }).ToList();
-                return new JsonResult(GetDropdownList);
+                return new JsonResult(new { Success = true, Data = GetDropdownList });                
             }
             catch (Exception ex)
             {
                 // Log the exception (implement your logging mechanism here)
-                return StatusCode(StatusCodes.Status500InternalServerError, new
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the List.",

@@ -43,15 +43,16 @@ var SupplierHelper = {
             type: "POST",
             url: "/Common/GenerateCombo",
             data: json,
-            success: function (data) {
-                if (data.length == 1) {
-                    $.each(data, function (key, item) {
+            success: function (data)
+        {
+            if (data.data.length == 1) {
+                $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
-                    $.each(data, function (key, item) {
+                $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
 
@@ -100,7 +101,7 @@ var SupplierHelper = {
     SaveCollectionData: function () {
 
         var SupplierData = {
-            SupplierId: $('#txtSupplierId').val(),
+            SupplierId: $('#txtSupplierId').val() ? "" : "000000000000",
             SupplierName: $('#txtSupplierName').val(),
             ContactPerson: $('#txtContactPerson').val(),
             SupplierPhone: $('#txtPhone').val(),

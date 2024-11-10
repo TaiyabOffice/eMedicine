@@ -26,7 +26,7 @@ namespace eMedicine.Controllers
                 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {                   
-                    return new JsonResult(new { Success = false, Data = new List<SalesPerson>(), Message = "SNo Sales Person found." });
+                    return new JsonResult(new { Success = false, Data = new List<SalesPerson>(), Message = "No Sales Person found." });
                 }
                 var GetSalesPersonDetails = (from DataRow dr in ds.Tables[0].Rows
                                            select new SalesPerson()

@@ -111,10 +111,13 @@ var CompanyHelper = {
     SaveCollectionData: function () {
 
         var companyData = {
-            CompanyId: $('#CompanyId').val(),
+            CompanyId: $('#CompanyId').val() ? "" : "000000000000",
             CompanyName: $('#CompanyName').val(),
             CompanyAddress: $('#CompanyAddress').val(),
             CompanyDescription: $('#CompanyDescription').val(),
+            CompanyNameBN: $('#CompanyNameBN').val(),
+            CompanyAddressBN: $('#CompanyAddressBN').val(),
+            CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
             CompanyPhone: $('#CompanyPhone').val(),
             IsActive: $('#IsActive').val(),
             CreatedBy: $('#hdnUserId').val(),
@@ -162,13 +165,15 @@ var CompanyHelper = {
             CompanyName: $('#CompanyName').val(),
             CompanyAddress: $('#CompanyAddress').val(),
             CompanyDescription: $('#CompanyDescription').val(),
+            CompanyNameBN: $('#CompanyNameBN').val(),
+            CompanyAddressBN: $('#CompanyAddressBN').val(),
+            CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
             CompanyPhone: $('#CompanyPhone').val(),            
             IsActive: $('#IsActive').val(),
             CreatedBy: $('#hdnUserId').val(),
             CreatedDate: $('#hdnDateToday').val(),
             UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-           
+            UpdatedDate: $('#hdnDateToday').val()           
         };
 
         // Send the form data to the CreateCompany action via AJAX
@@ -219,6 +224,9 @@ var CompanyHelper = {
                     $('#CompanyName').val(company.CompanyName);
                     $('#CompanyAddress').val(company.CompanyAddress);
                     $('#CompanyDescription').val(company.CompanyDescription);
+                    $('#CompanyNameBN').val(company.CompanyNameBN);
+                    $('#CompanyAddressBN').val(company.CompanyAddressBN);
+                    $('#CompanyDescriptionBN').val(company.CompanyDescriptionBN);
                     $('#CompanyPhone').val(company.CompanyPhone);                   
                     $('#IsActive').val(company.IsActive);                   
                 } else { 

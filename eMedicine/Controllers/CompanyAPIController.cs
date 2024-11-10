@@ -34,6 +34,9 @@ namespace eMedicine.Controllers
                                                CompanyName = dr["CompanyName"].ToString(),
                                                CompanyAddress = dr["CompanyAddress"].ToString(),
                                                CompanyDescription = dr["CompanyDescription"].ToString(),
+                                               CompanyNameBN = dr["CompanyNameBN"].ToString(),
+                                               CompanyAddressBN = dr["CompanyAddressBN"].ToString(),
+                                               CompanyDescriptionBN = dr["CompanyDescriptionBN"].ToString(),
                                                CompanyPhone = dr["CompanyPhone"].ToString(),                                               
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();
@@ -58,7 +61,8 @@ namespace eMedicine.Controllers
 
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntryCompany", "CREATECOMPANY", company.CompanyId, company.CompanyName, company.CompanyAddress,
-                company.CompanyDescription, company.CompanyPhone, company.IsActive, company.CreatedBy, company.CreatedDate, company.Updatedby, company.UpdatedDate);
+                 company.CompanyDescription, company.CompanyPhone, company.IsActive, company.CreatedBy, company.CreatedDate, company.Updatedby, company.UpdatedDate,
+                 company.CompanyNameBN, company.CompanyAddressBN, company.CompanyDescriptionBN);
 
                 // Check if dataset is valid and contains data
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
@@ -99,7 +103,10 @@ namespace eMedicine.Controllers
                                                CompanyName = dr["CompanyName"].ToString(),
                                                CompanyAddress = dr["CompanyAddress"].ToString(),
                                                CompanyDescription = dr["CompanyDescription"].ToString(),
-                                               CompanyPhone = dr["CompanyPhone"].ToString(),                                              
+                                               CompanyNameBN = dr["CompanyNameBN"].ToString(),
+                                               CompanyAddressBN = dr["CompanyAddressBN"].ToString(),
+                                               CompanyDescriptionBN = dr["CompanyDescriptionBN"].ToString(),
+                                               CompanyPhone = dr["CompanyPhone"].ToString(),
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();
                 return new JsonResult(new { Success = true, Data = GetCompanyDetails });
@@ -127,7 +134,8 @@ namespace eMedicine.Controllers
 
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntryCompany", "UPDATECOMPANYBYID", company.CompanyId, company.CompanyName, company.CompanyAddress,
-                company.CompanyDescription, company.CompanyPhone, company.IsActive,company.CreatedBy, company.CreatedDate, company.Updatedby,company.UpdatedDate);
+                company.CompanyDescription, company.CompanyPhone, company.IsActive,company.CreatedBy, company.CreatedDate, company.Updatedby,company.UpdatedDate,
+                company.CompanyNameBN, company.CompanyAddressBN, company.CompanyDescriptionBN);
 
                 // Check if dataset is valid and contains data
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)

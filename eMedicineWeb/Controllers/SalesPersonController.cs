@@ -27,6 +27,7 @@ namespace eMedicineWeb.Controllers
         {
             return View();
         }
+
         public async Task<ActionResult> GetAllSalesPerson()
         {
             List<SalesPersonViewModel> salesPersonList = new List<SalesPersonViewModel>();

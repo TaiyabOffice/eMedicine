@@ -17,10 +17,10 @@ namespace eMedicineWeb.Models
         public string Id { get; set; }
         public string Name { get; set; }
     }
-    public class ApiResponse<T>
+    public class DropdownListResponse
     {
         public bool Success { get; set; }
-        public List<T> Data { get; set; }
         public string Message { get; set; }
+        public List<DropdownListViewModel> Data { get; set; }
     }
 }

@@ -22,10 +22,12 @@ namespace eMedicineWeb.Controllers
             client = new HttpClient();
             client.BaseAddress = baseAddress;
         }
+
         public ActionResult UIEntryCompany()
         {
             return View();
         }
+
         public async Task<JsonResult> GetAllCompany()
         {
             List<CompanyViewModel> companyList = new List<CompanyViewModel>();
@@ -75,6 +77,7 @@ namespace eMedicineWeb.Controllers
             ModelState.AddModelError("", "Unable to create Company. Please try again.");
             return Json(new { success = false, message = "Failed to retrieve Company details." });
         }
+
         [HttpPost] 
         public async Task<JsonResult> GetCompanyById(string companyId)
         {
@@ -131,7 +134,7 @@ namespace eMedicineWeb.Controllers
             string data = JsonConvert.SerializeObject(company);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
             if (response.IsSuccessStatusCode)
             {
                 return Json(new { success = true, message = "Update Successfully" });

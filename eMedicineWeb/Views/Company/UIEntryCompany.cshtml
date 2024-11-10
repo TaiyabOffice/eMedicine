@@ -23,7 +23,7 @@
                                         <div class="form-group">
                                             <div class="col-sm-2">
                                                 <label for="CompanyId">Company ID</label>
-                                                <input type="text" id="CompanyId" name="CompanyId" class="form-control input-sm" autocomplete="off">
+                                                <input type="text" id="CompanyId" name="CompanyId" class="form-control input-sm" value="" autocomplete="off" disabled>
                                             </div>
                                             <div class="col-sm-3">
                                                 <label for="CompanyName">Company Name</label>
@@ -33,27 +33,41 @@
                                                 <label for="CompanyAddress">Company Address</label>
                                                 <input type="text" id="CompanyAddress" name="CompanyAddress" class="form-control input-sm" autocomplete="off">
                                             </div>
-                                            <div class="col-sm-2">
-                                                <label for="CompanyDescription">Company Dsc</label>
+                                            <div class="col-sm-4">
+                                                <label for="CompanyDescription">Company Dsccription</label>
                                                 <input type="text" id="CompanyDescription" name="CompanyDescription" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="CompanyNameBN">কোম্পানির নাম</label>
+                                                <input type="text" id="CompanyNameBN" name="CompanyNameBN" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label for="CompanyAddressBN">কোম্পানির ঠিকানা </label>
+                                                <input type="text" id="CompanyAddressBN" name="CompanyAddressBN" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="CompanyDescriptionBN">কোম্পানির বিবরণ</label>
+                                                <input type="text" id="CompanyDescriptionBN" name="CompanyDescriptionBN" class="form-control input-sm" autocomplete="off">
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="CompanyPhone">Company Phone</label>
                                                 <input type="text" id="CompanyPhone" name="CompanyPhone" class="form-control input-sm" autocomplete="off">
-                                            </div>                                           
-                                        </div>
+                                            </div>
+                                        </div>                                        
                                     </div>
-
-
                                     <div class="row">
-                                        <div class="form-group">
+                                        <div class="form-group">                                          
                                             <div class="col-sm-2">
                                                 <label for="IsActive">Is Active</label>
                                                 <select id="IsActive" name="IsActive" class="form-control input-sm">
                                                     <option value="1">Yes</option>
                                                     <option value="0">No</option>
                                                 </select>
-                                            </div>                                           
+                                            </div>
                                             <div class="col-sm-4" style="margin-top: 25px;">
                                                 <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
                                                 <button id="btnUpdate" type="button" class="btn btn-success">Update Info</button>
@@ -64,7 +78,6 @@
                                 </form>
                             </div>
                         </div>
-
                         <div class="box box-solid box-primary">
                             <div class="box-header">
                                 <div class="col-sm-12">

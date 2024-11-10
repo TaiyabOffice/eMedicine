@@ -44,14 +44,14 @@ var SalesPersonHelper = {
             url: "/Common/GenerateCombo",
             data: json,
             success: function (data) {
-                if (data.length == 1) {
-                    $.each(data, function (key, item) {
+                if (data.data.length == 1) {
+                    $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
-                    $.each(data, function (key, item) {
+                    $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
 
@@ -99,7 +99,7 @@ var SalesPersonHelper = {
     SaveCollectionData: function () {
 
         var companyData = {
-            SalesPersonId: $('#txtSalesPersonId').val(),
+            SalesPersonId: $('#txtSalesPersonId').val() ? "" : "000000000000",
             SalesPersonName: $('#txtSalesPersonName').val(),
             SalesPersonDescription: $('#txtDescription').val(),
             SalesPersonPhone: $('#txtPhone').val(),

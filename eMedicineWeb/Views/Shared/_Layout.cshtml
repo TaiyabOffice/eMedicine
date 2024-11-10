@@ -23,7 +23,7 @@
             Response.Redirect("~/LogIn/LogIn");
         }
     }    
-    <title>PIMS</title>
+<title>eMedicine</title>
     <link rel="icon" href="~/images/CC_Blue.png" type="image/x-icon">
     <link href="~/Content/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/bower_components/font-awesome/css/font-awesome.min.css">
@@ -39,28 +39,17 @@
         .datepicker {
             z-index: 9999 !important;
         }
-        /*.input-sm {
-            height: 25px;
-            padding: 0px 10px;
-            font-size: 12px;
-            line-height: .5;
-            border-radius: 3px;
-        }
-
-        .input-sm {
-            font-size: 11px;
-        }*/
     </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->
-            <a href="/CommonDashBoard/RequsitionDashBoard" class="logo">
+            <a href="/DashBoard/DashBoard" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>PIMS</b></span>
+                <span class="logo-mini"><b>eMedicine</b></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>PIMS</b></span>
+                <span class="logo-lg"><b>eMedicine</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
@@ -99,10 +88,6 @@
                                 </li>
                             </ul>
                         </li>
-                        <!-- Control Sidebar Toggle Button -->
-                        @*<li>
-                                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                            </li>*@
                     </ul>
                 </div>
             </nav>
@@ -122,7 +107,6 @@
                         @*<a href="#"><i class="fa fa-circle text-success"></i> Online</a>*@
                     </div>
                 </div>
-
                 <aside class="main-sidebar">
                     <!-- sidebar: style can be found in sidebar.less -->
                     <section class="sidebar">
@@ -131,8 +115,6 @@
                             @*<ul class="sidebar-menu" data-widget="tree" role="menu" data-accordion="false">*@
                             @if (ds != null)
                             {
-                                @*<li><a href="http://localhost:14104/CommonDashboard/ESDDashboard"> <i class="fa fa-dashboard"></i><span> Dashboard</span></a></li>*@
-
                                 foreach (DataRow item in ds.Tables[0].Rows)
                                 {
                                     if (item[1].ToString() == "0")
@@ -148,24 +130,12 @@
 
                                             <ul class="treeview-menu">
                                                 @foreach (DataRow firstItem in ds.Tables[0].Rows)
-                                                {
-                                                    @*if (firstItem[4].ToString() != "")
-                                        {
-                                            <li class="nav-link" style="color: white;">
-                                                <a href="~/@firstItem[4].ToString()">
-                                                    <i class="fa fa-circle-o"></i>
-                                                    <span>@firstItem[2].ToString()</span>
-                                                </a>
-                                            </li>
-                                        }
-                                        else
-                                        {*@
+                                                {                                                   
                                                     if (firstItem[1].ToString() == item[0].ToString())
                                                     {
                                                         if (firstItem[4].ToString() != "")
                                                         {
-                                                            <li class="nav-link" style="color: white;">
-                                                                @*<a href="~/@firstItem[4].ToString()?id=@firstItem[1].ToString()">*@
+                                                            <li class="nav-link" style="color: white;">                                                             
                                                                 <a href="~/@firstItem[4].ToString()">
                                                                     <i class="fa fa-circle-o"></i>
                                                                     <span>@firstItem[2].ToString()</span>
@@ -201,24 +171,16 @@
                                                             </li>
                                                         }
                                                     }
-                                                    //}
-
                                                 }
-
                                             </ul>
-
                                         </li>
                                     }
-
                                 }
                             }
                         </ul>
                     </section>
                     <!-- /.sidebar -->
                 </aside>
-
-
-
             </section>
             <!-- /.sidebar -->
         </aside>
@@ -231,19 +193,12 @@
                         @ViewBag.Title
                     </small>
                     @*<small>Entry</small>*@
-                </h1>
-                @*<ol class="breadcrumb">
-                        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-                        <li><a href="#">Forms</a></li>
-                        <li class="active">@ViewBag.Title</li>
-                    </ol>*@
+                </h1>             
             </section>
             @RenderBody()
             <hr />
         </div>
     </div>
-
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

@@ -1,7 +1,4 @@
 ﻿@using System.Data
-@using System.Web.UI.WebControls
-@using eMedicineWeb.Models
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,7 +38,8 @@
         }
     </style>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+@*<body class="hold-transition skin-blue sidebar-mini">*@
+<body class="hold-transition sidebar-collapse skin-blue sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->
@@ -130,12 +128,12 @@
 
                                             <ul class="treeview-menu">
                                                 @foreach (DataRow firstItem in ds.Tables[0].Rows)
-                                                {                                                   
+                                                {
                                                     if (firstItem[1].ToString() == item[0].ToString())
                                                     {
                                                         if (firstItem[4].ToString() != "")
                                                         {
-                                                            <li class="nav-link" style="color: white;">                                                             
+                                                            <li class="nav-link" style="color: white;">
                                                                 <a href="~/@firstItem[4].ToString()">
                                                                     <i class="fa fa-circle-o"></i>
                                                                     <span>@firstItem[2].ToString()</span>
@@ -193,7 +191,7 @@
                         @ViewBag.Title
                     </small>
                     @*<small>Entry</small>*@
-                </h1>             
+                </h1>
             </section>
             @RenderBody()
             <hr />

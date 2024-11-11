@@ -2,6 +2,23 @@
     ViewBag.Title = "Entry Generics Information";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    /*tr:nth-child(even) {
+        background-color: #dddddd;
+    }*/
+</style>
 <section class="content">
     <div class="box box-solid box-primary">
         <div class="box-body">
@@ -17,7 +34,7 @@
                             </div>
 
                             <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
-                                <form id="validateCompany">
+                                <form id="validateGenerics">
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-sm-2">
@@ -87,7 +104,7 @@
                                             <div class="col-sm-2">
                                                 <label for="txtContraindicationsBN">বিপরীত</label>
                                                 <input type="text" id="txtContraindicationsBN" name="txtContraindicationsBN" value="" class="form-control input-sm" autocomplete="off">
-                                            </div>                                            
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -158,3 +175,61 @@
     @Scripts.Render("~/Scripts/eMedicine/Generics/UIEntryGenerics.js")
     <script src="~/Scripts/jquery.validate.min.js"></script>
 }
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="mdlTitle"></h4>
+            </div>
+            <div class="modal-body" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td id="MdlName"></td>
+                                <td id="MdlNameBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlDescription"></td>
+                                <td id="MdlDescriptionBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlIndications"></td>
+                                <td id="MdlIndicationsBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlContraindications"></td>
+                                <td id="MdlContraindicationsBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlTherapeuticClass"></td>
+                                <td id="MdlTherapeuticClassBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlSideEffects"></td>
+                                <td id="MdlSideEffectsBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlPrecautions"></td>
+                                <td id="MdlPrecautionsBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlInteractions"></td>
+                                <td id="MdlInteractionsBN"></td>
+                            </tr>                           
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger pull-right" data-dismiss="modal">Close</button>               
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

@@ -52,6 +52,7 @@ namespace eMedicine.Controllers
                 });
             }
         }
+
         [HttpPost("CreateSupplier")]
         public async Task<IActionResult> CreateSupplier([FromBody] Supplier Supplier)
         {
@@ -59,7 +60,7 @@ namespace eMedicine.Controllers
             {
                 
                 var ds = await this.repo.GetAll("", "sp_EntrySupplier", "CREATESUPPLIER", Supplier.SupplierId, Supplier.SupplierName, Supplier.ContactPerson,
-                    Supplier.SupplierPhone, Supplier.Email, Supplier.CompanyId, Supplier.IsActive, Supplier.CreatedBy, Supplier.CreatedDate, Supplier.UpdatedBy, Supplier.UpdatedDate);
+                    Supplier.SupplierPhone, Supplier.Email, Supplier.CompanyId, Supplier.IsActive, Supplier.CreatedBy, Supplier.CreatedDate);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -81,6 +82,7 @@ namespace eMedicine.Controllers
                 });
             }
         }
+
         [HttpGet("GetSupplierById/{SupplierId}")]
         public async Task<IActionResult> GetSupplierById(string SupplierId)
         {
@@ -118,6 +120,7 @@ namespace eMedicine.Controllers
             }
 
         }
+
         [HttpPost("UpdateSupplierById")]
         public async Task<IActionResult> UpdateSupplierById([FromBody] Supplier Supplier)
         {
@@ -125,7 +128,7 @@ namespace eMedicine.Controllers
             {
                 
                 var ds = await this.repo.GetAll("", "sp_EntrySupplier", "UPDATESUPPLIERBYID", Supplier.SupplierId, Supplier.SupplierName, Supplier.ContactPerson,
-                    Supplier.SupplierPhone, Supplier.Email, Supplier.CompanyId, Supplier.IsActive, Supplier.CreatedBy, Supplier.CreatedDate, Supplier.UpdatedBy, Supplier.UpdatedDate);
+                    Supplier.SupplierPhone, Supplier.Email, Supplier.CompanyId, Supplier.IsActive, Supplier.UpdatedBy, Supplier.UpdatedDate);
 
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)

@@ -61,8 +61,7 @@ namespace eMedicine.Controllers
 
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntryCompany", "CREATECOMPANY", company.CompanyId, company.CompanyName, company.CompanyAddress,
-                 company.CompanyDescription, company.CompanyPhone, company.IsActive, company.CreatedBy, company.CreatedDate, company.Updatedby, company.UpdatedDate,
-                 company.CompanyNameBN, company.CompanyAddressBN, company.CompanyDescriptionBN);
+                 company.CompanyDescription, company.CompanyPhone, company.IsActive, company.CreatedBy, company.CreatedDate, company.CompanyNameBN, company.CompanyAddressBN, company.CompanyDescriptionBN);
 
                 // Check if dataset is valid and contains data
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
@@ -134,8 +133,7 @@ namespace eMedicine.Controllers
 
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntryCompany", "UPDATECOMPANYBYID", company.CompanyId, company.CompanyName, company.CompanyAddress,
-                company.CompanyDescription, company.CompanyPhone, company.IsActive,company.CreatedBy, company.CreatedDate, company.Updatedby,company.UpdatedDate,
-                company.CompanyNameBN, company.CompanyAddressBN, company.CompanyDescriptionBN);
+                company.CompanyDescription, company.CompanyPhone, company.IsActive, company.Updatedby,company.UpdatedDate, company.CompanyNameBN, company.CompanyAddressBN, company.CompanyDescriptionBN);
 
                 // Check if dataset is valid and contains data
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)

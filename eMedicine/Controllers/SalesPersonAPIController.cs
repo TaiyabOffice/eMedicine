@@ -58,7 +58,7 @@ namespace eMedicine.Controllers
             {  
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "CREATESALESPERSON", salesPerson.SalesPersonId, salesPerson.SalesPersonName, salesPerson.SalesPersonDescription,
-                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId);
+                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.IsActive, salesPerson.CompanyId);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -123,8 +123,7 @@ namespace eMedicine.Controllers
             {
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "UPDATESALESPERSONBYID", salesPerson.SalesPersonId, salesPerson.SalesPersonName, salesPerson.SalesPersonDescription,
-                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId);
-
+                salesPerson.SalesPersonPhone, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {

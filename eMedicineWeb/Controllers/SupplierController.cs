@@ -23,6 +23,7 @@ namespace eMedicineWeb.Controllers
             client.BaseAddress = baseAddress;
 
         }
+
         public ActionResult UIEntrySupplier()
         {
             return View();
@@ -61,7 +62,7 @@ namespace eMedicineWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateSupplier(SupplierViewModel Supplier)
         {
-            bool Satus = false;
+           
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed Insert Supplier details." });

@@ -123,6 +123,7 @@
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
+    <Compile Include="Controllers\GenericsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\SalesPersonController.cs" />
@@ -132,6 +133,7 @@
     </Compile>
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\DropdownListViewModel.cs" />
+    <Compile Include="Models\GenericsViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\SalesPersonViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
@@ -7346,6 +7348,7 @@
     <Content Include="Scripts\eMedicine\Company\UIEntryCompany.js" />
     <Content Include="Scripts\eMedicine\SalesPerson\UIEntrySalesPerson.js" />
     <Content Include="Scripts\eMedicine\Supplier\UIEntrySupplier.js" />
+    <Content Include="Scripts\eMedicine\Generics\UIEntryGenerics.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -7380,6 +7383,7 @@
     <Content Include="Views\Company\UIEntryCompany.cshtml" />
     <Content Include="Views\SalesPerson\UIEntrySalesPerson.cshtml" />
     <Content Include="Views\Supplier\UIEntrySupplier.cshtml" />
+    <Content Include="Views\Generics\UIEntryGenerics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

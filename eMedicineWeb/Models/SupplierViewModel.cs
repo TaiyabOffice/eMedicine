@@ -6,7 +6,7 @@ using System.Web;
 namespace eMedicineWeb.Models
 {
     public class SupplierViewModel
-    {
+    {       
         public string SupplierId { get; set; }
         public string SupplierName { get; set; }
         public string ContactPerson { get; set; }

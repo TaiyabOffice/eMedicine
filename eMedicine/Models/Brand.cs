@@ -5,8 +5,8 @@
         public string BrandId { get; set; }
         public string BrandName { get; set; }
         public string BrandNameBN { get; set; }
-        public string ComapnyId { get; set; }
-        public string ComapnyName { get; set; }
+        public string CompanyId { get; set; }
+        public string CompanyName { get; set; }
         public string GenericId { get; set; }
         public string GenericName { get; set; }
         public string DosageForm { get; set; }

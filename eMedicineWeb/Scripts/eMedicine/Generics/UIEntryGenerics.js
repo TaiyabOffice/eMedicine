@@ -336,8 +336,7 @@ var GenericsHelper = {
                     }
                     else {
                         $('#mdlIsActive').html("Status: InActive");
-                    }
-                    $('#MdlCmbIsActive').html("IsActive: " + Generics.IsActive);
+                    }                    
                     $("#modal-default").modal("show");
                 }
                 else {

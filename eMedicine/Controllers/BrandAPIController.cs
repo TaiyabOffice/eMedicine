@@ -34,10 +34,10 @@ namespace eMedicine.Controllers
                                               BrandId = dr["BrandId"].ToString(),
                                               BrandName = dr["BrandName"].ToString(),
                                               BrandNameBN = dr["BrandNameBN"].ToString(),
-                                              ComapnyId = dr["ComapnyId"].ToString(),
-                                              ComapnyName = dr["ComapnyName"].ToString(),
+                                              CompanyId = dr["CompanyId"].ToString(),
+                                              CompanyName = dr["CompanyName"].ToString(),
                                               GenericId = dr["GenericId"].ToString(),
-                                              GenericName = dr["GenericName"].ToString(),
+                                              GenericName = dr["GenericsName"].ToString(),
                                               DosageForm = dr["DosageForm"].ToString(),
                                               DosageFormBN = dr["DosageFormBN"].ToString(),
                                               Strength = dr["Strength"].ToString(),
@@ -65,7 +65,7 @@ namespace eMedicine.Controllers
             try
             {
 
-                var ds = await this.repo.GetAll("", "sp_EntryBrand", "CREATEBRAND", Brand.BrandId, Brand.BrandName, Brand.ComapnyId,
+                var ds = await this.repo.GetAll("", "sp_EntryBrand", "CREATEBRAND", Brand.BrandId, Brand.BrandName, Brand.BrandNameBN,Brand.CompanyId,
                     Brand.GenericId, Brand.DosageForm, Brand.DosageFormBN, Brand.Strength, Brand.StrengthBN, Brand.BrandDescription, Brand.BrandDescriptionBN, Brand.IsActive, Brand.CreatedBy,
                     Brand.CreatedDate);
 
@@ -106,10 +106,10 @@ namespace eMedicine.Controllers
                                               BrandId = dr["BrandId"].ToString(),
                                               BrandName = dr["BrandName"].ToString(),
                                               BrandNameBN = dr["BrandNameBN"].ToString(),
-                                              ComapnyId = dr["ComapnyId"].ToString(),
-                                              ComapnyName = dr["ComapnyName"].ToString(),
+                                              CompanyId = dr["CompanyId"].ToString(),
+                                              CompanyName = dr["CompanyName"].ToString(),
                                               GenericId = dr["GenericId"].ToString(),
-                                              GenericName = dr["GenericName"].ToString(),
+                                              GenericName = dr["GenericsName"].ToString(),
                                               DosageForm = dr["DosageForm"].ToString(),
                                               DosageFormBN = dr["DosageFormBN"].ToString(),
                                               Strength = dr["Strength"].ToString(),
@@ -140,7 +140,7 @@ namespace eMedicine.Controllers
             try
             {
 
-                var ds = await this.repo.GetAll("", "sp_EntryBrand", "UPDATEBRANDBYID", Brand.BrandId, Brand.BrandName, Brand.ComapnyId,
+                var ds = await this.repo.GetAll("", "sp_EntryBrand", "UPDATEBRANDBYID", Brand.BrandId, Brand.BrandName, Brand.BrandNameBN, Brand.CompanyId,
                     Brand.GenericId, Brand.DosageForm, Brand.DosageFormBN, Brand.Strength, Brand.StrengthBN, Brand.BrandDescription, Brand.BrandDescriptionBN, Brand.IsActive, Brand.Updatedby,
                     Brand.UpdatedDate);
 

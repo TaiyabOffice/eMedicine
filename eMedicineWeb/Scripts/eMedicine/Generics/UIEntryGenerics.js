@@ -14,17 +14,16 @@ $(document).ready(function () {
     });
     GenericsHelper.BuildTbl("");
     GenericsHelper.GetAllGenerics();
+    GenericsHelper.ValidateGenerics();
 
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
     GenericsHelper.SaveCollectionData();
-    location.reload();
 });
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
     GenericsHelper.UpdateCollectionData();
-    location.reload();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
@@ -97,125 +96,131 @@ var GenericsHelper = {
 
     },
     SaveCollectionData: function () {
+        if ($("#validateGenerics").valid()) {
+            var GenericsData = {
+                GenericsId: $('#txtGenericsId').val() ? "" : "000000000000",
+                GenericsName: $('#txtName').val(),
+                GenericsNameBN: $('#txtNameBN').val(),
+                GenericsDescription: $('#txtDescription').val(),
+                GenericsDescriptionBN: $('#txtDescriptionBN').val(),
+                Indications: $('#txtIndications').val(),
+                IndicationsBN: $('#txtIndicationsBN').val(),
+                Contraindications: $('#txtContraindications').val(),
+                ContraindicationsBN: $('#txtContraindicationsBN').val(),
+                TherapeuticClass: $('#txtTherapeuticClass').val(),
+                TherapeuticClassBN: $('#txtTherapeuticClassBN').val(),
+                SideEffects: $('#txtSideEffects').val(),
+                SideEffectsBN: $('#txtSideEffectsBN').val(),
+                Precautions: $('#txtPrecautions').val(),
+                PrecautionsBN: $('#txtPrecautionsBN').val(),
+                Interactions: $('#txtInteractions').val(),
+                InteractionsBN: $('#txtInteractionsBN').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
+            $.ajax({
+                url: '/Generics/CreateGenerics', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(GenericsData), // Send as JSON
+                success: function (response) {
+                    // Success message
+                    //console.log(response);
+                    if (response.success) {
+                        swal({
+                            title: "Congratulations",
+                            text: "Saved successfully!",
+                            type: "success",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
+                        });
+                        location.reload();
 
-        var GenericsData = {
-            GenericsId: $('#txtGenericsId').val() ? "" : "000000000000",
-            GenericsName: $('#txtName').val(),
-            GenericsNameBN: $('#txtNameBN').val(),
-            GenericsDescription: $('#txtDescription').val(),
-            GenericsDescriptionBN: $('#txtDescriptionBN').val(),
-            Indications: $('#txtIndications').val(),
-            IndicationsBN: $('#txtIndicationsBN').val(),
-            Contraindications: $('#txtContraindications').val(),
-            ContraindicationsBN: $('#txtContraindicationsBN').val(),
-            TherapeuticClass: $('#txtTherapeuticClass').val(),
-            TherapeuticClassBN: $('#txtTherapeuticClassBN').val(),
-            SideEffects: $('#txtSideEffects').val(),
-            SideEffectsBN: $('#txtSideEffectsBN').val(),
-            Precautions: $('#txtPrecautions').val(),
-            PrecautionsBN: $('#txtPrecautionsBN').val(),
-            Interactions: $('#txtInteractions').val(),
-            InteractionsBN: $('#txtInteractionsBN').val(),
-            IsActive: $('#CmbIsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };
-        $.ajax({
-            url: '/Generics/CreateGenerics', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(GenericsData), // Send as JSON
-            success: function (response) {
-                // Success message
-                //console.log(response);
-                if (response.success) {
-                    swal({
-                        title: "Congratulations",
-                        text: "Saved successfully!",
-                        type: "success",
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        timer: 2000
-                    });
-                    GenericsHelper.GetAllGenerics()
-                } else {
+                        GenericsHelper.GetAllGenerics()
+                    } else {
+                        swal({
+                            title: "Sorry!",
+                            text: "Saved Failde!",
+                            type: "error",
+                            closeOnConfirm: false,
+                            //timer: 2000
+                        });
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
                     swal({
                         title: "Sorry!",
-                        text: "Saved Failde!",
+                        text: "Error retrieving Generics.!" + error,
                         type: "error",
                         closeOnConfirm: false,
                         //timer: 2000
                     });
                 }
-
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                swal({
-                    title: "Sorry!",
-                    text: "Error retrieving Generics.!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    //timer: 2000
-                });
-            }
-        });
+            });
+        }
     },
     UpdateCollectionData: function () {
+        if ($("#validateGenerics").valid()) {
+            var GenericsData = {
+                GenericsId: $('#txtGenericsId').val(),
+                GenericsName: $('#txtName').val(),
+                GenericsNameBN: $('#txtNameBN').val(),
+                GenericsDescription: $('#txtDescription').val(),
+                GenericsDescriptionBN: $('#txtDescriptionBN').val(),
+                Indications: $('#txtIndications').val(),
+                IndicationsBN: $('#txtIndicationsBN').val(),
+                Contraindications: $('#txtContraindications').val(),
+                ContraindicationsBN: $('#txtContraindicationsBN').val(),
+                TherapeuticClass: $('#txtTherapeuticClass').val(),
+                TherapeuticClassBN: $('#txtTherapeuticClassBN').val(),
+                SideEffects: $('#txtSideEffects').val(),
+                SideEffectsBN: $('#txtSideEffectsBN').val(),
+                Precautions: $('#txtPrecautions').val(),
+                PrecautionsBN: $('#txtPrecautionsBN').val(),
+                Interactions: $('#txtInteractions').val(),
+                InteractionsBN: $('#txtInteractionsBN').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
+            $.ajax({
+                url: '/Generics/UpdateGenericsById', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(GenericsData), // Send as JSON
+                success: function (response) {
+                    // Success message               
+                    swal({
+                        title: "Congratulations",
+                        text: "saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    location.reload();
 
-        var GenericsData = {
-            GenericsId: $('#txtGenericsId').val(),
-            GenericsName: $('#txtName').val(),
-            GenericsNameBN: $('#txtNameBN').val(),
-            GenericsDescription: $('#txtDescription').val(),
-            GenericsDescriptionBN: $('#txtDescriptionBN').val(),
-            Indications: $('#txtIndications').val(),
-            IndicationsBN: $('#txtIndicationsBN').val(),
-            Contraindications: $('#txtContraindications').val(),
-            ContraindicationsBN: $('#txtContraindicationsBN').val(),
-            TherapeuticClass: $('#txtTherapeuticClass').val(),
-            TherapeuticClassBN: $('#txtTherapeuticClassBN').val(),
-            SideEffects: $('#txtSideEffects').val(),
-            SideEffectsBN: $('#txtSideEffectsBN').val(),
-            Precautions: $('#txtPrecautions').val(),
-            PrecautionsBN: $('#txtPrecautionsBN').val(),
-            Interactions: $('#txtInteractions').val(),
-            InteractionsBN: $('#txtInteractionsBN').val(),
-            IsActive: $('#CmbIsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };
-        $.ajax({
-            url: '/Generics/UpdateGenericsById', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(GenericsData), // Send as JSON
-            success: function (response) {
-                // Success message               
-                swal({
-                    title: "Congratulations",
-                    text: "saved successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                GenericsHelper.GetAllGenerics();
-            },
-            error: function (xhr, status, error) {
-                swal({
-                    title: "Sorry!",
-                    text: "Error retrieving Generics.!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    //timer: 2000
-                });
-            }
-        });
+                    GenericsHelper.GetAllGenerics();
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving Generics.!" + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            });
+        }
     },
     GetAllGenerics: function () {
         var serviceUrl = "/Generics/GetAllGenerics";
@@ -404,5 +409,59 @@ var GenericsHelper = {
         if (code > 31 && (code < 48 || code > 57)) {
             e.preventDefault();
         }
-    }
+    },
+    ValidateGenerics: function () {
+        $.validator.addMethod("notZero", function (value, element) {
+            return this.optional(element) || value != "0"; 
+        }, "Please select a valid option");
+
+        $("#validateGenerics").validate({
+            rules: {
+                txtName: "required",
+                txtDescription: "required",
+                txtIndications: "required",
+                txtContraindications: "required",
+                txtTherapeuticClass: "required",
+                txtSideEffects: "required",
+                txtPrecautions: "required",
+                txtInteractions: "required",
+                txtNameBN: "required",
+                txtDescriptionBN: "required",
+                txtIndicationsBN: "required",
+                txtContraindicationsBN: "required",
+                txtTherapeuticClassBN: "required",
+                txtSideEffectsBN: "required",
+                txtPrecautionsBN: "required",
+                txtInteractionsBN: "required",
+                CmbIsActive: {
+                    required: true,
+                    notZero: "0" 
+                }
+            },
+            messages: {
+                txtName: "Generic Name is required",
+                txtDescription: "Description is required",
+                txtIndications: "Indications are required",
+                txtContraindications: "Contraindications are required",
+                txtTherapeuticClass: "Therapeutic Class is required",
+                txtSideEffects: "Side Effects are required",
+                txtPrecautions: "Precautions are required",
+                txtInteractions: "Interactions are required",
+                txtNameBN: "জেনেরিক নাম প্রয়োজন",
+                txtDescriptionBN: "বর্ণনা প্রয়োজন",
+                txtIndicationsBN: "ইঙ্গিত প্রয়োজন",
+                txtContraindicationsBN: "বিপরীত প্রয়োজন",
+                txtTherapeuticClassBN: "থেরাপিউটিক ক্লাস প্রয়োজন",
+                txtSideEffectsBN: "পার্শ্ব প্রতিক্রিয়া প্রয়োজন",
+                txtPrecautionsBN: "সতর্কতা প্রয়োজন",
+                txtInteractionsBN: "মিথষ্ক্রিয়া প্রয়োজন",
+                CmbIsActive: "Please select if active or not"
+            },
+            errorPlacement: function (label, element) {
+                label.addClass('error');
+                element.parent().append(label);
+            }
+        });
+    },
+
 };

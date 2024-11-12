@@ -13,14 +13,14 @@
             ViewBag.UserId = Session["UserID"].ToString();
             ViewBag.UserloginId = Session["PhoneNumber"].ToString();
             ViewBag.PC = Session["TerminalId"].ToString();
-            ds = (DataSet)Session["MenuData"];           
+            ds = (DataSet)Session["MenuData"];
         }
         catch
         {
             Response.Redirect("~/LogIn/LogIn");
         }
-    }    
-<title>eMedicine</title>
+    }
+    <title>eMedicine</title>
     <link rel="icon" href="~/images/CC_Blue.png" type="image/x-icon">
     <link href="~/Content/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/Content/bower_components/font-awesome/css/font-awesome.min.css">
@@ -29,14 +29,45 @@
     @Scripts.Render("~/bundles/modernizr")
 
     <style>
-        .select2-results__options {
-            font-size: 11px !important;
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
         }
 
         .datepicker {
             z-index: 9999 !important;
         }
+
+        .error {
+            border-color: red;
+            color: #8a0303;
+            margin: 2px;
+        }
+
+        .select2-results__options {
+            font-size: 11px !important;
+        }
+
+        .content {
+            padding-left: 5px;
+            padding-right: 5px;
+            font-size: 11px !important;
+        }
+
+        .box.box-solid.box-primary > .box-header {
+            color: #fff;
+            background: #465760;
+            background-color: #465760;
+        }
     </style>
+
 </head>
 @*<body class="hold-transition skin-blue sidebar-mini">*@
 <body class="hold-transition sidebar-collapse skin-blue sidebar-mini">

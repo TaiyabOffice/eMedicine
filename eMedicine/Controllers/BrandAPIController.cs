@@ -1,0 +1,168 @@
+﻿using eMedicine.IRepository;
+using eMedicine.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Data;
+
+namespace eMedicine.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BrandAPIController : ControllerBase
+    {
+        DataSet ds = new DataSet();
+        private readonly ICommonRepo repo;
+        public BrandAPIController(ICommonRepo repo)
+        {
+            this.repo = repo;
+        }
+        [HttpGet("GetAllBrand")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectBrand", "GETALLBRAND");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "No Brand found." });
+                }
+                var GetBrandDetails = (from DataRow dr in ds.Tables[0].Rows
+                                          select new Brand()
+                                          {
+                                              BrandId = dr["BrandId"].ToString(),
+                                              BrandName = dr["BrandName"].ToString(),
+                                              BrandNameBN = dr["BrandNameBN"].ToString(),
+                                              ComapnyId = dr["ComapnyId"].ToString(),
+                                              ComapnyName = dr["ComapnyName"].ToString(),
+                                              GenericId = dr["GenericId"].ToString(),
+                                              GenericName = dr["GenericName"].ToString(),
+                                              DosageForm = dr["DosageForm"].ToString(),
+                                              DosageFormBN = dr["DosageFormBN"].ToString(),
+                                              Strength = dr["Strength"].ToString(),
+                                              StrengthBN = dr["StrengthBN"].ToString(),                                              
+                                              BrandDescription = dr["BrandDescription"].ToString(),                                           
+                                              BrandDescriptionBN = dr["BrandDescriptionBN"].ToString(),                                              
+                                              IsActive = dr["IsActive"].ToString()
+                                          }).ToList();
+                return new JsonResult(new { Success = true, Data = GetBrandDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Brand.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("CreateBrand")]
+        public async Task<IActionResult> CreateBrand([FromBody] Brand Brand)
+        {
+            try
+            {
+
+                var ds = await this.repo.GetAll("", "sp_EntryBrand", "CREATEBRAND", Brand.BrandId, Brand.BrandName, Brand.ComapnyId,
+                    Brand.GenericId, Brand.DosageForm, Brand.DosageFormBN, Brand.Strength, Brand.StrengthBN, Brand.BrandDescription, Brand.BrandDescriptionBN, Brand.IsActive, Brand.CreatedBy,
+                    Brand.CreatedDate);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "Brand Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Brand>(), Message = "Brand Create Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Brand.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("GetBrandById/{BrandId}")]
+        public async Task<IActionResult> GetBrandById(string BrandId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectBrand", "GETBRANDBYID", BrandId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "No Brand found." });
+                }
+                var GetBrandDetails = (from DataRow dr in ds.Tables[0].Rows
+                                          select new Brand()
+                                          {
+                                              BrandId = dr["BrandId"].ToString(),
+                                              BrandName = dr["BrandName"].ToString(),
+                                              BrandNameBN = dr["BrandNameBN"].ToString(),
+                                              ComapnyId = dr["ComapnyId"].ToString(),
+                                              ComapnyName = dr["ComapnyName"].ToString(),
+                                              GenericId = dr["GenericId"].ToString(),
+                                              GenericName = dr["GenericName"].ToString(),
+                                              DosageForm = dr["DosageForm"].ToString(),
+                                              DosageFormBN = dr["DosageFormBN"].ToString(),
+                                              Strength = dr["Strength"].ToString(),
+                                              StrengthBN = dr["StrengthBN"].ToString(),
+                                              BrandDescription = dr["BrandDescription"].ToString(),
+                                              BrandDescriptionBN = dr["BrandDescriptionBN"].ToString(),
+                                              IsActive = dr["IsActive"].ToString()
+                                          }).ToList();
+
+                return new JsonResult(new { Success = true, Data = GetBrandDetails });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Brand.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
+        [HttpPost("UpdateBrandById")]
+        public async Task<IActionResult> UpdateBrandById([FromBody] Brand Brand)
+        {
+            try
+            {
+
+                var ds = await this.repo.GetAll("", "sp_EntryBrand", "UPDATEBRANDBYID", Brand.BrandId, Brand.BrandName, Brand.ComapnyId,
+                    Brand.GenericId, Brand.DosageForm, Brand.DosageFormBN, Brand.Strength, Brand.StrengthBN, Brand.BrandDescription, Brand.BrandDescriptionBN, Brand.IsActive, Brand.Updatedby,
+                    Brand.UpdatedDate);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "Brand Update Failed." });
+                }
+                else
+                {
+
+                    return new JsonResult(new { Success = true, Data = new List<Brand>(), Message = "Brand Update Successfully." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Brand.",
+                    Details = ex.Message
+                });
+            }
+        }
+    }
+}

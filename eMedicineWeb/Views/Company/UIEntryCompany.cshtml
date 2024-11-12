@@ -2,6 +2,23 @@
     ViewBag.Title = "Create Company";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    /*tr:nth-child(even) {
+        background-color: #dddddd;
+    }*/
+</style>
 <section class="content">
     <div class="box box-solid box-primary">
         <div class="box-body">
@@ -113,3 +130,44 @@
     @Scripts.Render("~/Scripts/eMedicine/Company/UIEntryCompany.js")
     <script src="~/Scripts/jquery.validate.min.js"></script>
 }
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="mdlTitle"></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td id="MdlCompanyName"></td>
+                                <td id="MdlCompanyNameBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlCompanyAddress"></td>
+                                <td id="MdlCompanyAddressBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlICompanyDescription"></td>
+                                <td id="MdlICompanyDescriptionBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="mdlCompanyPhone"></td>
+                                <td id="mdlIsActive"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

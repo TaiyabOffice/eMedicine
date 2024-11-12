@@ -21,7 +21,6 @@ $("#btnSave").click(function (event) {
     GenericsHelper.SaveCollectionData();
     location.reload();
 });
-
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
     GenericsHelper.UpdateCollectionData();
@@ -301,7 +300,6 @@ var GenericsHelper = {
             }
         });
     },
-
     GetDetailsByGenericsID: function (GenericsId) {
 
         var jsonParam = { GenericsId: GenericsId };
@@ -332,7 +330,13 @@ var GenericsHelper = {
                     $('#MdlPrecautions').html("Precautions: " + Generics.Precautions);
                     $('#MdlPrecautionsBN').html("সতর্কতা: " + Generics.PrecautionsBN);
                     $('#MdlInteractions').html("Interactions: " + Generics.Interactions);
-                    $('#MdlInteractionsBN').html("মিথষ্ক্রিয়া: " +Generics.InteractionsBN);
+                    $('#MdlInteractionsBN').html("মিথষ্ক্রিয়া: " + Generics.InteractionsBN);
+                    if (Generics.IsActive == "1") {
+                        $('#mdlIsActive').html("Status: Active");
+                    }
+                    else {
+                        $('#mdlIsActive').html("Status: InActive");
+                    }
                     $('#MdlCmbIsActive').html("IsActive: " + Generics.IsActive);
                     $("#modal-default").modal("show");
                 }
@@ -351,6 +355,7 @@ var GenericsHelper = {
     clrMdl: function (o)
     {
         $('#MdlGenericsId').html("");
+        $('#mdlTitle').html("");
         $('#MdlName').html("");
         $('#MdlNameBN').html("");
         $('#MdlDescription').html("");

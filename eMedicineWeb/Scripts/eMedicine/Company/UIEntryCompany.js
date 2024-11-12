@@ -74,7 +74,7 @@ var CompanyHelper = {
                 {
                     data: null,//7
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetDetailsByCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -157,7 +157,6 @@ var CompanyHelper = {
             }
         });
     },
-
     UpdateCollectionData: function () {
 
         var companyData = {
@@ -227,7 +226,7 @@ var CompanyHelper = {
                     $('#CompanyNameBN').val(company.CompanyNameBN);
                     $('#CompanyAddressBN').val(company.CompanyAddressBN);
                     $('#CompanyDescriptionBN').val(company.CompanyDescriptionBN);
-                    $('#CompanyPhone').val(company.CompanyPhone);                   
+                    $('#CompanyPhone').val(company.CompanyPhone);
                     $('#IsActive').val(company.IsActive);                   
                 } else { 
                     swal({
@@ -249,6 +248,59 @@ var CompanyHelper = {
                 });
             }
         });
+    },
+
+    GetDetailsByCompanyID: function (CompanyId) {
+      
+        var jsonParam = { companyId: CompanyId };
+        var serviceUrl = "/Company/GetCompanyById";
+
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (response) {
+                if (response.Success) {
+                    var company = response.data;
+                    CompanyHelper.clrMdl()
+                    $('#mdlTitle').html("Company Details for: " + company.CompanyId + " - " + company.CompanyName + " - " + company.CompanyNameBN);
+                    $('#MdlCompanyName').html("Company Name: " + company.CompanyName);
+                    $('#MdlCompanyNameBN').html("কোম্পানির নাম: " + company.CompanyNameBN);
+                    $('#MdlCompanyAddress').html("Company Address: " + company.CompanyAddress);
+                    $('#MdlCompanyAddressBN').html("কোম্পানির ঠিকানা: " + company.CompanyAddressBN);
+                    $('#MdlICompanyDescription').html("Description: " + company.CompanyDescription);
+                    $('#MdlICompanyDescriptionBN').html("কোম্পানির বিবরণ: " + company.CompanyDescriptionBN);                   
+                    $('#mdlCompanyPhone').html("Company Phone: " + company.CompanyPhone);
+                    if (company.IsActive == "1") {
+                        $('#mdlIsActive').html("Status: Active");
+                    }
+                    else
+                    {
+                        $('#mdlIsActive').html("Status: InActive");
+                    }
+                   
+                    $("#modal-default").modal("show");
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "No company data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            }
+        });
+    },
+    clrMdl: function (o) {       
+        $('#mdlTitle').html("");
+        $('#mdlCompanyId').html("");
+        $('#mdlCompanyName').html("");
+        $('#mdlCompanyAddress').html("");
+        $('#mdlCompanyDescription').html("");
+        $('#mdlCompanyNameBN').html("");
+        $('#mdlCompanyAddressBN').html("");
+        $('#mdlCompanyPhone').html("");
     },
     getSelectionStart: function (o) {
         if (o.createTextRange) {

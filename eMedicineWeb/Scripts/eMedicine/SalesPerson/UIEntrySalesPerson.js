@@ -16,18 +16,17 @@ $(document).ready(function () {
     SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
     SalesPersonHelper.BuildTbl("");
     SalesPersonHelper.GetAllSalesPerson();
+    SalesPersonHelper.ValidateSalesPerson();
 
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
     SalesPersonHelper.SaveCollectionData();
-    location.reload();
 });
 
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
     SalesPersonHelper.UpdateCollectionData();
-    location.reload();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
@@ -97,84 +96,91 @@ var SalesPersonHelper = {
 
     },
     SaveCollectionData: function () {
+        if ($("#validateCompany").valid()) {
 
-        var companyData = {
-            SalesPersonId: $('#txtSalesPersonId').val() ? "" : "000000000000",
-            SalesPersonName: $('#txtSalesPersonName').val(),
-            SalesPersonDescription: $('#txtDescription').val(),
-            SalesPersonPhone: $('#txtPhone').val(),
-            CompanyId: $('#cmbCompanyId').val(),
-            CompanyName: $('#cmbCompanyId').val(),
-            IsActive: $('#CmbIsActive').val(),            
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };
+            var companyData = {
+                SalesPersonId: $('#txtSalesPersonId').val() ? "" : "000000000000",
+                SalesPersonName: $('#txtSalesPersonName').val(),
+                SalesPersonDescription: $('#txtDescription').val(),
+                SalesPersonPhone: $('#txtPhone').val(),
+                CompanyId: $('#cmbCompanyId').val(),
+                CompanyName: $('#cmbCompanyId').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
 
-        // Send the form data to the CreateCompany action via AJAX
-        $.ajax({
-            url: '/SalesPerson/CreateSalesPerson', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(companyData), // Send as JSON
-            success: function (response) {
-                // Success message               
-                swal({
-                    title: "Congratulations",
-                    text: "saved successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                SalesPersonHelper.GetAllSalesPerson();
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                alert('Error saving company: ' + error);
-            }
-        });
+            // Send the form data to the CreateCompany action via AJAX
+            $.ajax({
+                url: '/SalesPerson/CreateSalesPerson', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(companyData), // Send as JSON
+                success: function (response) {
+                    // Success message               
+                    swal({
+                        title: "Congratulations",
+                        text: "saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    location.reload();
+
+                    SalesPersonHelper.GetAllSalesPerson();
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    alert('Error saving company: ' + error);
+                }
+            });
+        }
     },
     UpdateCollectionData: function () {
+        if ($("#validateCompany").valid()) {
 
-        var SalesPersonData = {
-            SalesPersonId: $('#txtSalesPersonId').val(),
-            SalesPersonName: $('#txtSalesPersonName').val(),
-            SalesPersonDescription: $('#txtDescription').val(),
-            SalesPersonPhone: $('#txtPhone').val(),
-            CompanyId: $('#cmbCompanyId').val(),
-            CompanyName: $('#cmbCompanyId').val(),
-            IsActive: $('#CmbIsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };
+            var SalesPersonData = {
+                SalesPersonId: $('#txtSalesPersonId').val(),
+                SalesPersonName: $('#txtSalesPersonName').val(),
+                SalesPersonDescription: $('#txtDescription').val(),
+                SalesPersonPhone: $('#txtPhone').val(),
+                CompanyId: $('#cmbCompanyId').val(),
+                CompanyName: $('#cmbCompanyId').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
 
-        // Send the form data to the CreateCompany action via AJAX
-        $.ajax({
-            url: '/SalesPerson/UpdateSalesPersonById', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(SalesPersonData), // Send as JSON
-            success: function (response) {
-                // Success message               
-                swal({
-                    title: "Congratulations",
-                    text: "saved successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                SalesPersonHelper.GetAllSalesPerson();
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                alert('Error saving Sales Person Data: ' + error);
-            }
-        });
+            // Send the form data to the CreateCompany action via AJAX
+            $.ajax({
+                url: '/SalesPerson/UpdateSalesPersonById', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(SalesPersonData), // Send as JSON
+                success: function (response) {
+                    // Success message               
+                    swal({
+                        title: "Congratulations",
+                        text: "saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                    });
+                    location.reload();
+
+                    SalesPersonHelper.GetAllSalesPerson();
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    alert('Error saving Sales Person Data: ' + error);
+                }
+            });
+        }
     },
     GetAllSalesPerson: function () {
         var serviceUrl = "/SalesPerson/GetAllSalesPerson";
@@ -279,5 +285,38 @@ var SalesPersonHelper = {
         if (code > 31 && (code < 48 || code > 57)) {
             e.preventDefault();
         }
-    }
+    }, 
+    ValidateSalesPerson: function () {
+        $.validator.addMethod("notZero", function (value, element) {
+            return this.optional(element) || value != "0"; // Check if value is not '0'
+        }, "Please select a valid option");
+
+        $("#validateCompany").validate({
+            rules: {
+                txtSalesPersonName: "required",
+                txtPhone: "required",
+                cmbCompanyId: {
+                    required: true,
+                    notZero: "0"
+                },
+                CmbIsActive: {
+                    required: true,
+                    notZero: "0" 
+                },
+                txtDescription: "required"
+            },
+            messages: {
+                txtSalesPersonName: "Sales Person Name is required",
+                txtPhone: "Phone number is required",
+                cmbCompanyId: "Please select a company",
+                CmbIsActive: "Please select if the sales person is active",
+                txtDescription: "Description is required"
+            },
+            errorPlacement: function (label, element) {
+                label.addClass('error');
+                element.parent().append(label);
+            }
+        });
+    },
+
 };

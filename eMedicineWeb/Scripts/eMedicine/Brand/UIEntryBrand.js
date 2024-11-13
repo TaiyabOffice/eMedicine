@@ -16,17 +16,16 @@ $(document).ready(function () {
     BrandHelper.GenerateCombo($("#cmbGenericId"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
     BrandHelper.BuildTbl("");
     BrandHelper.GetAllBrand();
+    BrandHelper.ValidateBrand();
 
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
     BrandHelper.SaveCollectionData();
-    location.reload();
 });
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
     BrandHelper.UpdateCollectionData();
-    location.reload();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
@@ -94,8 +93,10 @@ var BrandHelper = {
             ]
         });
     },
-    SaveCollectionData: function () {
-        var BrandData = {
+    SaveCollectionData: function ()
+    {
+        var BrandData =
+        {
             BrandId: $('#txtBrandId').val() ? "" : "000000000000",
             BrandName: $('#txtName').val(),
             BrandNameBN: $('#txtNameBN').val(),
@@ -143,20 +144,23 @@ var BrandHelper = {
                     });
                 }
 
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                swal({
-                    title: "Sorry!",
-                    text: "Error retrieving Brand.!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    //timer: 2000
-                });
-            }
-        });
-    },
-    UpdateCollectionData: function () {
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving Brand.!" + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            });
+        },
+    UpdateCollectionData: function ()
+    {
+        if ($("#validateBrand").valid())
+        {
 
         var BrandData = {
             BrandId: $('#txtBrandId').val(),
@@ -205,6 +209,7 @@ var BrandHelper = {
                 });
             }
         });
+        }
     },
     GetAllBrand: function () {
         var serviceUrl = "/Brand/GetAllBrand";
@@ -367,10 +372,68 @@ var BrandHelper = {
         }
         return true;
     },
+
     AllowNumbersOnly: function (e) {
         var code = (e.which) ? e.which : e.keyCode;
         if (code > 31 && (code < 48 || code > 57)) {
             e.preventDefault();
         }
-    }
+    },
+    ValidateBrand: function () {
+        $.validator.addMethod("notZero", function (value, element) {
+            return this.optional(element) || value != "0"; 
+        }, "Please select a valid option");
+
+        $("#validateBrand").validate({
+            rules: {
+                txtName: "required",
+                txtDescription: "required",
+                txtDosageForm: "required",
+                txtStrength: {
+                    required: true,
+                    number: true
+                },
+                txtNameBN: "required",
+                txtDescriptionBN: "required",
+                txtDosageFormBN: "required",
+                txtStrengthBN: {
+                    required: true,
+                    number: true
+                },
+                cmbCompanyId: {
+                    required: true,
+                    notZero: "0" 
+                },
+                cmbGenericId: {
+                    required: true,
+                    notZero: "0" 
+                },
+                CmbIsActive: "required"
+            },
+            messages: {
+                txtName: "Brand Name is required",
+                txtDescription: "Brand Description is required",
+                txtDosageForm: "Dosage Form is required",
+                txtStrength: {
+                    required: "Strength is required",
+                    number: "Please enter a valid number for strength"
+                },
+                txtNameBN: "ব্র্যান্ড নাম প্রয়োজন",
+                txtDescriptionBN: "বর্ণনা প্রয়োজন",
+                txtDosageFormBN: "ডোজ ফর্ম প্রয়োজন",
+                txtStrengthBN: {
+                    required: "প্রতিরোধশক্তি প্রয়োজন",
+                    number: "সঠিক প্রতিরোধশক্তি প্রবেশ করুন"
+                },
+                cmbCompanyId: "Please select a valid company",
+                cmbGenericId: "Please select a valid generic name",
+                CmbIsActive: "Please select the active status"
+            },
+            errorPlacement: function (label, element) {
+                label.addClass('error');
+                element.parent().append(label);
+            }
+        });
+    },
+
 };

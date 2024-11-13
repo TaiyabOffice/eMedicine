@@ -15,16 +15,15 @@ $(document).ready(function () {
     CompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "0", "0", "0", "0", "0");
     CompanyHelper.BuildComanyTbl("");
     CompanyHelper.GetAllCompany();
+    CompanyHelper.ValidateCompany();
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
     CompanyHelper.SaveCollectionData();
-    location.reload();
 });
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
     CompanyHelper.UpdateCollectionData();
-    location.reload();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
@@ -109,102 +108,104 @@ var CompanyHelper = {
         });
     },  
     SaveCollectionData: function () {
+        if ($("#validateCompany").valid()) {
+            var companyData = {
+                CompanyId: $('#CompanyId').val() ? "" : "000000000000",
+                CompanyName: $('#CompanyName').val(),
+                CompanyAddress: $('#CompanyAddress').val(),
+                CompanyDescription: $('#CompanyDescription').val(),
+                CompanyNameBN: $('#CompanyNameBN').val(),
+                CompanyAddressBN: $('#CompanyAddressBN').val(),
+                CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
+                CompanyPhone: $('#CompanyPhone').val(),
+                IsActive: $('#IsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
 
-        var companyData = {
-            CompanyId: $('#CompanyId').val() ? "" : "000000000000",
-            CompanyName: $('#CompanyName').val(),
-            CompanyAddress: $('#CompanyAddress').val(),
-            CompanyDescription: $('#CompanyDescription').val(),
-            CompanyNameBN: $('#CompanyNameBN').val(),
-            CompanyAddressBN: $('#CompanyAddressBN').val(),
-            CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
-            CompanyPhone: $('#CompanyPhone').val(),
-            IsActive: $('#IsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };
+            $.ajax({
+                url: '/Company/CreateCompany', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(companyData), // Send as JSON
+                success: function (response) {
+                    swal({
+                        title: "Congratulations",
+                        text: "saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    location.reload();
 
-        // Send the form data to the CreateCompany action via AJAX
-        $.ajax({
-            url: '/Company/CreateCompany', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(companyData), // Send as JSON
-            success: function (response) {
-                // Success message
-                swal({
-                    title: "Congratulations",
-                    text: "saved successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                CompanyHelper.GetAllCompany();                
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-
-                swal({
-                    title: "Sorry!",
-                    text: "Error saving company!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    timer: 2000
-                });                
-            }
-        });
+                    CompanyHelper.GetAllCompany();
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error saving company!" + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                        timer: 2000
+                    });
+                }
+            });
+        }
     },
     UpdateCollectionData: function () {
+        if ($("#validateCompany").valid()) {
 
-        var companyData = {
-            CompanyId: $('#CompanyId').val(),
-            CompanyName: $('#CompanyName').val(),
-            CompanyAddress: $('#CompanyAddress').val(),
-            CompanyDescription: $('#CompanyDescription').val(),
-            CompanyNameBN: $('#CompanyNameBN').val(),
-            CompanyAddressBN: $('#CompanyAddressBN').val(),
-            CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
-            CompanyPhone: $('#CompanyPhone').val(),            
-            IsActive: $('#IsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()           
-        };
+            var companyData = {
+                CompanyId: $('#CompanyId').val(),
+                CompanyName: $('#CompanyName').val(),
+                CompanyAddress: $('#CompanyAddress').val(),
+                CompanyDescription: $('#CompanyDescription').val(),
+                CompanyNameBN: $('#CompanyNameBN').val(),
+                CompanyAddressBN: $('#CompanyAddressBN').val(),
+                CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
+                CompanyPhone: $('#CompanyPhone').val(),
+                IsActive: $('#IsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
 
-        // Send the form data to the CreateCompany action via AJAX
-        $.ajax({
-            url: '/Company/UpdateCompanyById', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(companyData), // Send as JSON
-            success: function (response) {
-                // Success message
-                swal({
-                    title: "Congratulations",
-                    text: "Update successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                CompanyHelper.GetAllCompany();
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
+            // Send the form data to the CreateCompany action via AJAX
+            $.ajax({
+                url: '/Company/UpdateCompanyById', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(companyData), // Send as JSON
+                success: function (response) {
+                    // Success message
+                    swal({
+                        title: "Congratulations",
+                        text: "Update successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    location.reload();
 
-                swal({
-                    title: "Sorry!",
-                    text: "Error Update company!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    //timer: 2000
-                });
-            }
-        });
+                    CompanyHelper.GetAllCompany();
+                },
+                error: function (xhr, status, error) {
+
+                    swal({
+                        title: "Sorry!",
+                        text: "Error Update company!" + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            });
+        }
     },
     GetCompanyID: function (CompanyId) {
         $("#btnSave").hide();
@@ -333,5 +334,44 @@ var CompanyHelper = {
         if (code > 31 && (code < 48 || code > 57)) {
             e.preventDefault();
         }
-    }
+    },
+
+    ValidateCompany: function () {
+        $("#validateCompany").validate({
+            rules: {
+                CompanyName: "required",
+                CompanyAddress: "required",
+                CompanyDescription: "required",
+                CompanyNameBN: "required",
+                CompanyAddressBN: "required",
+                CompanyDescriptionBN: "required",
+                CompanyPhone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 15
+                },
+                IsActive: "required"
+            },
+            messages: {
+                CompanyName: "Company Name is required",
+                CompanyAddress: "Company Address is required",
+                CompanyDescription: "Company Description is required",
+                CompanyNameBN: "কোম্পানির নাম প্রয়োজন",
+                CompanyAddressBN: "কোম্পানির ঠিকানা প্রয়োজন",
+                CompanyDescriptionBN: "কোম্পানির বিবরণ প্রয়োজন",
+                CompanyPhone: {
+                    required: "Company Phone is required",
+                    digits: "Please enter a valid phone number",
+                    minlength: "Phone number must be at least 10 digits",
+                    maxlength: "Phone number must not exceed 15 digits"
+                },
+                IsActive: "Please select the active status"
+            },
+            errorPlacement: function (label, element) {
+                label.addClass('error');
+                element.parent().append(label);
+            }
+        });
+    },
 };

@@ -244,13 +244,13 @@ var SupplierHelper = {
                 if (response.Success)
                 {
                     var Supplier = response.data;                    
-                    $("#cmbCompanyId").empty();
+                    //$("#cmbCompanyId").empty();
                     $('#txtSupplierId').val(Supplier.SupplierId);
                     $('#txtSupplierName').val(Supplier.SupplierName);
                     $('#txtContactPerson').val(Supplier.ContactPerson);
                     $('#txtPhone').val(Supplier.SupplierPhone);
                     $('#CompanyPhone').val(Supplier.SupplierPhone);
-                    $("#cmbCompanyId").append($("<option></option>").attr("value", Supplier.CompanyId).text(Supplier.CompanyName));
+                    $("#cmbCompanyId").val(Supplier.CompanyId).select2();
                     $('#txtEmail').val(Supplier.Email);                                    
                     $('#CmbIsActive').val(Supplier.IsActive);                                    
                 } else {

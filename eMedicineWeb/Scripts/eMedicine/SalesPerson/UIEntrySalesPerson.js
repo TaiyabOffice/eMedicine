@@ -225,13 +225,13 @@ var SalesPersonHelper = {
             success: function (response) {
                 if (response.success && response.data01 && response.data01.length > 0) {
                     var SalesPerson = response.data01[0];
-                    $("#cmbCompanyId").empty();
+                    //$("#cmbCompanyId").empty();
                     $('#txtSalesPersonId').val(SalesPerson.SalesPersonId);
                     $('#txtSalesPersonName').val(SalesPerson.SalesPersonName);
                     $('#txtDescription').val(SalesPerson.SalesPersonDescription);
                     $('#txtPhone').val(SalesPerson.SalesPersonPhone);
                     $('#CompanyPhone').val(SalesPerson.CompanyPhone);
-                    $("#cmbCompanyId").append($("<option></option>").attr("value", SalesPerson.CompanyId).text(SalesPerson.CompanyName));
+                    $("#cmbCompanyId").val(SalesPerson.CompanyId).select2();
                     $('#CmbIsActive').val(SalesPerson.IsActive);                                    
                 } else {
                     swal({

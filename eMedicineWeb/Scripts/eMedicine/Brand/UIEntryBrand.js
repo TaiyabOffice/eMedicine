@@ -4,6 +4,7 @@ $(document).ready(function () {
     $(".select2").select2();
     $("#btnSave").show();
     $("#btnUpdate").hide();  
+
     jQuery.ajax({
         url: "/Common/GetCurrentDate",
         type: "POST",
@@ -12,6 +13,7 @@ $(document).ready(function () {
             $("#hdnDateToday").datepicker('setDate', new Date(result));
         }
     });
+
     BrandHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
     BrandHelper.GenerateCombo($("#cmbGenericId"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
     BrandHelper.BuildTbl("");
@@ -253,22 +255,19 @@ var BrandHelper = {
             success: function (response) {
                 //console.log(response.data);
                 if (response.Success) {
-                    $("#cmbGenericId").empty();
-                    $("#cmbCompanyId").empty();
-
                     var Brand = response.data;
                     $('#txtBrandId').val(Brand.BrandId);
                     $('#txtName').val(Brand.BrandName);
                     $('#txtNameBN').val(Brand.BrandNameBN);
                     $('#txtDescription').val(Brand.BrandDescription);
                     $('#txtDescriptionBN').val(Brand.BrandDescriptionBN);
-                    $("#cmbCompanyId").append($("<option></option>").attr("value", Brand.CompanyId).text(Brand.CompanyName));
-                    $("#cmbGenericId").append($("<option></option>").attr("value", Brand.GenericId).text(Brand.GenericName));
+                    $("#cmbCompanyId").val(Brand.CompanyId).select2();
+                    $("#cmbGenericId").val(Brand.GenericId).select2();
                     $('#txtDosageForm').val(Brand.DosageForm);
                     $('#txtDosageFormBN').val(Brand.DosageFormBN);
                     $('#txtStrength').val(Brand.Strength);
-                    $('#txtStrengthBN').val(Brand.StrengthBN);                    
-                    $('#CmbIsActive').val(Brand.IsActive);
+                    $('#txtStrengthBN').val(Brand.StrengthBN);
+                    $('#CmbIsActive').val(Brand.IsActive).select2();
                 } else {
                     swal({
                         title: "Sorry!",
@@ -372,7 +371,6 @@ var BrandHelper = {
         }
         return true;
     },
-
     AllowNumbersOnly: function (e) {
         var code = (e.which) ? e.which : e.keyCode;
         if (code > 31 && (code < 48 || code > 57)) {

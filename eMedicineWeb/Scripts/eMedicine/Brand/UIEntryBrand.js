@@ -50,7 +50,7 @@ var BrandHelper = {
                     });
                 }
                 else {
-                    objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
+                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
@@ -97,54 +97,57 @@ var BrandHelper = {
     },
     SaveCollectionData: function ()
     {
-        var BrandData =
-        {
-            BrandId: $('#txtBrandId').val() ? "" : "000000000000",
-            BrandName: $('#txtName').val(),
-            BrandNameBN: $('#txtNameBN').val(),
-            BrandDescription: $('#txtDescription').val(),
-            BrandDescriptionBN: $('#txtDescriptionBN').val(),
-            CompanyId: $('#cmbCompanyId').val(),
-            GenericId: $('#cmbGenericId').val(),
-            DosageForm: $('#txtDosageForm').val(),
-            DosageFormBN: $('#txtDosageFormBN').val(),
-            Strength: $('#txtStrength').val(),
-            StrengthBN: $('#txtStrengthBN').val(),
-            GenericName: $('#cmbGenericId').val(),
-            CompanyName: $('#cmbCompanyId').val(),            
-            IsActive: $('#CmbIsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };
-        $.ajax({
-            url: '/Brand/CreateBrand', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(BrandData), // Send as JSON
-            success: function (response) {
-                // Success message
-                //console.log(response);
-                if (response.success) {
-                    swal({
-                        title: "Congratulations",
-                        text: "Saved successfully!",
-                        type: "success",
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        timer: 2000
-                    });
-                    BrandHelper.GetAllBrand()
-                } else {
-                    swal({
-                        title: "Sorry!",
-                        text: "Saved Failde!",
-                        type: "error",
-                        closeOnConfirm: false,
-                        //timer: 2000
-                    });
-                }
+        if ($("#validateBrand").valid()) {
+            var BrandData =
+            {
+                BrandId: $('#txtBrandId').val() ? "" : "000000000000",
+                BrandName: $('#txtName').val(),
+                BrandNameBN: $('#txtNameBN').val(),
+                BrandDescription: $('#txtDescription').val(),
+                BrandDescriptionBN: $('#txtDescriptionBN').val(),
+                CompanyId: $('#cmbCompanyId').val(),
+                GenericId: $('#cmbGenericId').val(),
+                DosageForm: $('#txtDosageForm').val(),
+                DosageFormBN: $('#txtDosageFormBN').val(),
+                Strength: $('#txtStrength').val(),
+                StrengthBN: $('#txtStrengthBN').val(),
+                GenericName: $('#cmbGenericId').val(),
+                CompanyName: $('#cmbCompanyId').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
+            $.ajax({
+                url: '/Brand/CreateBrand', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(BrandData), // Send as JSON
+                success: function (response) {
+                    // Success message
+                    //console.log(response);
+                    if (response.success) {
+                        swal({
+                            title: "Congratulations",
+                            text: "Saved successfully!",
+                            type: "success",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
+                        });
+                        location.reload();
+
+                        BrandHelper.GetAllBrand()
+                    } else {
+                        swal({
+                            title: "Sorry!",
+                            text: "Saved Failde!",
+                            type: "error",
+                            closeOnConfirm: false,
+                            //timer: 2000
+                        });
+                    }
 
                 },
                 error: function (xhr, status, error) {
@@ -158,6 +161,7 @@ var BrandHelper = {
                     });
                 }
             });
+        }
         },
     UpdateCollectionData: function ()
     {
@@ -199,6 +203,8 @@ var BrandHelper = {
                     allowOutsideClick: false,
                     timer: 2000
                 });
+                location.reload();
+
                 BrandHelper.GetAllBrand();
             },
             error: function (xhr, status, error) {
@@ -379,7 +385,7 @@ var BrandHelper = {
     },
     ValidateBrand: function () {
         $.validator.addMethod("notZero", function (value, element) {
-            return this.optional(element) || value != "0"; 
+            return this.optional(element) || value != ""; 
         }, "Please select a valid option");
 
         $("#validateBrand").validate({
@@ -389,22 +395,20 @@ var BrandHelper = {
                 txtDosageForm: "required",
                 txtStrength: {
                     required: true,
-                    number: true
                 },
                 txtNameBN: "required",
                 txtDescriptionBN: "required",
                 txtDosageFormBN: "required",
                 txtStrengthBN: {
                     required: true,
-                    number: true
                 },
                 cmbCompanyId: {
                     required: true,
-                    notZero: "0" 
+                    notZero: "" 
                 },
                 cmbGenericId: {
                     required: true,
-                    notZero: "0" 
+                    notZero: "" 
                 },
                 CmbIsActive: "required"
             },
@@ -421,7 +425,6 @@ var BrandHelper = {
                 txtDosageFormBN: "ডোজ ফর্ম প্রয়োজন",
                 txtStrengthBN: {
                     required: "প্রতিরোধশক্তি প্রয়োজন",
-                    number: "সঠিক প্রতিরোধশক্তি প্রবেশ করুন"
                 },
                 cmbCompanyId: "Please select a valid company",
                 cmbGenericId: "Please select a valid generic name",

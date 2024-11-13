@@ -34,7 +34,7 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="txtPhone">Phone</label>
-                                                <input type="text" id="txtPhone" name="txtPhone" value="" class="form-control input-sm" autocomplete="off">
+                                                <input type="text" id="txtPhone" name="txtPhone" value="" class="form-control input-sm" onkeypress="return SupplierHelper.AllowPhoneNumbersOnly(event)" autocomplete="off">
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="cmbCompanyId">Company</label>
@@ -58,7 +58,7 @@
                                             </div>
                                             <div class="col-sm-4" style="margin-top: 25px;">
                                                 <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
-                                                <button id="btnUpdate" type="button" class="btn btn-success">Update Info</button>
+                                                <button id="btnUpdate" type="button" class="btn btn-success" style="display:none">Update Info</button>
                                                 <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
                                             </div>
                                         </div>

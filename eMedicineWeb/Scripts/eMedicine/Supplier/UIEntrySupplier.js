@@ -16,18 +16,17 @@ $(document).ready(function () {
     SupplierHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
     SupplierHelper.BuildTbl("");
     SupplierHelper.GetAllSupplier();
+    SupplierHelper.ValidateSupplier();
 
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
     SupplierHelper.SaveCollectionData();
-    location.reload();
 });
 
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
     SupplierHelper.UpdateCollectionData();
-    location.reload();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
@@ -51,7 +50,7 @@ var SupplierHelper = {
                     });
                 }
                 else {
-                    objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
+                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                 $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
@@ -99,106 +98,113 @@ var SupplierHelper = {
 
     },
     SaveCollectionData: function () {
+        if ($("#validateCompany").valid()) {
 
-        var SupplierData = {
-            SupplierId: $('#txtSupplierId').val() ? "" : "000000000000",
-            SupplierName: $('#txtSupplierName').val(),
-            ContactPerson: $('#txtContactPerson').val(),
-            SupplierPhone: $('#txtPhone').val(),
-            CompanyId: $('#cmbCompanyId').val(),
-            CompanyName: $('#cmbCompanyId').val(),
-            Email: $('#txtEmail').val(),
-            IsActive: $('#CmbIsActive').val(),            
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };       
-        $.ajax({
-            url: '/Supplier/CreateSupplier', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(SupplierData), // Send as JSON
-            success: function (response) {
-                // Success message
-                //console.log(response);
-                if (response.success) {
-                    swal({
-                        title: "Congratulations",
-                        text: "Saved successfully!",
-                        type: "success",
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        timer: 2000
-                    });
-                    SupplierHelper.GetAllSupplier()
-                } else
-                {
+            var SupplierData = {
+                SupplierId: $('#txtSupplierId').val() ? "" : "000000000000",
+                SupplierName: $('#txtSupplierName').val(),
+                ContactPerson: $('#txtContactPerson').val(),
+                SupplierPhone: $('#txtPhone').val(),
+                CompanyId: $('#cmbCompanyId').val(),
+                CompanyName: $('#cmbCompanyId').val(),
+                Email: $('#txtEmail').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
+            $.ajax({
+                url: '/Supplier/CreateSupplier', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(SupplierData), // Send as JSON
+                success: function (response) {
+                    // Success message
+                    //console.log(response);
+                    if (response.success) {
+                        swal({
+                            title: "Congratulations",
+                            text: "Saved successfully!",
+                            type: "success",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
+                        });
+                        location.reload();
+
+                        SupplierHelper.GetAllSupplier()
+                    } else {
+                        swal({
+                            title: "Sorry!",
+                            text: "Saved Failde!",
+                            type: "error",
+                            closeOnConfirm: false,
+                            //timer: 2000
+                        });
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
                     swal({
                         title: "Sorry!",
-                        text: "Saved Failde!",
+                        text: "Error retrieving supplier.!" + error,
                         type: "error",
                         closeOnConfirm: false,
                         //timer: 2000
                     });
                 }
-                
-            },
-            error: function (xhr, status, error) {
-                // Handle errors
-                swal({
-                    title: "Sorry!",
-                    text: "Error retrieving supplier.!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    //timer: 2000
-                });
-            }
-        });
+            });
+        }
     },
     UpdateCollectionData: function () {
+        if ($("#validateCompany").valid()) {
 
-        var SupplierData = {
-            SupplierId: $('#txtSupplierId').val(),
-            SupplierName: $('#txtSupplierName').val(),
-            ContactPerson: $('#txtContactPerson').val(),
-            SupplierPhone: $('#txtPhone').val(),
-            CompanyId: $('#cmbCompanyId').val(),
-            CompanyName: $('#cmbCompanyId').val(),
-            Email: $('#txtEmail').val(),
-            IsActive: $('#CmbIsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };         
-        $.ajax({
-            url: '/Supplier/UpdateSupplierById', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(SupplierData), // Send as JSON
-            success: function (response) {
-                // Success message               
-                swal({
-                    title: "Congratulations",
-                    text: "saved successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                SupplierHelper.GetAllSupplier();
-            },
-            error: function (xhr, status, error) { 
-                swal({
-                    title: "Sorry!",
-                    text: "Error retrieving supplier.!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    //timer: 2000
-                });
-            }
-        });
+            var SupplierData = {
+                SupplierId: $('#txtSupplierId').val(),
+                SupplierName: $('#txtSupplierName').val(),
+                ContactPerson: $('#txtContactPerson').val(),
+                SupplierPhone: $('#txtPhone').val(),
+                CompanyId: $('#cmbCompanyId').val(),
+                CompanyName: $('#cmbCompanyId').val(),
+                Email: $('#txtEmail').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            };
+            $.ajax({
+                url: '/Supplier/UpdateSupplierById', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(SupplierData), // Send as JSON
+                success: function (response) {
+                    // Success message               
+                    swal({
+                        title: "Congratulations",
+                        text: "saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    location.reload();
+
+                    SupplierHelper.GetAllSupplier();
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving supplier.!" + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            });
+        }
     },
     GetAllSupplier: function () {
         var serviceUrl = "/Supplier/GetAllSupplier";
@@ -305,5 +311,69 @@ var SupplierHelper = {
         if (code > 31 && (code < 48 || code > 57)) {
             e.preventDefault();
         }
-    }
+    },
+
+    AllowPhoneNumbersOnly: function (e) {
+        var code = (e.which) ? e.which : e.keyCode;
+
+        if ((code >= 48 && code <= 57) || code === 43) {
+            return true;
+        } else if (code === 46) {
+            e.preventDefault();
+        } else {
+            e.preventDefault();
+        }
+    },
+
+    ValidateSupplier: function () {
+        $.validator.addMethod("notZero", function (value, element) {
+            return this.optional(element) || value != "";
+        }, "Please select a valid option");
+
+        $("#validateCompany").validate({
+            rules: {
+                txtSupplierName: "required",
+                txtContactPerson: "required",
+                txtPhone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 15
+                },
+                txtEmail: {
+                    required: true,
+                    email: true
+                },
+                cmbCompanyId: {
+                    required: true,
+                    notZero: "" 
+                },
+                CmbIsActive: {
+                    required: true,
+                    notZero: "" 
+                }
+            },
+            messages: {
+                txtSupplierName: "Supplier Name is required",
+                txtContactPerson: "Contact Person is required",
+                txtPhone: {
+                    required: "Phone Number is required",
+                    digits: "Please enter a valid phone number",
+                    minlength: "Phone number must be at least 10 digits",
+                    maxlength: "Phone number must not exceed 15 digits"
+                },
+                txtEmail: {
+                    required: "Email is required",
+                    email: "Please enter a valid email address"
+                },
+                cmbCompanyId: "Please select a valid company",
+                CmbIsActive: "Please select if the supplier is active or not"
+            },
+            errorPlacement: function (label, element) {
+                label.addClass('error');
+                element.parent().append(label);
+            }
+        });
+    },
+
 };

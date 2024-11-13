@@ -56,7 +56,7 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="CompanyPhone">Company Phone</label>
-                                                <input type="text" id="CompanyPhone" name="CompanyPhone" class="form-control input-sm" autocomplete="off">
+                                                <input type="text" id="CompanyPhone" name="CompanyPhone" class="form-control input-sm" onkeypress="return CompanyHelper.AllowPhoneNumbersOnly(event)" autocomplete="off">
                                             </div>
                                         </div>                                        
                                     </div>
@@ -71,7 +71,7 @@
                                             </div>
                                             <div class="col-sm-4" style="margin-top: 25px;">
                                                 <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
-                                                <button id="btnUpdate" type="button" class="btn btn-success">Update Info</button>
+                                                <button id="btnUpdate" type="button" class="btn btn-success" style="display:none">Update Info</button>
                                                 <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
                                             </div>
                                         </div>

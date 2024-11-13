@@ -46,7 +46,7 @@ var CompanyHelper = {
                     });
                 }
                 else {
-                    objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
+                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
@@ -137,7 +137,7 @@ var CompanyHelper = {
                         type: "success",
                         showConfirmButton: false,
                         allowOutsideClick: false,
-                        timer: 2000
+                    //    timer: 2000
                     });
                     location.reload();
 
@@ -149,7 +149,7 @@ var CompanyHelper = {
                         text: "Error saving company!" + error,
                         type: "error",
                         closeOnConfirm: false,
-                        timer: 2000
+                    //    timer: 2000
                     });
                 }
             });
@@ -188,7 +188,7 @@ var CompanyHelper = {
                         type: "success",
                         showConfirmButton: false,
                         allowOutsideClick: false,
-                        timer: 2000
+                        //timer: 2000
                     });
                     location.reload();
 
@@ -374,4 +374,15 @@ var CompanyHelper = {
             }
         });
     },
+        AllowPhoneNumbersOnly: function (e) {
+            var code = (e.which) ? e.which : e.keyCode;
+
+            if ((code >= 48 && code <= 57) || code === 43) {
+                return true; 
+            } else if (code === 46) {
+                e.preventDefault(); 
+            } else {
+                e.preventDefault(); 
+            }
+        },
 };

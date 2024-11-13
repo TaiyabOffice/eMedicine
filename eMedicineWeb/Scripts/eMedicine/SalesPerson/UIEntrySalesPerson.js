@@ -49,7 +49,7 @@ var SalesPersonHelper = {
                     });
                 }
                 else {
-                    objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
+                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
@@ -288,26 +288,36 @@ var SalesPersonHelper = {
     }, 
     ValidateSalesPerson: function () {
         $.validator.addMethod("notZero", function (value, element) {
-            return this.optional(element) || value != "0"; // Check if value is not '0'
+            return this.optional(element) || value != ""; 
         }, "Please select a valid option");
 
         $("#validateCompany").validate({
             rules: {
                 txtSalesPersonName: "required",
-                txtPhone: "required",
+                txtPhone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 15
+                },
                 cmbCompanyId: {
                     required: true,
-                    notZero: "0"
+                    notZero: ""
                 },
                 CmbIsActive: {
                     required: true,
-                    notZero: "0" 
+                    notZero: "" 
                 },
                 txtDescription: "required"
             },
             messages: {
                 txtSalesPersonName: "Sales Person Name is required",
-                txtPhone: "Phone number is required",
+                txtPhone: {
+                    required: "Phone Number is required",
+                    digits: "Please enter a valid phone number",
+                    minlength: "Phone number must be at least 10 digits",
+                    maxlength: "Phone number must not exceed 15 digits"
+                },
                 cmbCompanyId: "Please select a company",
                 CmbIsActive: "Please select if the sales person is active",
                 txtDescription: "Description is required"
@@ -318,5 +328,15 @@ var SalesPersonHelper = {
             }
         });
     },
+    AllowPhoneNumbersOnly: function (e) {
+        var code = (e.which) ? e.which : e.keyCode;
 
+        if ((code >= 48 && code <= 57) || code === 43) {
+            return true;
+        } else if (code === 46) {
+            e.preventDefault();
+        } else {
+            e.preventDefault();
+        }
+    },
 };

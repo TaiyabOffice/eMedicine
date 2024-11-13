@@ -46,7 +46,7 @@ var GenericsHelper = {
                     });
                 }
                 else {
-                    objcmb.append($("<option></option>").attr("value", "0").text("-Select-"));
+                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
                         objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
                     });
@@ -411,7 +411,7 @@ var GenericsHelper = {
     },
     ValidateGenerics: function () {
         $.validator.addMethod("notZero", function (value, element) {
-            return this.optional(element) || value != "0"; 
+            return this.optional(element) || value != ""; 
         }, "Please select a valid option");
 
         $("#validateGenerics").validate({
@@ -434,7 +434,7 @@ var GenericsHelper = {
                 txtInteractionsBN: "required",
                 CmbIsActive: {
                     required: true,
-                    notZero: "0" 
+                    notZero: "" 
                 }
             },
             messages: {

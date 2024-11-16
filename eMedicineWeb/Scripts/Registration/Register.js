@@ -38,14 +38,15 @@ var RegistrationHelper = {
 
         $("#registrationForm").validate({
             rules: {
-                userId: "required",
-                username: "required",
+                //userId: "required",
                 phone: {
                     required: true,
                     digits: true,
                     minlength: 10,
                     maxlength: 15
                 },
+                username: "required",
+
                 email: {
                     required: true,
                     email: true
@@ -60,14 +61,14 @@ var RegistrationHelper = {
                 }
             },
             messages: {
-                userId: "User ID is required",
-                username: "Username is required",
+                //userId: "User ID is required",
                 phone: {
                     required: "Phone Number is required",
                     digits: "Please enter a valid phone number",
                     minlength: "Phone number must be at least 10 digits",
                     maxlength: "Phone number must not exceed 15 digits"
                 },
+                username: "Username is required",
                 email: {
                     required: "Email Address is required",
                     email: "Please enter a valid email address"
@@ -91,11 +92,11 @@ var RegistrationHelper = {
     RegisterData: function () {
         var obj = new Object();
 
-        obj.DESC1 = $("#txtUserId").val();
+        //obj.DESC1 = $("#txtUserId").val();
+        obj.DESC1 = $("#txtPhone").val();
         obj.DESC2 = $("#txtUserName").val();
-        obj.DESC3 = $("#txtPhone").val();
-        obj.DESC4 = $("#txtEmail").val();
-        obj.DESC5 = $("#txtPassword").val();
+        obj.DESC3 = $("#txtEmail").val();
+        obj.DESC4 = $("#txtPassword").val();
 
 
         var objDetails = JSON.stringify(obj);

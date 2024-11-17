@@ -11,7 +11,7 @@ namespace eMedicineWeb.Controllers
     public class RegistrationController : Controller
     {
         DataSet ds = new DataSet();
-        public ActionResult UserRegister()
+        public ActionResult UIEntryRegister()
         {
             return View();
         }

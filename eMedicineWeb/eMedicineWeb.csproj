@@ -127,6 +127,7 @@
     <Compile Include="Controllers\GenericsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
     <Compile Include="Controllers\SalesPersonController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="Global.asax.cs">
@@ -137,6 +138,7 @@
     <Compile Include="Models\DropdownListViewModel.cs" />
     <Compile Include="Models\GenericsViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\RegistrationViewModel.cs" />
     <Compile Include="Models\SalesPersonViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -7349,6 +7351,7 @@
     <Content Include="Scripts\Duplicate.js" />
     <Content Include="Scripts\eMedicine\Brand\UIEntryBrand.js" />
     <Content Include="Scripts\eMedicine\Company\UIEntryCompany.js" />
+    <Content Include="Scripts\eMedicine\Registration\UIEntryRegister.js" />
     <Content Include="Scripts\eMedicine\SalesPerson\UIEntrySalesPerson.js" />
     <Content Include="Scripts\eMedicine\Supplier\UIEntrySupplier.js" />
     <Content Include="Scripts\eMedicine\Generics\UIEntryGenerics.js" />
@@ -7388,6 +7391,7 @@
     <Content Include="Views\Supplier\UIEntrySupplier.cshtml" />
     <Content Include="Views\Generics\UIEntryGenerics.cshtml" />
     <Content Include="Views\Brand\UIEntryBrand.cshtml" />
+    <Content Include="Views\Registration\UIEntryRegister.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

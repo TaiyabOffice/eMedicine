@@ -1,43 +1,54 @@
-﻿using System;
+﻿using eMedicineWeb.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace eMedicineWeb.Controllers
 {
-    [AllowAnonymous]
+   // [AllowAnonymous]
     public class RegistrationController : Controller
     {
-        DataSet ds = new DataSet();
+        // GET: Registration
+        Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"] + "RegistrationAPI");
+        HttpClient client;
+        public RegistrationController()
+        {
+            client = new HttpClient();
+            client.BaseAddress = baseAddress;
+
+        }       
         public ActionResult UIEntryRegister()
         {
             return View();
         }
 
-
-        public JsonResult SaveRegistration()
+        [HttpPost]
+        public async Task<ActionResult> CreateRegistration(RegistrationViewModel Registration)
         {
 
-            if (Session["UserID"] == null)
+            if (!ModelState.IsValid)
             {
-                return new JsonResult { Data = new { status = "Logout" } };
+                return Json(new { success = false, message = "Failed Insert Registration details." });
             }
-            else
+            string data = JsonConvert.SerializeObject(Registration);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateRegistration", content);
+
+            if (response.IsSuccessStatusCode)
             {
-                bool status = false;
-         
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    status = true;
-                }
-                else
-                {
-                    status = false;
-                }
-                return new JsonResult { Data = new { status = status } };
+                return Json(new { success = true, message = "Registration create Successfully" });
             }
+            ModelState.AddModelError("", "Unable to create Registration. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Registration details." });
         }
 
 

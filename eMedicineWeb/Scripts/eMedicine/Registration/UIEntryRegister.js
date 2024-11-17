@@ -103,7 +103,7 @@ var RegistrationHelper = {
 
         var jsonParam = "objDetails:" + objDetails;
 
-        var serviceUrl = "/Registration/SaveRegistration";
+        var serviceUrl = "/Registration/CreateRegistration";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",

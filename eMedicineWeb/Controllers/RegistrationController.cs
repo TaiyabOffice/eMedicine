@@ -31,13 +31,13 @@ namespace eMedicineWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateRegistration(RegistrationViewModel Registration)
+        public async Task<ActionResult> CreateRegistration(RegistrationViewModel objDetails)
         {
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed Insert Registration details." });
             }
-            string data = JsonConvert.SerializeObject(Registration);
+            string data = JsonConvert.SerializeObject(objDetails);
             StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateRegistration", content);

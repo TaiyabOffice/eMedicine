@@ -2,12 +2,12 @@
     $(".select2").select2();
     RegistrationHelper.ValidateRegistration();
     RegistrationHelper.GenerateCombo($("#cmbDistrictId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
-  
+
 
 });
 
 $("#btnRegister").click(function () {
-    if ($("#validateRegistration").valid()) {
+    if ($("#registrationForm").valid()) {
         $("body").addClass("loading");
         RegistrationHelper.RegisterData();
     }
@@ -15,7 +15,7 @@ $("#btnRegister").click(function () {
 
 $("#txtEmail, #txtPassword, #txtConfirmPassword").on("keydown", function (e) {
     if (e.keyCode == 13) {
-        if ($("#validateRegistration").valid()) {
+        if ($("#registrationForm").valid()) {
             $("#btnRegister").click();
         }
     }
@@ -55,7 +55,6 @@ var RegistrationHelper = {
             }
         });
     },
-
     ShowPassword: function (fieldId, eyeIcon) {
         var field = document.getElementById(fieldId);
         var icon = eyeIcon;
@@ -76,48 +75,56 @@ var RegistrationHelper = {
         $("#registrationForm").validate({
             rules: {
                 //userId: "required",
-                phone: {
+                txtPhone: {
                     required: true,
                     digits: true,
                     minlength: 10,
                     maxlength: 15
                 },
-                username: "required",
+                txtUserName: "required",
 
-                email: {
+                txtEmail: {
                     required: true,
                     email: true
                 },
-                password: {
+                txtPassword: {
                     required: true,
                     minlength: 6
                 },
-                confirmPassword: {
+                txtConfirmPassword: {
                     required: true,
-                    equalTo: "#password"
+                    equalTo: "#txtPassword"
+                },
+                cmbDistrictId: {
+                    required: true,
+                },
+                cmbUpazilasId: {
+                    required: true,
                 }
             },
             messages: {
                 //userId: "User ID is required",
-                phone: {
+                txtPhone: {
                     required: "Phone Number is required",
                     digits: "Please enter a valid phone number",
                     minlength: "Phone number must be at least 10 digits",
                     maxlength: "Phone number must not exceed 15 digits"
                 },
-                username: "Username is required",
-                email: {
+                txtUserName: "Username is required",
+                txtEmail: {
                     required: "Email Address is required",
                     email: "Please enter a valid email address"
                 },
-                password: {
+                txtPassword: {
                     required: "Password is required",
                     minlength: "Password must be at least 6 characters"
                 },
-                confirmPassword: {
+                txtConfirmPassword: {
                     required: "Please confirm your password",
                     equalTo: "Password did not match"
-                }
+                },
+                cmbDistrictId: "Please select any District",
+                cmbUpazilasId: "Please select any Upazila",
             },
             errorPlacement: function (label, element) {
                 label.addClass('error');
@@ -130,21 +137,22 @@ var RegistrationHelper = {
         var obj = new Object();
 
         //obj.DESC1 = $("#txtUserId").val();
-        obj.DESC1 = $("#txtPhone").val();
-        obj.DESC2 = $("#txtUserName").val();
-        obj.DESC3 = $("#txtEmail").val();
-        obj.DESC4 = $("#txtPassword").val();
+        obj.PhoneNumber = $("#txtPhone").val();
+        obj.UserName = $("#txtUserName").val();
+        obj.Email = $("#txtEmail").val();
+        obj.Password = $("#txtConfirmPassword").val();
+        obj.DistrictId = $("#cmbDistrictId").val();
+        obj.UpazilasId = $("#cmbUpazilasId").val();
+        obj.IsActive = "1";
 
 
         var objDetails = JSON.stringify(obj);
-
-        var jsonParam = "objDetails:" + objDetails;
 
         var serviceUrl = "/Registration/CreateRegistration";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
-            data: "{" + jsonParam + "}",
+            data: objDetails,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (data) {
@@ -158,7 +166,7 @@ var RegistrationHelper = {
 
                     });
                     location.reload();
-
+                    $("body").removeClass("loading");
                 } else {
                     swal({
                         title: "Sorry!",
@@ -166,6 +174,8 @@ var RegistrationHelper = {
                         type: "error",
                         closeOnConfirm: false,
                     });
+                    $("body").removeClass("loading");
+
                 }
             },
             error: function (data) {
@@ -175,9 +185,12 @@ var RegistrationHelper = {
                     type: "error",
                     closeOnConfirm: false
                 });
+                $("body").removeClass("loading");
+
             }
 
         });
-    }
+    },
+
 };
 

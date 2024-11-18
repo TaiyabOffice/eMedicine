@@ -79,7 +79,7 @@ var BrandHelper = {
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetBrandID(\'' + row.BrandId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetDetailsByBrandID(\'' + row.BrandId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetBrandID(\'' + row.BrandId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetDetailsByBrandID(\'' + row.BrandId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -91,6 +91,7 @@ var BrandHelper = {
                 },
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [] },
+                { "targets": [5,6], "visible": false, "searchable": false },
 
             ]
         });
@@ -107,10 +108,10 @@ var BrandHelper = {
                 BrandDescriptionBN: $('#txtDescriptionBN').val(),
                 CompanyId: $('#cmbCompanyId').val(),
                 GenericId: $('#cmbGenericId').val(),
-                DosageForm: $('#txtDosageForm').val(),
-                DosageFormBN: $('#txtDosageFormBN').val(),
-                Strength: $('#txtStrength').val(),
-                StrengthBN: $('#txtStrengthBN').val(),
+                DosageForm: "N/A",
+                DosageFormBN: "প্রয়োজনেই",
+                Strength: "N/A",
+                StrengthBN: "প্রয়োজনেই",
                 GenericName: $('#cmbGenericId').val(),
                 CompanyName: $('#cmbCompanyId').val(),
                 IsActive: $('#CmbIsActive').val(),
@@ -176,10 +177,10 @@ var BrandHelper = {
             BrandDescriptionBN: $('#txtDescriptionBN').val(),
             CompanyId: $('#cmbCompanyId').val(),
             GenericId: $('#cmbGenericId').val(),
-            DosageForm: $('#txtDosageForm').val(),
-            DosageFormBN: $('#txtDosageFormBN').val(),
-            Strength: $('#txtStrength').val(),
-            StrengthBN: $('#txtStrengthBN').val(),
+            DosageForm: "N/A",
+            DosageFormBN: "প্রয়োজনেই",
+            Strength: "N/A",
+            StrengthBN: "প্রয়োজনেই",
             GenericName: $('#cmbGenericId').val(),
             CompanyName: $('#cmbCompanyId').val(),
             IsActive: $('#CmbIsActive').val(),
@@ -340,9 +341,7 @@ var BrandHelper = {
         $('#MdlName').html("");
         $('#MdlNameBN').html("");
         $('#MdlDescription').html("");
-        $('#MdlDescriptionBN').html("");
-        $("#cmbCompanyId").html("");
-        $("#cmbGenericId").html("");
+        $('#MdlDescriptionBN').html("");        
         $('#MdlDosageForm').html("");
         $('#MdlDosageFormBN').html("");
         $('#MdlStrength').html("");

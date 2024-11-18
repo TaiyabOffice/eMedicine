@@ -33,7 +33,6 @@ namespace eMedicineWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateRegistration(RegistrationViewModel Registration)
         {
-
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed Insert Registration details." });

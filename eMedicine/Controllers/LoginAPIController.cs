@@ -26,7 +26,7 @@ namespace eMedicine.Controllers
             {
                 bool status = false;
                 string UserNameR = StrReverse(UserName.ToUpper());
-                string UserPass = EncodeMD5(UserNameR + UserPassword);
+                string UserPass = EncodeMD5(UserPassword);
 
 
                 // Call stored procedure to get all companies
@@ -43,9 +43,7 @@ namespace eMedicine.Controllers
                                                UserId = dr["UserId"].ToString(),
                                                UserName = dr["UserName"].ToString(),                                               
                                                Email = dr["Email"].ToString(),
-                                               PhoneNumber = dr["PhoneNumber"].ToString(),
-                                               LocationId = dr["LocationId"].ToString(),
-                                               CityId = dr["CityId"].ToString()                                               
+                                               PhoneNumber = dr["PhoneNumber"].ToString()                                                                                             
                                            }).ToList();
                 return new JsonResult(new { Success = true, Data = GetLoginDetails });
             }

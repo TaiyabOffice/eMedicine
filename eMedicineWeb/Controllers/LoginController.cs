@@ -58,8 +58,7 @@ namespace eMedicineWeb.Controllers
                         Session["UserID"] = loginModel.UserId;
                         Session["UserName"] = loginModel.UserName;
                         Session["Email"] = loginModel.Email;
-                        Session["PhoneNumber"] = loginModel.PhoneNumber;
-                        Session["LocationId"] = loginModel.LocationId;
+                        Session["PhoneNumber"] = loginModel.PhoneNumber;                       
                         Session["TerminalId"] = b.ToUpper();
                         Session["UserIPc"] = a.ToString();
                         GetMenuById(loginModel.UserId);

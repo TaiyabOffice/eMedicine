@@ -1,5 +1,8 @@
 ﻿$(document).ready(function () {
+    $(".select2").select2();
     RegistrationHelper.ValidateRegistration();
+    RegistrationHelper.GenerateCombo($("#cmbDistrictId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
+  
 
 });
 
@@ -18,7 +21,41 @@ $("#txtEmail, #txtPassword, #txtConfirmPassword").on("keydown", function (e) {
     }
 });
 
+$("#cmbDistrictId").on("change", function (e)
+{
+    $("#cmbUpazilasId").empty();
+    RegistrationHelper.GenerateCombo($("#cmbUpazilasId"), "SP_SelectGetAllDropDown", "GETALLUPAZILA", $("#cmbDistrictId").val(), "0", "0", "0", "0");
+});
+
 var RegistrationHelper = {
+
+    GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
+
+        objcmb.empty();
+        var json = { ProcedureName: proName, CallName: callName, Param1: param1, Param2: param2, Param3: param3, Param4: param4, Param5: param5 };
+        jQuery.ajax({
+            type: "POST",
+            url: "/Common/GenerateCombo",
+            data: json,
+            success: function (data) {
+                if (data.data.length == 1) {
+                    $.each(data.data, function (key, item) {
+                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                    });
+                }
+                else {
+                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
+                    $.each(data.data, function (key, item) {
+                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                    });
+
+                }
+                // this is for to work onchange event when only one data is returned
+                objcmb.change();
+            }
+        });
+    },
+
     ShowPassword: function (fieldId, eyeIcon) {
         var field = document.getElementById(fieldId);
         var icon = eyeIcon;

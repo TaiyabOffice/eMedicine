@@ -1,15 +1,7 @@
 ﻿let rowId = "";
 $(document).ready(function () {
 
-    $(".select2").select2();    
-    jQuery.ajax({
-        url: "/Common/GetCurrentDate",
-        type: "POST",
-        success: function (result) {
-            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#hdnDateToday").datepicker('setDate', new Date(result));
-        }
-    });
+    $(".select2").select2();
     UserHelper.BuildTbl("");
     UserHelper.GetAllUser();
 });
@@ -123,8 +115,6 @@ var UserHelper = {
             }
         });
     },
-
-
     EditByUserID: function (rowId) {
         var table = $('#tblUser').DataTable();
         var isActive = table.cell(rowId, 7).nodes().to$().find('select').val()        
@@ -172,37 +162,5 @@ var UserHelper = {
                 $("#btnLogin").show();
             }
         });
-    },
-    getSelectionStart: function (o) {
-        if (o.createTextRange) {
-            var r = document.selection.createRange().duplicate();
-            r.moveEnd('character', o.value.length);
-            if (r.text === '') return o.value.length;
-            return o.value.lastIndexOf(r.text);
-        } else return o.selectionStart;
-    },
-    isDeciaml: function (el, evt, deci_point) {
-        var charCode = (evt.which) ? evt.which : event.keyCode;
-        var number = el.value.split('.');
-        if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-        //just one dot
-        if (number.length > 1 && charCode === 46) {
-            return false;
-        }
-        //get the carat position
-        var caratPos = UserHelper.getSelectionStart(el);
-        var dotPos = el.value.indexOf(".");
-        if (caratPos > dotPos && dotPos > -1 && (number[1].length > deci_point - 1)) {
-            return false;
-        }
-        return true;
-    },
-    AllowNumbersOnly: function (e) {
-        var code = (e.which) ? e.which : e.keyCode;
-        if (code > 31 && (code < 48 || code > 57)) {
-            e.preventDefault();
-        }
     },
 };

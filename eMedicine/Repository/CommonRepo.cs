@@ -3,6 +3,7 @@ using eMedicine.IRepository;
 using eMedicine.Models;
 using eMedicine.Models.Data;
 using System.Data;
+using System.Transactions;
 
 namespace eMedicine.Repository
 {
@@ -21,8 +22,8 @@ namespace eMedicine.Repository
         string parm9 = "", string parm10 = "", string parm11 = "", string parm12 = "", string parm13 = "", string parm14 = "", string parm15 = "",
         string parm16 = "", string parm17 = "", string parm18 = "", string parm19 = "", string parm20 = "")
         {
-
-            var param = new DynamicParameters();
+            
+                var param = new DynamicParameters();
             param.Add("@ComC1", comCostID);
             param.Add("@CallType", CallType);
             param.Add("@Desc1", parm1);
@@ -46,11 +47,30 @@ namespace eMedicine.Repository
             param.Add("@Desc19", parm19);
             param.Add("@Desc20", parm20);
 
-            using (var connectin = this.context.CreateConnection())
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var list = await SqlMapper.ExecuteReaderAsync(connectin, ProcName, param, commandType: CommandType.StoredProcedure);
-                var dataset = ConvertDataReaderToDataSet(list);
-                return dataset;
+
+                using (var connection = this.context.CreateConnection())
+                    {
+                    try
+                    {
+                        var list = await SqlMapper.ExecuteReaderAsync(connection, ProcName, param, commandType: CommandType.StoredProcedure);
+                        var dataset = ConvertDataReaderToDataSet(list);
+                        transactionScope.Complete();
+                        transactionScope.Dispose();
+                        return dataset;
+                    }
+                    catch (Exception ex)
+                    {
+                        transactionScope.Dispose();
+                        return null;
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+                
             }
         }
         public DataSet ConvertDataReaderToDataSet(IDataReader data)

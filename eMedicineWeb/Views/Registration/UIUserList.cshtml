@@ -8,7 +8,7 @@
         <div class="box-body">
             <input type="hidden" id="hdnUserId" value="@Request.RequestContext.HttpContext.Session["UserID"]">
             <input type="hidden" id="hdnTermID" value="@Request.RequestContext.HttpContext.Session["TerminalId"]">
-            <input type="hidden" id="hdnDateToday" value="">
+            <input type="hidden" id="hdnDateToday" value="@Request.RequestContext.HttpContext.Session["DateToday"]">
             <div class="modal-body">
                 <div class="row">
                     <div class="col-sm-12"> 

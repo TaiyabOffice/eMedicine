@@ -61,6 +61,7 @@ namespace eMedicineWeb.Controllers
                         Session["PhoneNumber"] = loginModel.PhoneNumber;                       
                         Session["TerminalId"] = b.ToUpper();
                         Session["UserIPc"] = a.ToString();
+                        Session["DateToday"] = DateTime.Now.ToString("dd-MM-yyyy");
                         GetMenuById(loginModel.UserId);
                         status = true;
                     }

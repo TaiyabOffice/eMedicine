@@ -142,7 +142,9 @@ var RegistrationHelper = {
         obj.Email = $("#txtEmail").val();
         obj.Password = $("#txtConfirmPassword").val();
         obj.DistrictId = $("#cmbDistrictId").val();
+        obj.DistrictName = $("#cmbDistrictId").val();
         obj.UpazilasId = $("#cmbUpazilasId").val();
+        obj.UpazilasName = $("#cmbUpazilasId").val();
         obj.IsActive = "1";
 
 

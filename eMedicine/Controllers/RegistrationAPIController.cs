@@ -51,6 +51,69 @@ namespace eMedicine.Controllers
             }
         }
 
+        [HttpGet("GetAllUser")]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectLogin", "GETALLUSERS");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Registration>(), Message = "No user found." });
+                }
+                var GetUserDetails = (from DataRow dr in ds.Tables[0].Rows
+                                       select new Registration()
+                                       {
+                                           UserName = dr["UserName"].ToString(),
+                                           PhoneNumber = dr["PhoneNumber"].ToString(),
+                                           Email = dr["Email"].ToString(),
+                                           DistrictName = dr["DistrictName"].ToString(),
+                                           UpazilasName = dr["UpazilasName"].ToString(),                                         
+                                           IsActive = dr["IsActive"].ToString()
+                                       }).ToList();
+                return new JsonResult(new { Success = true, Data = GetUserDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the User.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("UpdateUserById")]
+        public async Task<IActionResult> UpdateUserById(string UserId, string isActive)
+        {
+            try
+            {
+                bool status = false;                 
+                var ds = await repo.GetAll("", "sp_EntryRegistration", "UPDATEUSERBYID", UserId, isActive);
+
+                // Check if dataset is valid and contains data
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    status = false;
+                    return new JsonResult(status);
+                }               
+                return new JsonResult(status);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (implement your logging mechanism here)
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the login.",
+                    Details = ex.Message
+                });
+            }
+        }
+
         public static string EncodeMD5(string originalStr)
         {
             Byte[] originalBytes;

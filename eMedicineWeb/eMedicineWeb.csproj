@@ -7351,6 +7351,7 @@
     <Content Include="Scripts\Duplicate.js" />
     <Content Include="Scripts\eMedicine\Brand\UIEntryBrand.js" />
     <Content Include="Scripts\eMedicine\Company\UIEntryCompany.js" />
+    <Content Include="Scripts\eMedicine\Registration\UIUserList.js" />
     <Content Include="Scripts\eMedicine\Registration\UIEntryRegister.js" />
     <Content Include="Scripts\eMedicine\SalesPerson\UIEntrySalesPerson.js" />
     <Content Include="Scripts\eMedicine\Supplier\UIEntrySupplier.js" />
@@ -7392,6 +7393,7 @@
     <Content Include="Views\Generics\UIEntryGenerics.cshtml" />
     <Content Include="Views\Brand\UIEntryBrand.cshtml" />
     <Content Include="Views\Registration\UIEntryRegister.cshtml" />
+    <Content Include="Views\Registration\UIUserList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

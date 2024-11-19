@@ -44,7 +44,8 @@ namespace eMedicineWeb.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                return Json(new { success = true, message = "Registration create Successfully" });
+                return Json(new { success = true, message = "Registration create Successfully", RedirectUrl = Url.Action("Login", "Login") });
+             
             }
             ModelState.AddModelError("", "Unable to create Registration. Please try again.");
             return Json(new { success = false, message = "Failed to retrieve Registration details." });

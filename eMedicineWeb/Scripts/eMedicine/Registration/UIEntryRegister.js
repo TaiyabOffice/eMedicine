@@ -155,17 +155,17 @@ var RegistrationHelper = {
             data: objDetails,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                if (data.status) {
-
+            success: function (response) {
+                if (response.success) {
                     swal({
                         title: "Congratulation!!",
-                        text: "Save Successfully",
+                        text: "Registration Successfull",
                         type: "success",
                         closeOnConfirm: false,
 
                     });
-                    location.reload();
+                    window.location.href = response.RedirectUrl;
+                    //location.reload();
                     $("body").removeClass("loading");
                 } else {
                     swal({

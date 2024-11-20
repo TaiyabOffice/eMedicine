@@ -72,15 +72,19 @@
                                     </div>  
                                     <div class="row">
                                         <div class="form-group">
-                                            <div class="col-sm-2">
-                                                <label for="cmbCompanyId">Company</label>
-                                                <select id="cmbCompanyId" name="cmbCompanyId" class="form-control input-sm select2" style="width:100%"></select>
-                                            </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-3">
                                                 <label for="cmbGenericId">Generic Name</label>
                                                 <select id="cmbGenericId" name="cmbGenericId" class="form-control input-sm select2" style="width:100%"></select>
                                             </div>
-                                            <div class="col-sm-4" style="margin-top: 25px;">
+                                            <div class="col-sm-3">
+                                                <label for="cmbCategoryId">Category Name</label>
+                                                <select id="cmbCategoryId" name="cmbCategoryId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label for="cmbCompanyId">Company</label>
+                                                <select id="cmbCompanyId" name="cmbCompanyId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
+                                            <div class="col-sm-3" style="margin-top: 25px;">
                                                 <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
                                                 <button id="btnUpdate" type="button" class="btn btn-warning" style="display:none">Update Info</button>
                                                 <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
@@ -102,8 +106,10 @@
                                             <th>SL</th>
                                             <th>Brand ID</th>
                                             <th>Brand Name</th>
-                                            <th>Company Name</th>
                                             <th>Generic Name</th>
+                                            <th>Category Name</th>
+                                            <th>Company Name</th>
+                                            <th>Category Name</th>
                                             <th>Dosage Form</th>
                                             <th>Strength</th>                                            
                                             <th>Description</th>                                            
@@ -156,7 +162,7 @@
                             </tr>
                             <tr>
                                 <td id="MdlStrength"></td>
-                                <td id="MdlStrengthBN"></td>
+                                <td id="MdlCategoryName"></td>
                             </tr>
                             <tr>
                                 <td id="MdlCompanyName"></td>

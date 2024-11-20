@@ -16,6 +16,7 @@ $(document).ready(function () {
 
     BrandHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
     BrandHelper.GenerateCombo($("#cmbGenericId"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
+    BrandHelper.GenerateCombo($("#cmbCategoryId"), "SP_SelectGetAllDropDown", "GETALLCATEGORY", "0", "0", "0", "0", "0");
     BrandHelper.BuildTbl("");
     BrandHelper.GetAllBrand();
     BrandHelper.ValidateBrand();
@@ -70,8 +71,9 @@ var BrandHelper = {
                 { "data": "SL" },
                 { data: 'BrandId' },
                 { data: 'BrandName' },
-                { data: 'CompanyName' },
                 { data: 'GenericName' },
+                { data: 'CategoryName' },
+                { data: 'CompanyName' },                
                 { data: 'DosageForm' },
                 { data: 'Strength' },
                 { data: 'BrandDescription' },                
@@ -91,7 +93,7 @@ var BrandHelper = {
                 },
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [] },
-                { "targets": [5,6], "visible": false, "searchable": false },
+                { "targets": [6,7], "visible": false, "searchable": false },
 
             ]
         });
@@ -107,12 +109,14 @@ var BrandHelper = {
                 BrandDescription: $('#txtDescription').val(),
                 BrandDescriptionBN: $('#txtDescriptionBN').val(),
                 CompanyId: $('#cmbCompanyId').val(),
+                CategoryId: $('#cmbCategoryId').val(),
                 GenericId: $('#cmbGenericId').val(),
                 DosageForm: "N/A",
                 DosageFormBN: "প্রয়োজনেই",
                 Strength: "N/A",
                 StrengthBN: "প্রয়োজনেই",
                 GenericName: $('#cmbGenericId').val(),
+                CategoryName: $('#cmbCategoryId').val(),
                 CompanyName: $('#cmbCompanyId').val(),
                 IsActive: $('#CmbIsActive').val(),
                 CreatedBy: $('#hdnUserId').val(),
@@ -176,12 +180,14 @@ var BrandHelper = {
             BrandDescription: $('#txtDescription').val(),
             BrandDescriptionBN: $('#txtDescriptionBN').val(),
             CompanyId: $('#cmbCompanyId').val(),
+            CategoryId: $('#cmbCategoryId').val(),
             GenericId: $('#cmbGenericId').val(),
             DosageForm: "N/A",
             DosageFormBN: "প্রয়োজনেই",
             Strength: "N/A",
             StrengthBN: "প্রয়োজনেই",
             GenericName: $('#cmbGenericId').val(),
+            CategoryName: $('#cmbCategoryId').val(),
             CompanyName: $('#cmbCompanyId').val(),
             IsActive: $('#CmbIsActive').val(),
             CreatedBy: $('#hdnUserId').val(),
@@ -269,6 +275,7 @@ var BrandHelper = {
                     $('#txtDescription').val(Brand.BrandDescription);
                     $('#txtDescriptionBN').val(Brand.BrandDescriptionBN);
                     $("#cmbCompanyId").val(Brand.CompanyId).select2();
+                    $("#cmbCategoryId").val(Brand.CategoryId).select2();
                     $("#cmbGenericId").val(Brand.GenericId).select2();
                     $('#txtDosageForm').val(Brand.DosageForm);
                     $('#txtDosageFormBN').val(Brand.DosageFormBN);
@@ -319,8 +326,9 @@ var BrandHelper = {
                     $('#MdlDosageFormBN').html("ডোজ ফর্ম: " + Brand.DosageFormBN);
                     $('#MdlStrength').html("Strength: " + Brand.Strength);
                     $('#MdlStrengthBN').html("প্রতিরোধশক্তি: " + Brand.StrengthBN);
-                    $('#MdlCompanyName').html("CompanyName: " + Brand.CompanyName);
-                    $('#MdlGenericName').html("GenericName: " + Brand.GenericName);
+                    $('#MdlCompanyName').html("Company Name: " + Brand.CompanyName);
+                    $('#MdlGenericName').html("Generic Name: " + Brand.GenericName);
+                    $('#MdlCategoryName').html("Category Name: " + Brand.CategoryName);
                     $("#modal-default").modal("show");
                 }
                 else {
@@ -348,6 +356,7 @@ var BrandHelper = {
         $('#MdlStrengthBN').html("");
         $('#MdlCompanyName').html("");
         $('#MdlGenericName').html("");
+        $('#MdlCategoryName').html("");
            
     },
     getSelectionStart: function (o) {
@@ -409,6 +418,10 @@ var BrandHelper = {
                     required: true,
                     notZero: "" 
                 },
+                cmbCategoryId: {
+                    required: true,
+                    notZero: ""
+                },
                 CmbIsActive: "required"
             },
             messages: {
@@ -427,6 +440,7 @@ var BrandHelper = {
                 },
                 cmbCompanyId: "Please select a valid company",
                 cmbGenericId: "Please select a valid generic name",
+                cmbCategoryId: "Please select a valid CategoryId name",
                 CmbIsActive: "Please select the active status"
             },
             errorPlacement: function (label, element) {

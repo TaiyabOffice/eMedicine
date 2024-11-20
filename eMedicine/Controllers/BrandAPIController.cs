@@ -36,6 +36,8 @@ namespace eMedicine.Controllers
                                               BrandNameBN = dr["BrandNameBN"].ToString(),
                                               CompanyId = dr["CompanyId"].ToString(),
                                               CompanyName = dr["CompanyName"].ToString(),
+                                              CategoryId = dr["CategoryId"].ToString(),
+                                              CategoryName = dr["CategoryName"].ToString(),
                                               GenericId = dr["GenericId"].ToString(),
                                               GenericName = dr["GenericsName"].ToString(),
                                               DosageForm = dr["DosageForm"].ToString(),
@@ -67,7 +69,7 @@ namespace eMedicine.Controllers
 
                 var ds = await this.repo.GetAll("", "sp_EntryBrand", "CREATEBRAND", Brand.BrandId, Brand.BrandName, Brand.BrandNameBN,Brand.CompanyId,
                     Brand.GenericId, Brand.DosageForm, Brand.DosageFormBN, Brand.Strength, Brand.StrengthBN, Brand.BrandDescription, Brand.BrandDescriptionBN, Brand.IsActive, Brand.CreatedBy,
-                    Brand.CreatedDate);
+                    Brand.CreatedDate, Brand.CategoryId);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -108,6 +110,8 @@ namespace eMedicine.Controllers
                                               BrandNameBN = dr["BrandNameBN"].ToString(),
                                               CompanyId = dr["CompanyId"].ToString(),
                                               CompanyName = dr["CompanyName"].ToString(),
+                                              CategoryId = dr["CategoryId"].ToString(),
+                                              CategoryName = dr["CategoryName"].ToString(),
                                               GenericId = dr["GenericId"].ToString(),
                                               GenericName = dr["GenericsName"].ToString(),
                                               DosageForm = dr["DosageForm"].ToString(),
@@ -142,7 +146,7 @@ namespace eMedicine.Controllers
 
                 var ds = await this.repo.GetAll("", "sp_EntryBrand", "UPDATEBRANDBYID", Brand.BrandId, Brand.BrandName, Brand.BrandNameBN, Brand.CompanyId,
                     Brand.GenericId, Brand.DosageForm, Brand.DosageFormBN, Brand.Strength, Brand.StrengthBN, Brand.BrandDescription, Brand.BrandDescriptionBN, Brand.IsActive, Brand.Updatedby,
-                    Brand.UpdatedDate);
+                    Brand.UpdatedDate, Brand.CategoryId);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {

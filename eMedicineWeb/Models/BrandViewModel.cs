@@ -14,6 +14,8 @@ namespace eMedicineWeb.Models
         public string CompanyName { get; set; }
         public string GenericId { get; set; }
         public string GenericName { get; set; }
+        public string CategoryId { get; set; }
+        public string CategoryName { get; set; }
         public string DosageForm { get; set; }
         public string DosageFormBN { get; set; }
         public string Strength { get; set; }

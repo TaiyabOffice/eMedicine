@@ -70,11 +70,10 @@ var UserHelper = {
                     targets: [7], // Target the appropriate column index
                     render: function (data, type, row, meta) {  
                         const isActive = row.IsActive || 0;
-                        return `
-                                <select id="CmbIsActive_${meta.row}" name="CmbIsActive" class="form-control input-sm">
-                                    <option value="1" ${row.IsActive === '1' ? 'selected' : ''}>Yes</option>
-                                    <option value="0" ${row.IsActive === '0' ? 'selected' : ''}>No</option>
-                                </select>`;
+                        return '<select id="CmbIsActive_' + meta.row + '" name="CmbIsActive" class="form-control input-sm">' +
+                            '<option value="1" ' + (row.IsActive === '1' ? 'selected' : '') + '>Yes</option>' +
+                            '<option value="0" ' + (row.IsActive === '0' ? 'selected' : '') + '>No</option>' +
+                            '</select>';
                     }
                 },
                 { "className": "dt-center", "targets": [] },

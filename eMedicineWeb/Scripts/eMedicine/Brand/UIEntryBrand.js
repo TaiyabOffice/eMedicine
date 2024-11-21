@@ -440,7 +440,7 @@ var BrandHelper = {
                 },
                 cmbCompanyId: "Please select a valid company",
                 cmbGenericId: "Please select a valid generic name",
-                cmbCategoryId: "Please select a valid CategoryId name",
+                cmbCategoryId: "Please select a valid Category name",
                 CmbIsActive: "Please select the active status"
             },
             errorPlacement: function (label, element) {

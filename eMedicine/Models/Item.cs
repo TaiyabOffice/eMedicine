@@ -7,6 +7,8 @@
         public string ItemNameBN { get; set; }
         public string ItemDescription { get; set; }
         public string ItemDescriptionBN { get; set; }
+        public string UnitPrice { get; set; }
+        public string MRP { get; set; }
         public string BrandId { get; set; }
         public string BrandName { get; set; }
         public string UnitId { get; set; }

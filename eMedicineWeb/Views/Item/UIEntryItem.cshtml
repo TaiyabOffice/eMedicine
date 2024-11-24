@@ -40,7 +40,7 @@
                                                 <label for="txtNameBN">নাম </label>
                                                 <input type="text" id="txtNameBN" name="txtNameBN" class="form-control input-sm" autocomplete="off">
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <label for="txtDescriptionBN">বর্ণনা</label>
                                                 <input type="text" id="txtDescriptionBN" name="txtDescriptionBN" value="" class="form-control input-sm" autocomplete="off">
                                             </div>
@@ -48,19 +48,26 @@
                                                 <label for="cmbCategoryId">Category Name</label>
                                                 <select id="cmbCategoryId" name="cmbCategoryId" class="form-control input-sm select2" style="width:100%"></select>
                                             </div>
+                                            <div class="col-sm-2">
+                                                <label for="cmbUnitId">Unit</label>
+                                                <select id="cmbUnitId" name="cmbUnitId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
                                             <div class="col-sm-2">
-                                                <label for="cmbUnitId">Unit</label>
-                                                <select id="cmbUnitId" name="cmbUnitId" class="form-control input-sm select2" style="width:100%"></select>
+                                                <label for="txtUnitPrice">Unit Price</label>
+                                                <input type="text" id="txtUnitPrice" name="txtUnitPrice" value="" class="form-control input-sm" autocomplete="off" onkeypress="return ItemHelper.isDeciaml(this, event, 2)">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="txtMRP">MRP</label>
+                                                <input type="txtMRP" id="txtMRP" name="txtMRP" value="" class="form-control input-sm" autocomplete="off" onkeypress="return ItemHelper.isDeciaml(this, event, 2)">
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="cmbBrandId">Brand Name</label>
                                                 <select id="cmbBrandId" name="cmbBrandId" class="form-control input-sm select2" style="width:100%"></select>
                                             </div>
-
                                             <div class="col-sm-2">
                                                 <label for="cmbSupplierId">Supplier Name</label>
                                                 <select id="cmbSupplierId" name="cmbSupplierId" class="form-control input-sm select2" style="width:100%"></select>
@@ -72,10 +79,9 @@
                                                     <option value="0">No</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-3" style="margin-top: 25px;">
+                                            <div class="col-sm-2" style="margin-top: 25px;">
                                                 <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
                                                 <button id="btnUpdate" type="button" class="btn btn-warning" style="display:none">Update Info</button>
-                                                <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
                                             </div>
                                         </div>
                                     </div>
@@ -97,6 +103,8 @@
                                             <th>Description</th>
                                             <th>Category Name</th>
                                             <th>Unit</th>
+                                            <th>Unit Price</th>
+                                            <th>MRP</th>
                                             <th>Barnd</th>                                            
                                             <th>Supplier</th>                                            
                                             <th>Is Active</th>
@@ -147,9 +155,13 @@
                                 <td id="MdlItemCategoryName"></td>
                             </tr>
                             <tr>
+                                <td id="MdlUnitPrice"></td>
+                                <td id="MdlMRP"></td>
+                            </tr>
+                            <tr>
                                 <td id="MdlUnitName"></td>
                                 <td id="MdlSupplierName"></td>
-                            </tr>                           
+                            </tr>
                         </table>
                     </div>
                 </div>

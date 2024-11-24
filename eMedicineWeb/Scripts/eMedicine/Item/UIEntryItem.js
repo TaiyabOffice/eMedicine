@@ -75,6 +75,8 @@ var ItemHelper = {
                 { data: 'ItemDescription' },
                 { data: 'ItemCategoryName' },
                 { data: 'UnitName' },                
+                { data: 'UnitPrice' },                
+                { data: 'MRP' },                
                 { data: 'BrandName' },
                 { data: 'SupplierName' },                              
                 { data: 'IsActive' },
@@ -108,6 +110,8 @@ var ItemHelper = {
                 ItemNameBN: $('#txtNameBN').val(),
                 ItemDescription: $('#txtDescription').val(),
                 ItemDescriptionBN: $('#txtDescriptionBN').val(),
+                UnitPrice: $('#txtUnitPrice').val(),
+                MRP: $('#txtMRP').val(),
                 BrandId: $('#cmbBrandId').val(),
                 BrandName: $('#cmbBrandId').val(),
                 UnitId: $('#cmbUnitId').val(),
@@ -177,6 +181,8 @@ var ItemHelper = {
             ItemNameBN: $('#txtNameBN').val(),
             ItemDescription: $('#txtDescription').val(),
             ItemDescriptionBN: $('#txtDescriptionBN').val(),
+            UnitPrice: $('#txtUnitPrice').val(),
+            MRP: $('#txtMRP').val(),
             BrandId: $('#cmbBrandId').val(),
             BrandName: $('#cmbBrandId').val(),
             UnitId: $('#cmbUnitId').val(),
@@ -270,6 +276,8 @@ var ItemHelper = {
                     $('#txtNameBN').val(Item.ItemNameBN);
                     $('#txtDescription').val(Item.ItemDescription);
                     $('#txtDescriptionBN').val(Item.ItemDescriptionBN);
+                    $('#txtUnitPrice').val(Item.UnitPrice);
+                    $('#txtMRP').val(Item.MRP);                    
                     $("#cmbBrandId").val(Item.BrandId).select2();
                     $("#cmbUnitId").val(Item.UnitId).select2();
                     $("#cmbSupplierId").val(Item.SupplierId).select2();
@@ -315,6 +323,8 @@ var ItemHelper = {
                     $('#MdlNameBN').html("নাম: " + Item.ItemNameBN);
                     $('#MdlDescription').html("Description: " + Item.ItemDescription);
                     $('#MdlDescriptionBN').html("বর্ণনা: " + Item.ItemDescriptionBN);
+                    $('#MdlUnitPrice').html("Unit Price: " + Item.UnitPrice);
+                    $('#MdlMRP').html("MRP: " + Item.MRP);
                     $('#MdlBrandName').html("Brand Name: " + Item.BrandName);
                     $('#MdlItemCategoryName').html("Category Name: " + Item.ItemCategoryName);
                     $('#MdlUnitName').html("Unit: " + Item.UnitName);                   
@@ -341,6 +351,8 @@ var ItemHelper = {
         $('#MdlNameBN').html("");
         $('#MdlDescription').html("");
         $('#MdlDescriptionBN').html("");
+        $('#MdlUnitPrice').html("");
+        $('#MdlMRP').html("");
         $('#MdlItemCategoryName').html("");
         $('#MdlUnitName').html("");
         $('#MdlSupplierName').html("");
@@ -390,6 +402,8 @@ var ItemHelper = {
                 txtDescription: "required",                
                 txtNameBN: "required",
                 txtDescriptionBN: "required",                
+                txtUnitPrice: "required",                
+                txtMRP: "required",                
                 cmbBrandId: {
                     required: true,
                     notZero: "" 
@@ -411,6 +425,8 @@ var ItemHelper = {
             messages: {
                 txtName: "Item Name is required",
                 txtDescription: "Item Description is required",                
+                txtUnitPrice: "Item Unit Price is required",                
+                txtMRP: "Item MRP is required",                
                 txtNameBN: "নাম প্রয়োজন",
                 txtDescriptionBN: "বর্ণনা প্রয়োজন",               
                 cmbSupplierId: "Please select a Supplier company",

@@ -36,6 +36,8 @@ namespace eMedicine.Controllers
                                            ItemNameBN = dr["ItemNameBN"].ToString(),
                                            ItemDescription = dr["ItemDescription"].ToString(),
                                            ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                           UnitPrice = dr["UnitPrice"].ToString(),
+                                           MRP = dr["MRP"].ToString(),
                                            BrandName = dr["BrandName"].ToString(),                                          
                                            UnitName = dr["UnitName"].ToString(),                                          
                                            SupplierName = dr["SupplierName"].ToString(),                                           
@@ -62,7 +64,7 @@ namespace eMedicine.Controllers
             {
 
                 var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEITEM", Item.ItemId, Item.ItemName, Item.ItemNameBN, Item.ItemDescription, Item.ItemDescriptionBN, 
-                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.CreatedBy, Item.CreatedDate);
+                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.CreatedBy, Item.CreatedDate, Item.UnitPrice, Item.MRP);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -103,6 +105,8 @@ namespace eMedicine.Controllers
                                            ItemNameBN = dr["ItemNameBN"].ToString(),
                                            ItemDescription = dr["ItemDescription"].ToString(),
                                            ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                           UnitPrice = dr["UnitPrice"].ToString(),
+                                           MRP = dr["MRP"].ToString(),
                                            BrandId = dr["BrandId"].ToString(),
                                            BrandName = dr["BrandName"].ToString(),
                                            UnitId = dr["UnitId"].ToString(),
@@ -136,7 +140,7 @@ namespace eMedicine.Controllers
             {
 
                 var ds = await this.repo.GetAll("", "sp_EntryItem", "UPDATEITEMBYID", Item.ItemId, Item.ItemName, Item.ItemNameBN, Item.ItemDescription, Item.ItemDescriptionBN,
-                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.Updatedby, Item.UpdatedDate);
+                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.Updatedby, Item.UpdatedDate, Item.UnitPrice, Item.MRP);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {

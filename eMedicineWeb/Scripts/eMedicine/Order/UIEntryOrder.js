@@ -1,7 +1,6 @@
 ﻿
 let cart = [];
 let products = [];
-// Cart items
 let rowId = "";
 $(document).ready(function () {
     $('#ItemSearch').on('keyup', function () {
@@ -64,8 +63,7 @@ $(document).ready(function () {
         OrderHelper.clearCart()
     });
 });
-var OrderHelper =
-{
+var OrderHelper = {
     loadCartFromCache: function () {
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {

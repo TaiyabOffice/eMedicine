@@ -27,6 +27,11 @@ namespace eMedicineWeb.Controllers
         {
             return View();
         }
+
+        public ActionResult UIItemList()
+        {
+            return View();
+        }
         public async Task<ActionResult> GetAllItem()
         {
             List<ItemViewModel> ItemList = new List<ItemViewModel>();

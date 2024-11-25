@@ -79,5 +79,39 @@ namespace eMedicine.Controllers
                 });
             }
         }
+
+        [HttpGet("GetItems/{item}")]
+        public async Task<IActionResult> GetItems(string item)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectItem", "GETITEMS", item);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Message = "No Menu found.", Data = new List<Item>() });
+                }
+                var GetItemList = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Item()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          ItemName = dr["ItemName"].ToString(),
+                                          UnitPrice = dr["UnitPrice"].ToString(),                                         
+                                          MRP = dr["MRP"].ToString()                                         
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemList });
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (implement your logging mechanism here)
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the item.",
+                    Details = ex.Message
+                });
+            }
+
+        }
     }
 }

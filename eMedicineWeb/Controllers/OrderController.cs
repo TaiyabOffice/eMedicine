@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -49,6 +50,38 @@ namespace eMedicineWeb.Controllers
             
             ModelState.AddModelError("", "Unable to create Brand. Please try again.");
             return Json(new { success = false, message = "Failed to retrieve Brand details." });
+        }
+
+        public async Task<ActionResult> GetItems(string item)
+        {
+            List<ItemViewModel> ItemList = new List<ItemViewModel>();
+
+            try
+            {              
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetItems/" + item).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<ItemResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            ItemList = Response?.Data ?? new List<ItemViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Brand. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = true, data = ItemList }, JsonRequestBehavior.AllowGet);
         }
     }
 }

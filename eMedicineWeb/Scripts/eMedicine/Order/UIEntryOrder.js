@@ -1,13 +1,18 @@
-﻿
-// Cart items
-let rowId = "";
-$(document).ready(function () {
-    let cart = [];
-    const products = [
+﻿const products = [
         { id: 1, name: 'Basmati Rice', price: 20 },
         { id: 2, name: 'Jasmine Rice', price: 18 },
-        { id: 3, name: 'Brown Rice', price: 15 }
-    ];
+        { id: 3, name: 'Brown Rice1', price: 15 },
+        { id: 4, name: 'Brown Rice2', price: 15 },
+        { id: 5, name: 'Brown Rice3', price: 15 },
+        { id: 6, name: 'Brown Rice4', price: 15 },
+        { id: 7, name: 'Brown Rice5', price: 15 },
+        { id: 8, name: 'Brown Rice6', price: 15 }
+];
+let cart = [];
+// Cart items
+let rowId = "";
+$(document).ready(function () {  
+    
     OrderHelper.loadCartFromCache();
     OrderHelper.renderProducts(); 
     $("#btnSaveOrder").click(function () {
@@ -38,10 +43,9 @@ var OrderHelper =
             const productDiv = document.createElement('div');
             productDiv.className = 'product';
             productDiv.innerHTML =
-                '<h3>' + product.name + '</h3>' +
-                '<p>Price: $' + product.price + '</p>' +
+                '<div>' + product.name + '</div>' +
+                '<div>Price: $' + product.price + '</div>' +
                 '<button onclick="OrderHelper.addToCart(' + product.id + ')">Add to Cart</button>';
-
             productList.appendChild(productDiv);
         });
     }, 

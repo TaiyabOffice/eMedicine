@@ -19,8 +19,7 @@
 <section class="content">
             <input type="hidden" id="hdnUserId" value="@Request.RequestContext.HttpContext.Session["UserID"]">
             <input type="hidden" id="hdnTermID" value="@Request.RequestContext.HttpContext.Session["TerminalId"]">
-            <input type="hidden" id="hdnDateToday" value="@Request.RequestContext.HttpContext.Session["DateToday"]">
-            <div class="modal-body">
+            <input type="hidden" id="hdnDateToday" value="@Request.RequestContext.HttpContext.Session["DateToday"]">            
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="box box-solid box-primary" style="margin-top:15px;">
@@ -29,16 +28,15 @@
                             </div>
                             <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
                                 <h1>Rice Store</h1>
-                                <div id="product-list">
-                                    <!-- Product items dynamically rendered here -->
+                                <div id="product-list">                                    
                                 </div>
 
                                 <div class="cart">
                                     <h2>Your Cart</h2>
                                     <div id="cart-items">
-                                        <!-- Cart items rendered dynamically -->
+                                       
                                     </div>
-                                    <p>Total: $<span id="cart-total">0</span></p>
+                                    <p>Total: $<span id="cart-total">0</span></p>                                   
                                 </div>
                                 <button id="btnSaveOrder">Save Order</button>
                                 <button id="btnClear">Clear Order</button>
@@ -46,11 +44,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
+
+         
 </section>
 
 @section Scripts {
     @Scripts.Render("~/Scripts/eMedicine/Order/UIEntryOrder.js")
     <script src="~/Scripts/jquery.validate.min.js"></script>
-    <script src="~/Scripts/cart.js"></script>
+    
 }

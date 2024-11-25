@@ -7352,6 +7352,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\cart.js" />
     <Content Include="Scripts\Duplicate.js" />
     <Content Include="Scripts\eMedicine\Brand\UIEntryBrand.js" />
     <Content Include="Scripts\eMedicine\Company\UIEntryCompany.js" />

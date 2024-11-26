@@ -33,6 +33,7 @@ namespace eMedicineWeb.Controllers
         {
             return View();
         }
+
         public async Task<ActionResult> GetAllItem()
         {
             List<ItemViewModel> ItemList = new List<ItemViewModel>();
@@ -65,8 +66,7 @@ namespace eMedicineWeb.Controllers
             return Json(new { success = true, data = ItemList }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]     
-
+        [HttpPost]
         public async Task<ActionResult> CreateItem(ItemViewModel Item, HttpPostedFileBase imageFile)
         {
 

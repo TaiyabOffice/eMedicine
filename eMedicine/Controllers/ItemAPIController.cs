@@ -42,6 +42,7 @@ namespace eMedicine.Controllers
                                            UnitName = dr["UnitName"].ToString(),                                          
                                            SupplierName = dr["SupplierName"].ToString(),                                           
                                            ItemCategoryName = dr["ItemCategoryName"].ToString(),                                           
+                                           ImagePath = dr["ImagePath"].ToString(),                                           
                                            IsActive = dr["IsActive"].ToString()
                                        }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
@@ -64,7 +65,7 @@ namespace eMedicine.Controllers
             {
 
                 var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEITEM", Item.ItemId, Item.ItemName, Item.ItemNameBN, Item.ItemDescription, Item.ItemDescriptionBN, 
-                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.CreatedBy, Item.CreatedDate, Item.UnitPrice, Item.MRP);
+                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.CreatedBy, Item.CreatedDate, Item.UnitPrice, Item.MRP, Item.ImagePath);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -115,6 +116,7 @@ namespace eMedicine.Controllers
                                            SupplierName = dr["SupplierName"].ToString(),
                                            ItemCategoryId = dr["ItemCategoryId"].ToString(),
                                            ItemCategoryName = dr["ItemCategoryName"].ToString(),
+                                           ImagePath = dr["ImagePath"].ToString(),
                                            IsActive = dr["IsActive"].ToString()
                                        }).ToList();
 
@@ -140,7 +142,7 @@ namespace eMedicine.Controllers
             {
 
                 var ds = await this.repo.GetAll("", "sp_EntryItem", "UPDATEITEMBYID", Item.ItemId, Item.ItemName, Item.ItemNameBN, Item.ItemDescription, Item.ItemDescriptionBN,
-                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.Updatedby, Item.UpdatedDate, Item.UnitPrice, Item.MRP);
+                    Item.BrandId, Item.UnitId, Item.SupplierId, Item.ItemCategoryId, Item.IsActive, Item.Updatedby, Item.UpdatedDate, Item.UnitPrice, Item.MRP, Item.ImagePath);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {

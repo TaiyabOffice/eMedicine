@@ -15,6 +15,7 @@
         public string UnitName { get; set; }
         public string SupplierId { get; set; }
         public string SupplierName { get; set; }
+        public string ImagePath { get; set; }        
         public string ItemCategoryId { get; set; }
         public string ItemCategoryName { get; set; }
         public string IsActive { get; set; }

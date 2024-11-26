@@ -2,6 +2,16 @@
     ViewBag.Title = "Entry Item Information";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    table img {
+        border-radius: 5px;
+        object-fit: cover;
+    }
+    #MdlImage {
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
 
 <section class="content">
     <div class="box box-solid box-primary">
@@ -27,11 +37,11 @@
                                             <div class="col-sm-4">
                                                 <label for="txtName">Name</label>
                                                 <input type="text" id="txtName" name="txtName" value="" class="form-control input-sm" autocomplete="off">
-                                            </div>                                           
+                                            </div>
                                             <div class="col-sm-6">
                                                 <label for="txtDescription">Description</label>
                                                 <input type="text" id="txtDescription" name="txtDescription" value="" class="form-control input-sm" autocomplete="off">
-                                            </div> 
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -72,14 +82,22 @@
                                                 <label for="cmbSupplierId">Supplier Name</label>
                                                 <select id="cmbSupplierId" name="cmbSupplierId" class="form-control input-sm select2" style="width:100%"></select>
                                             </div>
-                                            <div class="col-sm-2">
+                                            <div class="col-sm-1">
                                                 <label for="CmbIsActive">Is Active</label>
                                                 <select id="CmbIsActive" name="CmbIsActive" class="form-control input-sm">
                                                     <option value="1">Yes</option>
                                                     <option value="0">No</option>
                                                 </select>
                                             </div>
-                                            <div class="col-sm-2" style="margin-top: 25px;">
+                                            <div class="col-sm-1" >
+                                                <label for=""id="lblimgPreview" hidden>File</label>
+                                                <img id="imgPreview" src="" alt="Item Image" style="width:50px; height:50px; display: none; border-radius: 5px; margin-bottom: 15px;" />
+                                            </div>
+                                            <div class="col-sm-1">
+                                                <label for="">Upload File</label>
+                                                <input type="file" id="fileUpload" name="fileUpload" accept="image/png, image/jpeg"/>
+                                            </div>
+                                            <div class="col-sm-1" style="margin-top: 25px;">
                                                 <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
                                                 <button id="btnUpdate" type="button" class="btn btn-warning" style="display:none">Update Info</button>
                                             </div>
@@ -105,8 +123,9 @@
                                             <th>Unit</th>
                                             <th>Unit Price</th>
                                             <th>MRP</th>
-                                            <th>Barnd</th>                                            
-                                            <th>Supplier</th>                                            
+                                            <th>Barnd</th>
+                                            <th>Supplier</th>
+                                            <th>Image</th>
                                             <th>Is Active</th>
                                             <th>Action</th>
                                         </tr>
@@ -137,6 +156,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <h4 class="modal-title" id="mdlTitle"></h4>
+                <img id="MdlImage" src="" alt="Item Image" style="width:50px; height:auto;" height: auto; margin-bottom: 15px; display: none;">
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -170,7 +190,9 @@
                 <button type="button" class="btn btn-sm btn-danger pull-right" data-dismiss="modal">Close</button>
             </div>
         </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
+
 </div>
+
+</div>
+
+

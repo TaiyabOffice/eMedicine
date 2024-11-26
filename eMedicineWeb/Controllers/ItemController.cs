@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -64,25 +65,49 @@ namespace eMedicineWeb.Controllers
             return Json(new { success = true, data = ItemList }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateItem(ItemViewModel Item)
+        [HttpPost]     
+
+        public async Task<ActionResult> CreateItem(ItemViewModel Item, HttpPostedFileBase imageFile)
         {
 
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed Insert Item details." });
             }
-            string data = JsonConvert.SerializeObject(Item);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateItem", content);
-
-            if (response.IsSuccessStatusCode)
+            if (imageFile == null || imageFile.ContentLength == 0)
             {
-                return Json(new { success = true, message = "Item create Successfully" });
+                return Json(new { success = false, message = "Image file is required." });
             }
-            ModelState.AddModelError("", "Unable to create Item. Please try again.");
-            return Json(new { success = false, message = "Failed to retrieve Item details." });
+            try
+            {
+                string uploadsFolder = Server.MapPath("~/Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                imageFile.SaveAs(filePath);                
+                Item.ImagePath = $"/Uploads/{uniqueFileName}";
+
+                string data = JsonConvert.SerializeObject(Item);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateItem", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Item create Successfully" });
+                }
+                ModelState.AddModelError("", "Unable to create Item. Please try again.");
+                return Json(new { success = false, message = "Failed to retrieve Item details." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
         }
 
         [HttpPost]
@@ -128,24 +153,55 @@ namespace eMedicineWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> UpdateItemById(ItemViewModel Item)
+        public async Task<ActionResult> UpdateItemById(ItemViewModel Item, HttpPostedFileBase imageFile)
         {
-            bool Satus = false;
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed Insert Item details." });
             }
-            string data = JsonConvert.SerializeObject(Item);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateItemById", content);
-
-            if (response.IsSuccessStatusCode)
+            if (imageFile == null || imageFile.ContentLength == 0)
             {
-                return Json(new { success = true, message = "Item update Successfully" });
+                return Json(new { success = false, message = "Image file is required." });
             }
-            ModelState.AddModelError("", "Unable to update Item. Please try again.");
-            return Json(new { success = false, message = "Failed to retrieve Item details." });
+            try
+            {
+                string uploadsFolder = Server.MapPath("~/Uploads");
+
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+                string fileExtension = Path.GetExtension(imageFile.FileName);
+                string baseFileName = Guid.NewGuid().ToString();
+
+                string uniqueFileName = baseFileName + fileExtension;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                string preImagePath = Server.MapPath(Item.PreImagePath);
+                if (System.IO.File.Exists(preImagePath))
+                {                    
+                    System.IO.File.Delete(preImagePath);
+                }
+                imageFile.SaveAs(filePath);
+                Item.ImagePath = $"/Uploads/{uniqueFileName}";
+                string data = JsonConvert.SerializeObject(Item);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateItemById", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Item updated successfully" });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to update Item. Please try again.");
+                    return Json(new { success = false, message = "Failed to retrieve Item details." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
         }
+
     }
 }

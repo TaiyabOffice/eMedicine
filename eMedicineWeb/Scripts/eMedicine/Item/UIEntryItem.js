@@ -70,6 +70,15 @@ var ItemHelper = {
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
+                {
+                    "data": "ImagePath",
+                    "render": function (data, type, row) {
+                        if (data) {
+                            return '<img src="' + data + '" alt="Item Image" style="width:50px; height:auto;"/>';
+                        }
+                        return '<span>No image</span>';
+                    }
+                },
                 { data: 'ItemId' },
                 { data: 'ItemName' },
                 { data: 'ItemDescription' },
@@ -79,7 +88,7 @@ var ItemHelper = {
                 { data: 'MRP' },                
                 { data: 'BrandName' },
                 { data: 'SupplierName' },                              
-                { data: 'IsActive' },
+                { data: 'IsActive' },                
                 {
                     data: null,
                     render: function (data, type, row) {
@@ -93,6 +102,8 @@ var ItemHelper = {
                     "width": "2%",
                     render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
                 },
+                { "targets": [1], "width": "10%" }, // Image Column
+                { "className": "dt-center", "targets": [0, 10] },
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [] },
                 { "targets": [], "visible": false, "searchable": false },
@@ -100,40 +111,45 @@ var ItemHelper = {
             ]
         });
     },
-    SaveCollectionData: function ()
-    {
+    SaveCollectionData: function () {
         if ($("#validateItem").valid()) {
-            var ItemData =
-            {
-                ItemId: $('#txtItemId').val() ? "" : "000000000000",
-                ItemName: $('#txtName').val(),
-                ItemNameBN: $('#txtNameBN').val(),
-                ItemDescription: $('#txtDescription').val(),
-                ItemDescriptionBN: $('#txtDescriptionBN').val(),
-                UnitPrice: $('#txtUnitPrice').val(),
-                MRP: $('#txtMRP').val(),
-                BrandId: $('#cmbBrandId').val(),
-                BrandName: $('#cmbBrandId').val(),
-                UnitId: $('#cmbUnitId').val(),
-                UnitName: $('#cmbUnitId').val(),               
-                SupplierId: $('#cmbSupplierId').val(),
-                SupplierName: $('#cmbSupplierId').val(),
-                ItemCategoryId: $('#cmbCategoryId').val(),
-                ItemCategoryName: $('#cmbCategoryId').val(),                
-                IsActive: $('#CmbIsActive').val(),
-                CreatedBy: $('#hdnUserId').val(),
-                CreatedDate: $('#hdnDateToday').val(),
-                UpdatedBy: $('#hdnUserId').val(),
-                UpdatedDate: $('#hdnDateToday').val()
-            };
+            var formData = new FormData();
+           
+            formData.append("ItemId", $('#txtItemId').val() || "000000000000");
+            formData.append("ItemName", $('#txtName').val());
+            formData.append("ItemNameBN", $('#txtNameBN').val());
+            formData.append("ItemDescription", $('#txtDescription').val());
+            formData.append("ItemDescriptionBN", $('#txtDescriptionBN').val());
+            formData.append("UnitPrice", $('#txtUnitPrice').val());
+            formData.append("MRP", $('#txtMRP').val());
+            formData.append("BrandId", $('#cmbBrandId').val());
+            formData.append("BrandName", $('#cmbBrandId').val());
+            formData.append("UnitId", $('#cmbUnitId').val());
+            formData.append("UnitName", $('#cmbUnitId').val());
+            formData.append("SupplierId", $('#cmbSupplierId').val());
+            formData.append("SupplierName", $('#cmbSupplierId').val());
+            formData.append("ItemCategoryId", $('#cmbCategoryId').val());
+            formData.append("ItemCategoryName", $('#cmbCategoryId').val());
+            formData.append("IsActive", $('#CmbIsActive').val());
+            formData.append("CreatedBy", $('#hdnUserId').val());
+            formData.append("CreatedDate", $('#hdnDateToday').val());
+            formData.append("UpdatedBy", $('#hdnUserId').val());
+            formData.append("UpdatedDate", $('#hdnDateToday').val());
+
+            
+            var fileInput = $('#fileUpload')[0];
+            if (fileInput.files.length > 0) {
+                formData.append("imageFile", fileInput.files[0]);
+            }
+
+            
             $.ajax({
-                url: '/Item/CreateItem', // Your controller action
+                url: '/Item/CreateItem', 
                 type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(ItemData), // Send as JSON
+                processData: false, 
+                contentType: false,
+                data: formData,
                 success: function (response) {
-                    // Success message
-                    //console.log(response);
                     if (response.success) {
                         swal({
                             title: "Congratulations",
@@ -145,87 +161,95 @@ var ItemHelper = {
                         });
                         location.reload();
 
-                        ItemHelper.GetAllItem()
+                        ItemHelper.GetAllItem();
                     } else {
                         swal({
                             title: "Sorry!",
-                            text: "Saved Failde!",
+                            text: "Save failed!",
                             type: "error",
                             closeOnConfirm: false,
-                            //timer: 2000
                         });
                     }
-
                 },
                 error: function (xhr, status, error) {
-                    // Handle errors
                     swal({
                         title: "Sorry!",
-                        text: "Error retrieving Item.!" + error,
+                        text: "Error occurred: " + error,
                         type: "error",
                         closeOnConfirm: false,
-                        //timer: 2000
                     });
                 }
             });
         }
-        },
+    },
     UpdateCollectionData: function ()
     {
-        if ($("#validateItem").valid())
-        {
-
-        var ItemData = {
-            ItemId: $('#txtItemId').val(),
-            ItemName: $('#txtName').val(),
-            ItemNameBN: $('#txtNameBN').val(),
-            ItemDescription: $('#txtDescription').val(),
-            ItemDescriptionBN: $('#txtDescriptionBN').val(),
-            UnitPrice: $('#txtUnitPrice').val(),
-            MRP: $('#txtMRP').val(),
-            BrandId: $('#cmbBrandId').val(),
-            BrandName: $('#cmbBrandId').val(),
-            UnitId: $('#cmbUnitId').val(),
-            UnitName: $('#cmbUnitId').val(),
-            SupplierId: $('#cmbSupplierId').val(),
-            SupplierName: $('#cmbSupplierId').val(),
-            ItemCategoryId: $('#cmbCategoryId').val(),
-            ItemCategoryName: $('#cmbCategoryId').val(),
-            IsActive: $('#CmbIsActive').val(),
-            CreatedBy: $('#hdnUserId').val(),
-            CreatedDate: $('#hdnDateToday').val(),
-            UpdatedBy: $('#hdnUserId').val(),
-            UpdatedDate: $('#hdnDateToday').val()
-        };
-        $.ajax({
-            url: '/Item/UpdateItemById', // Your controller action
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(ItemData), // Send as JSON
-            success: function (response) {
-                // Success message               
-                swal({
-                    title: "Congratulations",
-                    text: "saved successfully!",
-                    type: "success",
-                    showConfirmButton: false,
-                    allowOutsideClick: false,
-                    timer: 2000
-                });
-                location.reload();
-
-                ItemHelper.GetAllItem();
-            },
-            error: function (xhr, status, error) {
-                swal({
-                    title: "Sorry!",
-                    text: "Error retrieving Item.!" + error,
-                    type: "error",
-                    closeOnConfirm: false,
-                    //timer: 2000
-                });
+        if ($("#validateItem").valid()) {
+            var formData = new FormData();
+            // Collect form data
+            formData.append("ItemId", $('#txtItemId').val());
+            formData.append("ItemName", $('#txtName').val());
+            formData.append("ItemNameBN", $('#txtNameBN').val());
+            formData.append("ItemDescription", $('#txtDescription').val());
+            formData.append("ItemDescriptionBN", $('#txtDescriptionBN').val());
+            formData.append("UnitPrice", $('#txtUnitPrice').val());
+            formData.append("MRP", $('#txtMRP').val());
+            formData.append("BrandId", $('#cmbBrandId').val());
+            formData.append("BrandName", $('#cmbBrandId').val());
+            formData.append("UnitId", $('#cmbUnitId').val());
+            formData.append("UnitName", $('#cmbUnitId').val());
+            formData.append("SupplierId", $('#cmbSupplierId').val());
+            formData.append("SupplierName", $('#cmbSupplierId').val());
+            formData.append("ItemCategoryId", $('#cmbCategoryId').val());
+            formData.append("ItemCategoryName", $('#cmbCategoryId').val());
+            formData.append("IsActive", $('#CmbIsActive').val());
+            formData.append("CreatedBy", $('#hdnUserId').val());
+            formData.append("CreatedDate", $('#hdnDateToday').val());
+            formData.append("UpdatedBy", $('#hdnUserId').val());
+            formData.append("UpdatedDate", $('#hdnDateToday').val());          
+            formData.append("PreImagePath", $('#lblimgPreview').html());          
+            var fileInput = $('#fileUpload')[0];
+            if (fileInput.files.length > 0) {
+                formData.append("imageFile", fileInput.files[0]);
             }
-        });
+           
+            $.ajax({
+                url: '/Item/UpdateItemById',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        swal({
+                            title: "Congratulations",
+                            text: "Update successfully!",
+                            type: "success",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
+                        });
+                        location.reload();
+
+                        ItemHelper.GetAllItem();
+                    } else {
+                        swal({
+                            title: "Sorry!",
+                            text: "Save failed!",
+                            type: "error",
+                            closeOnConfirm: false,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error occurred: " + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                    });
+                }
+            });
         }
     },
     GetAllItem: function () {
@@ -283,6 +307,12 @@ var ItemHelper = {
                     $("#cmbSupplierId").val(Item.SupplierId).select2();
                     $('#cmbCategoryId').val(Item.ItemCategoryId).select2();                   
                     $('#CmbIsActive').val(Item.IsActive).select2();
+                    $('#lblimgPreview').html(Item.ImagePath);
+                    if (Item.ImagePath) {
+                        $('#imgPreview').attr('src', Item.ImagePath).show();
+                    } else {
+                        $('#imgPreview').hide();
+                    }
                 } else {
                     swal({
                         title: "Sorry!",
@@ -328,7 +358,12 @@ var ItemHelper = {
                     $('#MdlBrandName').html("Brand Name: " + Item.BrandName);
                     $('#MdlItemCategoryName').html("Category Name: " + Item.ItemCategoryName);
                     $('#MdlUnitName').html("Unit: " + Item.UnitName);                   
-                    $('#MdlSupplierName').html("Supplier Name: " + Item.SupplierName);                   
+                    $('#MdlSupplierName').html("Supplier Name: " + Item.SupplierName);  
+                    if (Item.ImagePath) {
+                        $('#MdlImage').attr("src", Item.ImagePath).show();
+                    } else {
+                        $('#MdlImage').hide(); // Hide the image element if no image is available
+                    }
                     $("#modal-default").modal("show");
                 }
                 else {
@@ -404,6 +439,7 @@ var ItemHelper = {
                 txtDescriptionBN: "required",                
                 txtUnitPrice: "required",                
                 txtMRP: "required",                
+                fileUpload: "required",                
                 cmbBrandId: {
                     required: true,
                     notZero: "" 
@@ -427,6 +463,7 @@ var ItemHelper = {
                 txtDescription: "Item Description is required",                
                 txtUnitPrice: "Item Unit Price is required",                
                 txtMRP: "Item MRP is required",                
+                fileUpload: "File is  required",                
                 txtNameBN: "নাম প্রয়োজন",
                 txtDescriptionBN: "বর্ণনা প্রয়োজন",               
                 cmbSupplierId: "Please select a Supplier company",

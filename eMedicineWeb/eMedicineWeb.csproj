@@ -6723,7 +6723,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\ccBack.jpg" />
-    <Content Include="images\ccBack1.jpg" />
+    <Content Include="images\ccBack2.jpg" />
     <Content Include="images\CC_Blue.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7408,6 +7408,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

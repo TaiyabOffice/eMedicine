@@ -7,9 +7,8 @@ $(document).ready(function () {
        
         const query = $(this).val().trim();
         const productList = document.getElementById('product-list');
-        if (query.length > 0) {  // Trigger search after 3 characters
-            $.ajax({
-                //url: '@Url.Action("GetItems", "Order")',
+        if (query.length > 0) {
+            $.ajax({                
                 url: '/Order/GetItems',
                 method: 'GET',
                 data: { item: query },
@@ -23,7 +22,10 @@ $(document).ready(function () {
                             name: item.ItemName,
                             price: item.UnitPrice,
                             quantity: 1,
-                            mrp: item.MRP
+                            mrp: item.MRP,
+                            imagePath: item.ImagePath,
+                            itemDescription: item.ItemDescription
+
                         }));                       
                         
                         productList.innerHTML = '';
@@ -31,12 +33,18 @@ $(document).ready(function () {
                             const productDiv = document.createElement('div');
                             productDiv.className = 'product';
                             productDiv.innerHTML =
-                                '<div>' + item.ItemName + '</div>' +
-                                '<div>Price: $' + item.UnitPrice + '</div>' +
-                                '<div>MRP: $' + item.MRP + '</div>' +
+                                '<img src="' + item.ImagePath + '" alt="' + item.ItemName + '">' +
+                                '<div class="product-details">' +
+                                '<h3>' + item.ItemName + '</h3>' +                               
+                                '<p>' + item.ItemDescription + '</p>' +
+                                '<p>Price: $' + item.UnitPrice + '</p>' +
+                                '<p>MRP: $' + item.MRP + '</p>' +
+                                '</div>' +
                                 '<button onclick="OrderHelper.addToCart(' + item.ItemId + ')">Add to Cart</button>';
+
                             productList.appendChild(productDiv);
                         });
+
                     } else {  
                        
                         productList.appendChild("NO data Found");
@@ -52,16 +60,18 @@ $(document).ready(function () {
         }
     });
 
-
-    OrderHelper.loadCartFromCache();
-    //OrderHelper.renderProducts();
+    OrderHelper.loadCartFromCache();   
     $("#btnSaveOrder").click(function () {
         OrderHelper.saveOrderList()
     });
-
     $("#btnClear").click(function () {
         OrderHelper.clearCart()
     });
+
+    $("#mdlShow").click(function () {
+        $("#modal-default").modal("show");
+    });
+    
 });
 var OrderHelper = {
     loadCartFromCache: function () {
@@ -73,21 +83,7 @@ var OrderHelper = {
     },
     saveCartToCache: function () {
         localStorage.setItem('cart', JSON.stringify(cart));
-    },
-    //renderProducts: function () {
-    //    const productList = document.getElementById('product-list');
-    //    productList.innerHTML = '';
-
-    //    products.forEach(product => {
-    //        const productDiv = document.createElement('div');
-    //        productDiv.className = 'product';
-    //        productDiv.innerHTML =
-    //            '<div>' + product.name + '</div>' +
-    //            '<div>Price: $' + product.price + '</div>' +
-    //            '<button onclick="OrderHelper.addToCart(' + product.id + ')">Add to Cart</button>';
-    //        productList.appendChild(productDiv);
-    //    });
-    //},
+    },   
     addToCart: function (productId) {
         const product = products.find(p => p.id == productId); // Find product by ID
 
@@ -111,34 +107,36 @@ var OrderHelper = {
         }
     },
     updateCart: function () {
-        const cartItemsContainer = document.getElementById('cart-items');
-        cartItemsContainer.innerHTML = '';
-
+        const cartItemsTableBody = document.getElementById('cart-items');
+        const cartBadge = document.getElementById('cart-badge'); 
+        const cartTotal = document.getElementById('cart-total');
+        cartItemsTableBody.innerHTML = '';
         let total = 0;
 
         cart.forEach(item => {
-            const cartItemDiv = document.createElement('div');
-            cartItemDiv.className = 'cart-item';
-            cartItemDiv.setAttribute('data-id', item.id);
-            cartItemDiv.setAttribute('data-name', item.name);
-            cartItemDiv.setAttribute('data-price', item.price);
-            cartItemDiv.setAttribute('data-quantity', item.quantity);
-
-            cartItemDiv.innerHTML =
-                `<span class="item-name">${item.name}</span> ` +
-                `<span class="item-price">$${item.price}</span> ` +
-                `<span class="item-quantity">${item.quantity}</span> ` +
-                `<button onclick="OrderHelper.addToCart(${item.id})">+</button>` +
-                `<button onclick="OrderHelper.decreaseQuantity(${item.id})">-</button>` +
-                `<button onclick="OrderHelper.removeFromCart(${item.id})">Remove</button>`;
-
-            cartItemsContainer.appendChild(cartItemDiv);
-
+            const cartItemRow = document.createElement('tr');
+            cartItemRow.setAttribute('data-id', item.id);
+            cartItemRow.innerHTML =
+                '<td class="item-name">' + item.name + '</td>' +
+                '<td class="item-price">$' + item.price + '</td>' +
+                '<td class="item-quantity">' + item.quantity + '</td>' +
+                '<td>' +
+                '<button onclick="OrderHelper.addToCart(' + item.id + ')">+</button>' +
+                '<button onclick="OrderHelper.decreaseQuantity(' + item.id + ')">-</button>' +
+                '<button onclick="OrderHelper.removeFromCart(' + item.id + ')">Remove</button>' +
+                '</td>';                
+            cartItemsTableBody.appendChild(cartItemRow);            
             total += item.price * item.quantity;
         });
-        document.getElementById('cart-total').textContent = total.toFixed(2);
-        document.getElementById('cart-totalItem').textContent = cart.length;;
+        const totalRow = document.createElement('tr');
+        totalRow.className = 'total-row';
+        totalRow.innerHTML =
+            '<td colspan="3" class="total-label">Total:</td>' +
+            '<td class="total-value">$' + total.toFixed(2) + '</td>';            
+        cartItemsTableBody.appendChild(totalRow);              
+        cartBadge.textContent = cart.length;
     },
+
     decreaseQuantity: function (productId) {
         const cartItem = cart.find(item => item.id == productId);
 
@@ -159,20 +157,27 @@ var OrderHelper = {
     },
     getCartItems: function () {
         const cartItems = [];
-        document.querySelectorAll('.cart-item').forEach(item => {
-            const cartItem = {
-                Id: item.getAttribute('data-id'),
-                Name: item.getAttribute('data-name'),
-                Price: item.getAttribute('data-price'),
-                Quantity: item.getAttribute('data-quantity')
-            };
+        const cartRows = document.querySelectorAll('#cart-items tr');
+        cartRows.forEach(row => {            
+            const nameCell = row.querySelector('.item-name');
+            const priceCell = row.querySelector('.item-price');
+            const quantityCell = row.querySelector('.item-quantity');
+            
+            if (nameCell && priceCell && quantityCell) {
+                const cartItem = {
+                    Id: row.getAttribute('data-id'),
+                    Name: nameCell.textContent.trim(),
+                    Price: parseFloat(priceCell.textContent.replace('$', '').trim()),
+                    Quantity: parseInt(quantityCell.textContent.trim(), 10)
+                };
 
-            cartItems.push(cartItem);
+                cartItems.push(cartItem);
+            }
         });
-
-        console.log(cartItems);
         return cartItems;
     },
+
+
     saveOrderList: function () {
         const cartItems = OrderHelper.getCartItems();
         $.ajax({

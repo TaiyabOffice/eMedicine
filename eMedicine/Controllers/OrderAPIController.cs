@@ -96,7 +96,9 @@ namespace eMedicine.Controllers
                                           ItemId = dr["ItemId"].ToString(),
                                           ItemName = dr["ItemName"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),                                         
-                                          MRP = dr["MRP"].ToString()                                         
+                                          MRP = dr["MRP"].ToString(),                                         
+                                          ImagePath = dr["ImagePath"].ToString(),                                         
+                                          ItemDescription = dr["ItemDescription"].ToString() 
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemList });
 

@@ -31,26 +31,33 @@ namespace eMedicineWeb.Controllers
 
         [HttpPost]
         public async Task<ActionResult> SaveOrderList(List<OrderViewModel> OrderItems)
-        {
+        {            
             if (!ModelState.IsValid)
             {
-                return Json(new { success = false, message = "Failed Insert Brand details." });
+                return Json(new { success = false, message = "Failed to validate input." });
             }
+            bool allSucceeded = true;           
             foreach (var item in OrderItems)
             {
                 string data = JsonConvert.SerializeObject(item);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/SaveOrder", content);
 
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    return Json(new { success = true, message = "Brand create Successfully" });
+                    allSucceeded = false;
+                    break;
                 }
+            }          
+            if (allSucceeded)
+            {
+                return Json(new { success = true, message = "All orders were created successfully." });
             }
-            
-            ModelState.AddModelError("", "Unable to create Brand. Please try again.");
-            return Json(new { success = false, message = "Failed to retrieve Brand details." });
+
+            ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
+            return Json(new { success = false, message = "Failed to save orders." });
         }
+
 
         public async Task<ActionResult> GetItems(string item)
         {

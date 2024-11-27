@@ -3,11 +3,10 @@ let cart = [];
 let products = [];
 let rowId = "";
 $(document).ready(function () {
-    $('#ItemSearch').on('keyup', function () {
-       
+    $('#ItemSearch').on('keyup', function () {       
         const query = $(this).val().trim();
         const productList = document.getElementById('product-list');
-        if (query.length > 0) {
+        if (query.length >= 2) {
             $.ajax({                
                 url: '/Order/GetItems',
                 method: 'GET',
@@ -16,6 +15,7 @@ $(document).ready(function () {
                 success: function (response) {                                   
                     if (response.data.length > 0)
                     {
+                        $("#titleHeder").html("Item Information");                        
                         products = [];
                         products = response.data.map(item => ({
                             id: item.ItemId,
@@ -55,6 +55,7 @@ $(document).ready(function () {
                 }
             });
         } else {
+            $("#titleHeder").html("");  
             productList.innerHTML = '';
             products = [];          
         }
@@ -69,6 +70,17 @@ $(document).ready(function () {
     });
 
     $("#mdlShow").click(function () {
+        const cartItems = OrderHelper.getCartItems();
+        if (cartItems.length == 0) {
+            swal({
+                title: "Sorry!",
+                text: "Please Add item to Cart",
+                type: "error",
+                closeOnConfirm: false,
+                //timer: 2000
+            });
+            return;
+        }
         $("#modal-default").modal("show");
     });
     
@@ -85,13 +97,12 @@ var OrderHelper = {
         localStorage.setItem('cart', JSON.stringify(cart));
     },   
     addToCart: function (productId) {
-        const product = products.find(p => p.id == productId); // Find product by ID
+        const product = products.find(p => p.id == productId);
 
         if (product) {
             const cartItem = cart.find(item => item.id == productId);
-
             if (cartItem) {
-                cartItem.quantity++; // Increment quantity if product is already in cart
+                cartItem.quantity++;
             } else {
                 cart.push({
                     id: product.id,
@@ -100,8 +111,8 @@ var OrderHelper = {
                     quantity: 1
                 });
             }
-            this.updateCart(); // Update the cart display
-            this.saveCartToCache(); // Save updated cart to local storage
+            this.updateCart();
+            this.saveCartToCache();
         } else {
             console.error('Product not found:', productId);
         }
@@ -121,9 +132,9 @@ var OrderHelper = {
                 '<td class="item-price">$' + item.price + '</td>' +
                 '<td class="item-quantity">' + item.quantity + '</td>' +
                 '<td>' +
-                '<button onclick="OrderHelper.addToCart(' + item.id + ')">+</button>' +
-                '<button onclick="OrderHelper.decreaseQuantity(' + item.id + ')">-</button>' +
-                '<button onclick="OrderHelper.removeFromCart(' + item.id + ')">Remove</button>' +
+            '<button onclick="OrderHelper.IncreseQuantity(' + item.id + ')">+</button> &nbsp; ' +
+                '<button onclick="OrderHelper.decreaseQuantity(' + item.id + ')">-</button> &nbsp;' +
+                '<button class="fa fa-trash-o" style="font-size:20px;color:red" onclick="OrderHelper.removeFromCart(' + item.id + ')"></button>' +
                 '</td>';                
             cartItemsTableBody.appendChild(cartItemRow);            
             total += item.price * item.quantity;
@@ -150,6 +161,17 @@ var OrderHelper = {
         }
         this.saveCartToCache();
     },
+    IncreseQuantity: function (productId) {
+        const cartItem = cart.find(item => item.id == productId);
+
+        if (cartItem) {
+            cartItem.quantity += 1;
+            if (cartItem.quantity > 0) {
+                this.updateCart();
+            } 
+        }
+        this.saveCartToCache();
+    },
     removeFromCart: function (productId) {
         cart = cart.filter(item => item.id != productId);
         this.updateCart();
@@ -165,10 +187,13 @@ var OrderHelper = {
             
             if (nameCell && priceCell && quantityCell) {
                 const cartItem = {
-                    Id: row.getAttribute('data-id'),
+                    OrderId: "000000000000",
+                    ItemId: row.getAttribute('data-id'),
                     Name: nameCell.textContent.trim(),
-                    Price: parseFloat(priceCell.textContent.replace('$', '').trim()),
-                    Quantity: parseInt(quantityCell.textContent.trim(), 10)
+                    UnitPrice: parseFloat(priceCell.textContent.replace('$', '').trim()),
+                    Quantity: parseInt(quantityCell.textContent.trim(), 10),
+                    OrderdBy: $('#hdnUserId').val(),
+                    OrderdDate: $('#hdnDateToday').val()
                 };
 
                 cartItems.push(cartItem);
@@ -180,6 +205,17 @@ var OrderHelper = {
 
     saveOrderList: function () {
         const cartItems = OrderHelper.getCartItems();
+        if (cartItems.length == 0)
+        {
+            swal({
+                title: "Sorry!",
+                text: "No Items Found!",
+                type: "error",
+                closeOnConfirm: false,
+                //timer: 2000
+            });
+            return;
+        }
         $.ajax({
             url: '/Order/SaveOrderList',
             type: 'POST',
@@ -187,9 +223,23 @@ var OrderHelper = {
             data: JSON.stringify(cartItems),
             success: function (response) {
                 if (response.success) {
-                    alert('Order saved successfully! Order ID: ' + response.orderId);
+                    swal({
+                        title: "Congratulations",
+                        text: "Saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    OrderHelper.clearCart()
                 } else {
-                    alert('Failed to save the order: ' + response.message);
+                    swal({
+                        title: "Sorry!",
+                        text: "Saved Failde!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
                 }
             },
             error: function (xhr, status, error) {
@@ -199,10 +249,11 @@ var OrderHelper = {
         });
     },
     clearCart: function () {
+        
         cart = [];
         this.updateCart();
         localStorage.removeItem('cart');
-        alert('Your cart has been cleared!');
+        //alert('Your cart has been cleared!');
     },
 
 };

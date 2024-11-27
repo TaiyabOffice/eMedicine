@@ -62,7 +62,6 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
-
     </style>
 </head>
 <section class="content">
@@ -73,17 +72,20 @@
         <div class="col-sm-12">
             <div class="box box-solid box-primary" style="margin-top:15px;">
                 <div class="box-header">
-                    <h3 class="box-title">Order Information</h3>
-                    <input type="text" id="ItemSearch" placeholder="Search Items..." class="form-control">
-                    <div class="cart-icon" id="mdlShow">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon">
-                            <path d="M7 4h-2V2h4v2h6V2h4v2h-2l1.68 10.92A3 3 0 0 1 17.72 18H6.28a3 3 0 0 1-2.96-3.08L4 4zM5 4v10h14V4zm4 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm10 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
-                        </svg>
-                        <div class="cart-badge" id="cart-badge">0</div>
+                    <div class="col-sm-11">
+                        <input type="text" id="ItemSearch" placeholder="Search Items..." class="form-control">
                     </div>
+                    <div class="col-sm-1">
+                        <div class="cart-icon pull-right" id="mdlShow">
+                            <svg xmlns="" viewBox="0 0 24 24" class="icon">
+                                <path d="M7 4h-2V2h4v2h6V2h4v2h-2l1.68 10.92A3 3 0 0 1 17.72 18H6.28a3 3 0 0 1-2.96-3.08L4 4zM5 4v10h14V4zm4 16a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm10 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0z" />
+                            </svg>
+                            <div class="cart-badge" id="cart-badge">0</div>
+                        </div>
+                    </div>                    
                 </div>
                 <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
-                    <h3>Item Information</h3>
+                    <h3 id="titleHeder"></h3>
                     <div id="product-list">
                     </div>
                 </div>

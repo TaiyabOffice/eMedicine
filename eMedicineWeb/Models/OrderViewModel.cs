@@ -7,10 +7,13 @@ namespace eMedicineWeb.Models
 {
     public class OrderViewModel
     {
-        public string Id { get; set; }       // Product ID
-        public string Name { get; set; } // Product Name
-        public string Price { get; set; } // Price per unit
+        public string OrderId { get; set; }
+        public string ItemId { get; set; }
+        public string Name { get; set; }
         public string Quantity { get; set; }
+        public string UnitPrice { get; set; }
+        public string OrderdBy { get; set; }
+        public string OrderdDate { get; set; }
     }
     public class OrderResponse
     {

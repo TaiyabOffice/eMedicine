@@ -24,7 +24,7 @@ namespace eMedicine.Controllers
             try
             {
 
-                var ds = await this.repo.GetAll("", "sp_Entryorder", "CREATEorder", order.Id, order.Name, order.Price, order.Quantity);
+                var ds = await this.repo.GetAll("", "sp_EntryOrder", "CREATEORDER", order.OrderId, order.ItemId, order.UnitPrice, order.Quantity, order.OrderdBy, order.OrderdDate);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -54,19 +54,19 @@ namespace eMedicine.Controllers
             {
                 if (orderItems == null || orderItems.Count == 0)
                 {
-                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "Order Create Failed." });
+                    return new JsonResult(new { Success = false, Data = new List<Order>(), Message = "Order Create Failed." });
                 }
                 foreach (var item in orderItems)
                 {
-                    var ds = await this.repo.GetAll("", "sp_EntryBrand", "CREATEBRAND", item.Id, item.Name, item.Price, item.Quantity);
+                    var ds = await this.repo.GetAll("", "sp_EntryOrder", "CREATEORDER", item.OrderId, item.ItemId, item.UnitPrice, item.Quantity, item.OrderdBy, item.OrderdDate);
                 }
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "Brand Create Failed." });
+                    return new JsonResult(new { Success = false, Data = new List<Order>(), Message = "Order Create Failed." });
                 }
                 else
                 {
-                    return new JsonResult(new { Success = true, Data = new List<Brand>(), Message = "Brand Create Successfully." });
+                    return new JsonResult(new { Success = true, Data = new List<Order>(), Message = "Order Create Successfully." });
                 }
             }
             catch (Exception ex)
@@ -74,7 +74,7 @@ namespace eMedicine.Controllers
                 return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
-                    Message = "An error occurred while retrieving the Brand.",
+                    Message = "An error occurred while retrieving the Order.",
                     Details = ex.Message
                 });
             }

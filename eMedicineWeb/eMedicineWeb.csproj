@@ -7356,6 +7356,7 @@
     <Content Include="Scripts\Duplicate.js" />
     <Content Include="Scripts\eMedicine\Brand\UIEntryBrand.js" />
     <Content Include="Scripts\eMedicine\Company\UIEntryCompany.js" />
+    <Content Include="Scripts\eMedicine\DashBoard\UIDashBoard.js" />
     <Content Include="Scripts\eMedicine\Item\UIEntryItem.js" />
     <Content Include="Scripts\eMedicine\Item\UIItemList.js" />
     <Content Include="Scripts\eMedicine\Order\UIEntryOrder.js" />

@@ -2,15 +2,12 @@
     ViewBag.Title = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <script type="text/javascript">
 
     function preventBack() { window.history.forward(); }
     setTimeout("preventBack()", 0);
     window.onunload = function () { null };
     sessionStorage.clear();
-
-
 </script>
 <section class="content">
     <div class="row">
@@ -626,8 +623,13 @@
                     <a href="javascript:void(0)" class="uppercase">View All Products</a>
                 </div>
             </div>
-        <!-- /.col -->
-    </div>
-    <!-- /.row -->
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
 </section>
+@section Scripts {
+    @Scripts.Render("~/Scripts/eMedicine/DashBoard/UIDashBoard.js")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
+
 

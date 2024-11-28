@@ -63,7 +63,25 @@ $(document).ready(function () {
 
     OrderHelper.loadCartFromCache();   
     $("#btnSaveOrder").click(function () {
-        OrderHelper.saveOrderList()
+
+        swal({
+            title: "",
+            text: "Are you sure to save?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonClass: "btn-danger",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: false,
+            closeOnCancel: true,
+            //timer: 500
+        },
+            function (isConfirm) {
+                if (isConfirm) {                    
+                    OrderHelper.saveOrderList();
+                }
+            });
+       
     });
     $("#btnClear").click(function () {
         OrderHelper.clearCart()
@@ -203,7 +221,8 @@ var OrderHelper = {
     },
 
 
-    saveOrderList: function () {
+    saveOrderList: function ()
+    {
         const cartItems = OrderHelper.getCartItems();
         if (cartItems.length == 0)
         {

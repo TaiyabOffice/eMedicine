@@ -3,7 +3,7 @@ using eMedicine.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
-
+using FastMember;
 namespace eMedicine.Controllers
 {
     [Route("api/[controller]")]
@@ -18,13 +18,29 @@ namespace eMedicine.Controllers
         }
 
 
-        [HttpPost("SaveOrder")]
-        public async Task<IActionResult> SaveOrder([FromBody] Order order)
+        [HttpPost("SaveOrders")]
+        public async Task<IActionResult> SaveOrders([FromBody] List<Order> orders)
         {
             try
             {
+                DataTable itemListdt = new DataTable();
+                try
+                {
+                    using (var reader = ObjectReader.Create(orders))
+                    {
+                        itemListdt.Load(reader);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //
+                }
+                itemListdt.TableName = "Table";
 
-                var ds = await this.repo.GetAll("", "sp_EntryOrder", "CREATEORDER", order.OrderId, order.ItemId, order.UnitPrice, order.Quantity, order.OrderdBy, order.OrderdDate);
+                DataSet dstrnd = new DataSet("dsItemList");
+                dstrnd.Tables.Add(itemListdt);
+
+                var ds = await this.repo.SaveUsingDataSet("", "sp_EntryOrder", "CREATEORDER", dstrnd);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -115,5 +131,6 @@ namespace eMedicine.Controllers
             }
 
         }
+
     }
 }

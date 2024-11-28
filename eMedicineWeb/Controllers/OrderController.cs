@@ -29,29 +29,49 @@ namespace eMedicineWeb.Controllers
             return View();
         }
 
+        // [HttpPost]
+        //public async Task<ActionResult> SaveOrderList(List<OrderViewModel> OrderItems)
+        //{            
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Json(new { success = false, message = "Failed to validate input." });
+        //    }
+        //    bool allSucceeded = true;           
+        //    foreach (var item in OrderItems)
+        //    {
+        //        string data = JsonConvert.SerializeObject(item);
+        //        StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/SaveOrder", content);
+
+        //        if (!response.IsSuccessStatusCode)
+        //        {
+        //            allSucceeded = false;
+        //            break;
+        //        }
+        //    }          
+        //    if (allSucceeded)
+        //    {
+        //        return Json(new { success = true, message = "All orders were created successfully." });
+        //    }
+
+        //    ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
+        //    return Json(new { success = false, message = "Failed to save orders." });
+        //}
+
         [HttpPost]
         public async Task<ActionResult> SaveOrderList(List<OrderViewModel> OrderItems)
-        {            
+        {
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed to validate input." });
             }
-            bool allSucceeded = true;           
-            foreach (var item in OrderItems)
-            {
-                string data = JsonConvert.SerializeObject(item);
-                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/SaveOrder", content);
+            string data = JsonConvert.SerializeObject(OrderItems);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/SaveOrders", content);
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    allSucceeded = false;
-                    break;
-                }
-            }          
-            if (allSucceeded)
+            if (response.IsSuccessStatusCode)
             {
-                return Json(new { success = true, message = "All orders were created successfully." });
+                return Json(new { success = true, message = "Order create Successfully" });
             }
 
             ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");

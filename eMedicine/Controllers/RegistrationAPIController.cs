@@ -93,18 +93,21 @@ namespace eMedicine.Controllers
             {
                 bool status = false;                 
                 var ds = await repo.GetAll("", "sp_EntryRegistration", "UPDATEUSERBYID", UserId, isActive);
-
-                // Check if dataset is valid and contains data
+               
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
                     status = false;
                     return new JsonResult(status);
-                }               
-                return new JsonResult(status);
+                }
+                else
+                {
+                    status = true;
+                    return new JsonResult(status);
+                }
+               
             }
             catch (Exception ex)
-            {
-                // Log the exception (implement your logging mechanism here)
+            {              
                 return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
@@ -123,11 +126,48 @@ namespace eMedicine.Controllers
             encodedBytes = md5.ComputeHash(originalBytes);
             return BitConverter.ToString(encodedBytes);
         }
+
         public static string StrReverse(string s)
         {
             char[] arr = s.ToCharArray();
             Array.Reverse(arr);
             return new string(arr);
+        }
+
+        [HttpGet("RecoverPassword")]
+        public async Task<IActionResult> RecoverPassword(string PhoneNumber, string UserPass)
+        {
+            try
+            {
+                bool status = false;               
+                var ds = await repo.GetAll("", "sp_EntryRegistration", "RECOVERPASSWORD", PhoneNumber, EncodeMD5(UserPass));
+              
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    status = false;
+                    return new JsonResult(status);
+                }
+                else if (ds.Tables[0].Rows[0]["UserId"].ToString() == "NE")
+                {
+                    status = false;                   
+                    return new JsonResult(new { Success = false, Message = "NE" });
+                }
+                else
+                {
+                    status = true;
+                    return new JsonResult(status);
+                }
+                
+            }
+            catch (Exception ex)
+            {                
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Password.",
+                    Details = ex.Message
+                });
+            }
         }
     }
 }

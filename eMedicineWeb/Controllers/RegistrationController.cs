@@ -112,6 +112,28 @@ namespace eMedicineWeb.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult RecoverPassword(string PhoneNumber, string UserPass)
+        {
+            bool status = false;
+            try
+            {
+                string requestUrl = $"{client.BaseAddress}/RecoverPassword?PhoneNumber={Uri.EscapeDataString(PhoneNumber)}&isActive={Uri.EscapeDataString(UserPass)}";
 
+                HttpResponseMessage response = client.GetAsync(requestUrl).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    status = true;
+
+                }
+            }
+            catch (JsonSerializationException)
+            {
+                status = false;
+            }
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
     }
 }

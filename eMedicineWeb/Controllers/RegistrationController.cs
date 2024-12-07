@@ -112,6 +112,11 @@ namespace eMedicineWeb.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult UIRecoverPassword()
+        {
+            return View();
+        }
+
         [HttpPost]
         public ActionResult RecoverPassword(string PhoneNumber, string UserPass)
         {

@@ -20,5 +20,6 @@
         public string PageName { get; set; }
         public string PageUrl { get; set; }
         public string MenuSequenceNo { get; set; }
+        public string ImagePath { get; set; }
     }
 }

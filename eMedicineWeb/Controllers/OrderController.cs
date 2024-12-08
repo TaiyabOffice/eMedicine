@@ -29,35 +29,6 @@ namespace eMedicineWeb.Controllers
             return View();
         }
 
-        // [HttpPost]
-        //public async Task<ActionResult> SaveOrderList(List<OrderViewModel> OrderItems)
-        //{            
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Json(new { success = false, message = "Failed to validate input." });
-        //    }
-        //    bool allSucceeded = true;           
-        //    foreach (var item in OrderItems)
-        //    {
-        //        string data = JsonConvert.SerializeObject(item);
-        //        StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-        //        HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/SaveOrder", content);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            allSucceeded = false;
-        //            break;
-        //        }
-        //    }          
-        //    if (allSucceeded)
-        //    {
-        //        return Json(new { success = true, message = "All orders were created successfully." });
-        //    }
-
-        //    ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
-        //    return Json(new { success = false, message = "Failed to save orders." });
-        //}
-
         [HttpPost]
         public async Task<ActionResult> SaveOrderList(List<OrderViewModel> OrderItems)
         {
@@ -77,8 +48,6 @@ namespace eMedicineWeb.Controllers
             ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
             return Json(new { success = false, message = "Failed to save orders." });
         }
-
-
         public async Task<ActionResult> GetItems(string item)
         {
             List<ItemViewModel> ItemList = new List<ItemViewModel>();
@@ -123,6 +92,38 @@ namespace eMedicineWeb.Controllers
             try
             {
                 HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllOrders");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<OrderListResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            OrdersList = Response?.Data ?? new List<OrderListViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Orders. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = true, data = OrdersList }, JsonRequestBehavior.AllowGet);
+        }
+
+        public async Task<ActionResult> GetDetailsByOrderID(string OrderId)
+        {
+            List<OrderListViewModel> OrdersList = new List<OrderListViewModel>();
+
+            try
+            {
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetDetailsByOrderID/" + OrderId).Result;
 
                 if (response.IsSuccessStatusCode)
                 {

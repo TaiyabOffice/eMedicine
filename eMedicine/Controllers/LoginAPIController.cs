@@ -101,7 +101,7 @@ namespace eMedicine.Controllers
         {
             try
             {
-                var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETAPPMENU");
+                var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETAPPMENUS");
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
                     return new JsonResult(new { Success = false, Message = "No Menu found.", Data = new List<Menu>() });
@@ -109,12 +109,10 @@ namespace eMedicine.Controllers
                 var GetMenuDetails = (from DataRow dr in ds.Tables[0].Rows
                                       select new Menu()
                                       {
-                                          MenuID = dr["MenuID"].ToString(),
-                                          ParentID = dr["ParentID"].ToString(),
+                                          MenuID = dr["MenuID"].ToString(),                                         
                                           MenuName = dr["MenuName"].ToString(),
                                           PageName = dr["PageName"].ToString(),
-                                          PageUrl = dr["PageUrl"].ToString(),
-                                          MenuSequenceNo = dr["MenuSequenceNo"].ToString(),
+                                          PageUrl = dr["PageUrl"].ToString(),                                        
                                           ImagePath = dr["ImagePath"].ToString()
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetMenuDetails });

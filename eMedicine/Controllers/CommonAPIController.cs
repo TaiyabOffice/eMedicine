@@ -55,7 +55,7 @@ namespace eMedicine.Controllers
         {
             try
             {
-                var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETALLCATEGORIES");
+                var ds = await this.repo.GetAll("", "sp_SelectCompany", "GETALLCATEGORIES");
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
                     return new JsonResult(new { Success = false, Message = "No Categories found.", Data = new List<Categories>() });

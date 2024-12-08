@@ -17,7 +17,6 @@ namespace eMedicine.Controllers
             this.repo = repo;
         }
 
-
         [HttpPost("SaveOrders")]
         public async Task<IActionResult> SaveOrders([FromBody] List<Order> orders)
         {
@@ -130,6 +129,42 @@ namespace eMedicine.Controllers
                 });
             }
 
+        }
+
+        [HttpGet("GetAllOrders")]
+        public async Task<IActionResult> GetAllOrders()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectOrder", "GETALLORDERLIST");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<OrderList>(), Message = "No Order List found." });
+                }
+                var GetOrderList = (from DataRow dr in ds.Tables[0].Rows
+                                       select new OrderList()
+                                       {
+                                           OrderId = dr["OrderId"].ToString(),
+                                           OrderDate = dr["OrderDate"].ToString(),
+                                           OrderBy = dr["OrderBy"].ToString(),
+                                           CustomerName = dr["CustomerName"].ToString(),
+                                           CustomerPhone = dr["CustomerPhone"].ToString(),                                           
+                                           SalesPersonName = dr["SalesPersonName"].ToString(),
+                                           IsDelivered = dr["IsDelivered"].ToString()                                           
+                                       }).ToList();
+                return new JsonResult(new { Success = true, Data = GetOrderList });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Order List.",
+                    Details = ex.Message
+                });
+            }
         }
 
     }

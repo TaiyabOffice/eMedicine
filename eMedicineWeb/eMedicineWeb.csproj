@@ -7359,6 +7359,7 @@
     <Content Include="Scripts\eMedicine\DashBoard\UIDashBoard.js" />
     <Content Include="Scripts\eMedicine\Item\UIEntryItem.js" />
     <Content Include="Scripts\eMedicine\Item\UIItemList.js" />
+    <Content Include="Scripts\eMedicine\Order\UIOrderList.js" />
     <Content Include="Scripts\eMedicine\Order\UIEntryOrder.js" />
     <Content Include="Scripts\eMedicine\Registration\UIUserList.js" />
     <Content Include="Scripts\eMedicine\Registration\UIEntryRegister.js" />
@@ -7406,6 +7407,7 @@
     <Content Include="Views\Item\UIEntryItem.cshtml" />
     <Content Include="Views\Order\UIEntryOrder.cshtml" />
     <Content Include="Views\Item\UIItemList.cshtml" />
+    <Content Include="Views\Order\UIOrderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

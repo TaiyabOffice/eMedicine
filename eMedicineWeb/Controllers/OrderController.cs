@@ -101,7 +101,7 @@ namespace eMedicineWeb.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Failed to retrieve Brand. Please try again later." }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "Failed to retrieve Orders. Please try again later." }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
@@ -109,6 +109,43 @@ namespace eMedicineWeb.Controllers
                 return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { success = true, data = ItemList }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UIOrderList()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> GetAllOrders()
+        {
+            List<OrderListViewModel> OrdersList = new List<OrderListViewModel>();
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllOrders");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<OrderListResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            OrdersList = Response?.Data ?? new List<OrderListViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Orders. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = true, data = OrdersList }, JsonRequestBehavior.AllowGet);
         }
     }
 }

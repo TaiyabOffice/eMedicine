@@ -123,22 +123,28 @@ namespace eMedicineWeb.Controllers
             bool status = false;
             try
             {
-                string requestUrl = $"{client.BaseAddress}/RecoverPassword?PhoneNumber={Uri.EscapeDataString(PhoneNumber)}&isActive={Uri.EscapeDataString(UserPass)}";
+                string requestUrl = $"{client.BaseAddress}/RecoverPassword?PhoneNumber={Uri.EscapeDataString(PhoneNumber)}&UserPass={Uri.EscapeDataString(UserPass)}";
 
                 HttpResponseMessage response = client.GetAsync(requestUrl).Result;
-
-                if (response.IsSuccessStatusCode)
+                string data = response.Content.ReadAsStringAsync().Result;
+                var loginResponse = JsonConvert.DeserializeObject<RegistrationResponse>(data);
+                if (loginResponse.Success)
                 {
                     status = true;
-
                 }
+                else if(loginResponse.Message == "NE")
+                {                    
+                    status = false;
+                    return Json(new { success = false, message = loginResponse.Message }, JsonRequestBehavior.AllowGet);
+                }
+                
             }
             catch (JsonSerializationException)
             {
                 status = false;
             }
 
-            return Json(status, JsonRequestBehavior.AllowGet);
+            return Json(new { success = true, RedirectUrl = Url.Action("Login", "Login") }, JsonRequestBehavior.AllowGet);
         }
     }
 }

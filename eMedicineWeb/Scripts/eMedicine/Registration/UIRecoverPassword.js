@@ -119,6 +119,7 @@ var PasswordRecoveryHelper = {
             type: "POST",
             data: { PhoneNumber: phoneNumber, UserPass: newPassword },
             success: function (response) {
+               // console.log(response);
                 if (response.success) {
                     swal({
                         title: "Congratulation!!",
@@ -128,6 +129,17 @@ var PasswordRecoveryHelper = {
 
                     });
                     window.location.href = response.RedirectUrl;
+                    //location.reload();
+                    $("body").removeClass("loading");
+                }
+                    else if (response.message=="NE") {
+                    swal({
+                        title: "Sorry!",
+                        text: "Failed to save!",
+                        type: "error",
+                        closeOnConfirm: false,
+                    });
+                    //window.location.href = response.RedirectUrl;
                     //location.reload();
                     $("body").removeClass("loading");
                 } else {

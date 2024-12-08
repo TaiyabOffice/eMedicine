@@ -19,6 +19,7 @@ namespace eMedicine.Controllers
         {
             this.repo = repo;
         }
+
         [HttpGet("LogIn")]
         public async Task<IActionResult> LogIn(string UserName, string UserPassword)
         {
@@ -59,7 +60,6 @@ namespace eMedicine.Controllers
             }
         }
 
-
         [HttpGet("GetMenuById/{UserId}")]
         public async Task<IActionResult> GetMenuById(string UserId)
         {
@@ -96,6 +96,43 @@ namespace eMedicine.Controllers
 
         }
 
+        [HttpGet("GetAppMenu")]
+        public async Task<IActionResult> GetAppMenu()
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETAPPMENU");
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Message = "No Menu found.", Data = new List<Menu>() });
+                }
+                var GetMenuDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Menu()
+                                      {
+                                          MenuID = dr["MenuID"].ToString(),
+                                          ParentID = dr["ParentID"].ToString(),
+                                          MenuName = dr["MenuName"].ToString(),
+                                          PageName = dr["PageName"].ToString(),
+                                          PageUrl = dr["PageUrl"].ToString(),
+                                          MenuSequenceNo = dr["MenuSequenceNo"].ToString(),
+                                          ImagePath = dr["ImagePath"].ToString()
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetMenuDetails });
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (implement your logging mechanism here)
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Menu.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
         public static string EncodeMD5(string originalStr)
         {
             Byte[] originalBytes;
@@ -105,6 +142,7 @@ namespace eMedicine.Controllers
             encodedBytes = md5.ComputeHash(originalBytes);
             return BitConverter.ToString(encodedBytes);
         }
+
         public static string StrReverse(string s)
         {
             char[] arr = s.ToCharArray();

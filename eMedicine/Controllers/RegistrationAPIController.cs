@@ -145,17 +145,18 @@ namespace eMedicine.Controllers
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
                     status = false;
-                    return new JsonResult(status);
+                    //return new JsonResult(status);
+                    return new JsonResult(new { Success = false, Message = "No user found." });
                 }
                 else if (ds.Tables[0].Rows[0]["UserId"].ToString() == "NE")
                 {
-                    status = false;                   
+                    status = false;
                     return new JsonResult(new { Success = false, Message = "NE" });
                 }
                 else
                 {
                     status = true;
-                    return new JsonResult(status);
+                    return new JsonResult(new { Success = true, Message = "Success" });
                 }
                 
             }

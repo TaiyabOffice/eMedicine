@@ -219,8 +219,6 @@ var OrderHelper = {
         });
         return cartItems;
     },
-
-
     saveOrderList: function ()
     {
         const cartItems = OrderHelper.getCartItems();

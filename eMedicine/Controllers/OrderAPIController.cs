@@ -62,39 +62,6 @@ namespace eMedicine.Controllers
             }
         }
 
-        [HttpPost("SaveAPIOrderList")]
-        public async Task<IActionResult> SaveAPIOrderList([FromBody] List<Order> orderItems)
-        {
-            try
-            {
-                if (orderItems == null || orderItems.Count == 0)
-                {
-                    return new JsonResult(new { Success = false, Data = new List<Order>(), Message = "Order Create Failed." });
-                }
-                foreach (var item in orderItems)
-                {
-                    var ds = await this.repo.GetAll("", "sp_EntryOrder", "CREATEORDER", item.OrderId, item.ItemId, item.UnitPrice, item.Quantity, item.OrderdBy, item.OrderdDate);
-                }
-                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
-                {
-                    return new JsonResult(new { Success = false, Data = new List<Order>(), Message = "Order Create Failed." });
-                }
-                else
-                {
-                    return new JsonResult(new { Success = true, Data = new List<Order>(), Message = "Order Create Successfully." });
-                }
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(StatusCodes.Status500InternalServerError, new
-                {
-                    Success = false,
-                    Message = "An error occurred while retrieving the Order.",
-                    Details = ex.Message
-                });
-            }
-        }
-
         [HttpGet("GetItems/{item}")]
         public async Task<IActionResult> GetItems(string item)
         {
@@ -202,6 +169,79 @@ namespace eMedicine.Controllers
                 });
             }
 
+        }
+
+        [HttpPost("ConfirmOrders")]
+        public async Task<IActionResult> ConfirmOrders([FromBody] List<Order> orders)
+        {
+            try
+            {
+                DataTable itemListdt = new DataTable();
+                try
+                {
+                    using (var reader = ObjectReader.Create(orders))
+                    {
+                        itemListdt.Load(reader);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //
+                }
+                itemListdt.TableName = "Table";
+
+                DataSet dstrnd = new DataSet("dsItemList");
+                dstrnd.Tables.Add(itemListdt);
+
+                var ds = await this.repo.SaveUsingDataSet("", "sp_EntryOrder", "CONFIRMORDERS", dstrnd);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Order>(), Message = "Order Confirm Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Order>(), Message = "Order Confirm Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Order Confirm.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("SaveOrderItem")]
+        public async Task<IActionResult> SaveOrderItem([FromBody] Order order)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_EntryOrder", "CREATEORDER", order.OrderId, order.ItemId, order.UnitPrice, order.Quantity, order.OrderdBy, order.OrderdDate);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Order>(), Message = "Order Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Order>(), Message = "Order Create Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Order.",
+                    Details = ex.Message
+                });
+            }
         }
     }
 }

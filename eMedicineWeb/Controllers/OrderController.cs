@@ -148,5 +148,45 @@ namespace eMedicineWeb.Controllers
             }
             return Json(new { success = true, data = OrdersList }, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> ConfirmOrders(List<OrderViewModel> OrderItems)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed to validate input." });
+            }
+            string data = JsonConvert.SerializeObject(OrderItems);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/ConfirmOrders", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Order Confirm Successfully" });
+            }
+
+            ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
+            return Json(new { success = false, message = "Failed to save orders." });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> SaveOrderItem(OrderViewModel OrderItem)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed to validate input." });
+            }
+            string data = JsonConvert.SerializeObject(OrderItem);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/SaveOrderItem", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Order create Successfully" });
+            }
+
+            ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
+            return Json(new { success = false, message = "Failed to save orders." });
+        }
     }
 }

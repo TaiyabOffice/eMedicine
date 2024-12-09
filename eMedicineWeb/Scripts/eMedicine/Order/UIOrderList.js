@@ -20,6 +20,14 @@ $("#tblOrderDtails").on("click", "#btnDelete", function () {
 
 });
 
+$("#btnConfirm").click(function () {
+    OrderListHelper.saveOrderList()
+});
+
+$("#btnAddNew").click(function () {
+    OrderListHelper.SaveOrderItem()
+});
+
 var OrderListHelper = {
     BuildTbl: function (tbldata) {
         $('#tblOrders').DataTable({
@@ -37,8 +45,10 @@ var OrderListHelper = {
                 { data: 'IsDelivered' },
                 {
                     data: null,
-                    render: function (data, type, row) {
-                        return '<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ConfirmedByOrderID(\'' + row.OrderId + '\')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.OrderId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                    render: function (data, type, row, meta) {
+                        return '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.OrderId + '\',' + meta.row + ')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>' +
+                            '<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ConfirmedByOrderID(\'' + row.OrderId + '\',' + meta.row + ')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button>' +                            
+                            '<button id="btnReject" name="btnReject" type="button" title="Reject" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.OrderId + '\',' + meta.row + ')" > <i class="fa fa-close" style="font-size:15px;color:red;padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -55,7 +65,6 @@ var OrderListHelper = {
             ]
         });
     },
-
     BuildTblDetails: function (tbldata) {
         $('#tblOrderDtails').DataTable({
             "footerCallback": function (row, data, start, end, display) {
@@ -149,8 +158,9 @@ var OrderListHelper = {
             }
         });
     },
-    GetDetailsByOrderID: function (OrderId) {
-
+    GetDetailsByOrderID: function (OrderId, rowId) {
+        var table = $("#tblOrders").DataTable();
+        $("#mdlTitle").html('Order Id:'+table.cell(rowId, 1).data() + ', Customer Name: ' + table.cell(rowId, 3).data());
         var jsonParam = { OrderId: OrderId };
         var serviceUrl = "/Order/GetDetailsByOrderID";
 
@@ -159,8 +169,7 @@ var OrderListHelper = {
             type: "POST",
             data: jsonParam,
             success: function (result) {
-                if (result.success) {
-                    //console.log(result.data);
+                if (result.success) {                   
                     OrderListHelper.BuildTblDetails(result.data);
                     $("#modal-default").modal("show");
                 } else {
@@ -210,7 +219,134 @@ var OrderListHelper = {
             return;
         }
         
-    }
+    },
+    CreateDetailsObject: function () {
+        var table = $('#tblOrderDtails').DataTable();
+        var detaildata = table.data();
+        var datalist = [];
+        for (var i = 0; i < detaildata.length; i++) {
+            var obj = new Object();
+            obj.OrderId = table.cell(i, 1).data();
+            obj.ItemId = table.cell(i, 2).data();
+            obj.Name = table.cell(i, 2).data();
+            obj.UnitPrice = table.cell(i, 4).data();
+            obj.Quantity = table.cell(i, 5).data();
+            obj.OrderdBy = $('#hdnUserId').val();
+            obj.OrderdDate = $('#hdnDateToday').val();
+            datalist.push(obj);            
+        }        
+        return datalist;
+    },
+    saveOrderList: function () {
+        const OrderItems = OrderListHelper.CreateDetailsObject();
+        if (OrderItems.length == 0) {
+            swal({
+                title: "Sorry!",
+                text: "No Items Found!",
+                type: "error",
+                closeOnConfirm: false,                
+            });
+            return;
+        }
+        $.ajax({
+            url: '/Order/ConfirmOrders',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(OrderItems),
+            success: function (response) {
+                if (response.success) {
+                    swal({
+                        title: "Congratulations",
+                        text: "Saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });                 
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Saved Failde!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error saving order:', error);
+                alert('An error occurred while saving the order.');
+            }
+        });
+    },
+    SaveOrderItem: function () {        
+            var GenericsData = {
+                GenericsId: $('#txtGenericsId').val() ? "" : "000000000000",
+                GenericsName: $('#txtName').val(),
+                GenericsNameBN: $('#txtNameBN').val(),
+                GenericsDescription: $('#txtDescription').val(),
+                GenericsDescriptionBN: $('#txtDescriptionBN').val(),
+                Indications: $('#txtIndications').val(),
+                IndicationsBN: $('#txtIndicationsBN').val(),
+                Contraindications: $('#txtContraindications').val(),
+                ContraindicationsBN: $('#txtContraindicationsBN').val(),
+                TherapeuticClass: $('#txtTherapeuticClass').val(),
+                TherapeuticClassBN: $('#txtTherapeuticClassBN').val(),
+                SideEffects: $('#txtSideEffects').val(),
+                SideEffectsBN: $('#txtSideEffectsBN').val(),
+                Precautions: $('#txtPrecautions').val(),
+                PrecautionsBN: $('#txtPrecautionsBN').val(),
+                Interactions: $('#txtInteractions').val(),
+                InteractionsBN: $('#txtInteractionsBN').val(),
+                IsActive: $('#CmbIsActive').val(),
+                CreatedBy: $('#hdnUserId').val(),
+                CreatedDate: $('#hdnDateToday').val(),
+                UpdatedBy: $('#hdnUserId').val(),
+                UpdatedDate: $('#hdnDateToday').val()
+            }
+            $.ajax({
+                url: '/Order/SaveOrderItem', // Your controller action
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(GenericsData), // Send as JSON
+                success: function (response) {
+                    // Success message
+                    //console.log(response);
+                    if (response.success) {
+                        swal({
+                            title: "Congratulations",
+                            text: "Saved successfully!",
+                            type: "success",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
+                        });
+                        location.reload();
+
+                        GenericsHelper.GetAllGenerics()
+                    } else {
+                        swal({
+                            title: "Sorry!",
+                            text: "Saved Failde!",
+                            type: "error",
+                            closeOnConfirm: false,
+                            //timer: 2000
+                        });
+                    }
+
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving Generics.!" + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            });        
+    },
 };
 
 

@@ -1,14 +1,49 @@
 ﻿
 let cart = [];
 let products = [];
-let rowId = "";
+let hdnrowId = "";
 $(document).ready(function () {
-
+    $(".select2").select2();
     OrderListHelper.BuildTbl("");
     OrderListHelper.BuildTblDetails("");
     OrderListHelper.GetAllOrders();
-});
 
+    $('#ItemSearch').on('keyup', function () {
+        const query = $(this).val().trim();
+
+        if (query.length > 0) {
+            $.ajax({
+                url: '/Order/GetItems',
+                method: 'GET',
+                data: { item: query },
+                dataType: 'json',
+                success: function (response) {
+                    $('#searchResults').empty();
+                    if (response.data.length > 0) {
+                        const select = $('#searchResults');
+                        select.append('<option value="" disabled selected>Select an item</option>');
+
+                        response.data.forEach(function (item) {                         
+                            if (item.ItemName.length == 1) {                             
+                                select.append('<option value="' + item.ItemId + '">' + item.ItemName + '</option>');
+                            } else {                               
+                                select.append('<option value="' + item.ItemId + '">' + item.ItemName + '</option>');
+                            }
+                        });
+                    } else {                    
+                        $('#searchResults').html('<option value="" disabled>No results found</option>');
+                    }
+                },
+                error: function () {
+                    console.error('Search failed.');
+                }
+            });
+        } else {           
+            $('#searchResults').empty();
+        }
+    });
+
+});
 $("#tblOrderDtails").on("click", "#btnDelete", function () {
 
     var table = $("#tblOrderDtails").DataTable();
@@ -19,12 +54,14 @@ $("#tblOrderDtails").on("click", "#btnDelete", function () {
     OrderListHelper.BuildTblDetails("");
 
 });
-
 $("#btnConfirm").click(function () {
     OrderListHelper.saveOrderList()
 });
-
 $("#btnAddNew").click(function () {
+    $("#modal-AddItem").modal("show");
+});
+
+$("#btnAddTolIst").click(function () {
     OrderListHelper.SaveOrderItem()
 });
 
@@ -47,8 +84,8 @@ var OrderListHelper = {
                     data: null,
                     render: function (data, type, row, meta) {
                         return '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.OrderId + '\',' + meta.row + ')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>' +
-                            '<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ConfirmedByOrderID(\'' + row.OrderId + '\',' + meta.row + ')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button>' +                            
-                            '<button id="btnReject" name="btnReject" type="button" title="Reject" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.OrderId + '\',' + meta.row + ')" > <i class="fa fa-close" style="font-size:15px;color:red;padding:0px;"></i></button>';
+                            '<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'D\')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button>' +
+                            '<button id="btnReject" name="btnReject" type="button" title="Reject" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'R\')" > <i class="fa fa-close" style="font-size:15px;color:red;padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -159,6 +196,7 @@ var OrderListHelper = {
         });
     },
     GetDetailsByOrderID: function (OrderId, rowId) {
+        hdnrowId = rowId
         var table = $("#tblOrders").DataTable();
         $("#mdlTitle").html('Order Id:'+table.cell(rowId, 1).data() + ', Customer Name: ' + table.cell(rowId, 3).data());
         var jsonParam = { OrderId: OrderId };
@@ -279,39 +317,23 @@ var OrderListHelper = {
             }
         });
     },
-    SaveOrderItem: function () {        
-            var GenericsData = {
-                GenericsId: $('#txtGenericsId').val() ? "" : "000000000000",
-                GenericsName: $('#txtName').val(),
-                GenericsNameBN: $('#txtNameBN').val(),
-                GenericsDescription: $('#txtDescription').val(),
-                GenericsDescriptionBN: $('#txtDescriptionBN').val(),
-                Indications: $('#txtIndications').val(),
-                IndicationsBN: $('#txtIndicationsBN').val(),
-                Contraindications: $('#txtContraindications').val(),
-                ContraindicationsBN: $('#txtContraindicationsBN').val(),
-                TherapeuticClass: $('#txtTherapeuticClass').val(),
-                TherapeuticClassBN: $('#txtTherapeuticClassBN').val(),
-                SideEffects: $('#txtSideEffects').val(),
-                SideEffectsBN: $('#txtSideEffectsBN').val(),
-                Precautions: $('#txtPrecautions').val(),
-                PrecautionsBN: $('#txtPrecautionsBN').val(),
-                Interactions: $('#txtInteractions').val(),
-                InteractionsBN: $('#txtInteractionsBN').val(),
-                IsActive: $('#CmbIsActive').val(),
-                CreatedBy: $('#hdnUserId').val(),
-                CreatedDate: $('#hdnDateToday').val(),
-                UpdatedBy: $('#hdnUserId').val(),
-                UpdatedDate: $('#hdnDateToday').val()
+    SaveOrderItem: function () {    
+        var table = $("#tblOrders").DataTable();       
+            var ItemData = {      
+                OrderId: table.cell(hdnrowId, 1).data(),
+                ItemId: $('#searchResults').val(),
+                Name: $('#searchResults').val(),
+                UnitPrice: '0',
+                Quantity: $('#txtQty').val(),
+                OrderdBy: $('#hdnUserId').val(),
+                OrderdDate: $('#hdnDateToday').val()
             }
             $.ajax({
-                url: '/Order/SaveOrderItem', // Your controller action
+                url: '/Order/SaveOrderItem',
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(GenericsData), // Send as JSON
+                data: JSON.stringify(ItemData),
                 success: function (response) {
-                    // Success message
-                    //console.log(response);
                     if (response.success) {
                         swal({
                             title: "Congratulations",
@@ -321,16 +343,17 @@ var OrderListHelper = {
                             allowOutsideClick: false,
                             timer: 2000
                         });
-                        location.reload();
-
-                        GenericsHelper.GetAllGenerics()
+                        //location.reload();
+                        $('#searchResults').empty();
+                        $('#txtQty').val("");
+                        $('#ItemSearch').val("");
+                        OrderListHelper.GetDetailsByOrderID(table.cell(hdnrowId, 1).data(), hdnrowId)
                     } else {
                         swal({
                             title: "Sorry!",
                             text: "Saved Failde!",
                             type: "error",
                             closeOnConfirm: false,
-                            //timer: 2000
                         });
                     }
 
@@ -346,6 +369,46 @@ var OrderListHelper = {
                     });
                 }
             });        
+    },
+    ChangeStatusByOrderID: function (OrderId, rowId, statusType) {
+        var jsonParam = { OrderId: OrderId, statusType: statusType };
+        var serviceUrl = "/Order/ChangeStatusByOrderID";
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (response) {
+                //console.log(response)
+                if (response) {
+                    swal({
+                        title: "Congratulations",
+                        text: "Saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving !" + response.message,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving Orders.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
+            }
+        });
+
     },
 };
 

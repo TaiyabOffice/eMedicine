@@ -188,5 +188,27 @@ namespace eMedicineWeb.Controllers
             ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
             return Json(new { success = false, message = "Failed to save orders." });
         }
+
+        public ActionResult ChangeStatusByOrderID(string OrderId, string statusType)
+        {
+            bool status = false;
+            try
+            {
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/ChangeStatusByOrderID/{OrderId}/{statusType}").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    status = true;
+
+                }
+            }
+            catch (JsonSerializationException)
+            {
+                status = false;
+            }
+
+            return Json(status, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

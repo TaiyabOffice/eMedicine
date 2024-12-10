@@ -221,7 +221,7 @@ namespace eMedicine.Controllers
         {
             try
             {
-                var ds = await this.repo.GetAll("", "sp_EntryOrder", "CREATEORDER", order.OrderId, order.ItemId, order.UnitPrice, order.Quantity, order.OrderdBy, order.OrderdDate);
+                var ds = await this.repo.GetAll("", "sp_EntryOrder", "ITEMORDER", order.OrderId, order.ItemId, order.UnitPrice, order.Quantity, order.OrderdBy, order.OrderdDate);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -242,6 +242,36 @@ namespace eMedicine.Controllers
                     Details = ex.Message
                 });
             }
+        }
+
+        [HttpGet("ChangeStatusByOrderID/{OrderId}/{statusType}")]
+        public async Task<IActionResult> RejectByChangeStatusByOrderIDOrderID(string OrderId, string statusType)
+        {
+            try
+            {
+                bool status = false;
+                var ds = await this.repo.GetAll("", "sp_EntryOrder", "REJECTBYORDERID", OrderId, statusType);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    status = false;
+                    return new JsonResult(status);
+                }
+                else
+                {
+                    status = true;
+                    return new JsonResult(status);
+                }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the item.",
+                    Details = ex.Message
+                });
+            }
+
         }
     }
 }

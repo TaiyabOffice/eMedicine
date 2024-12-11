@@ -3,20 +3,19 @@ let cart = [];
 let products = [];
 let rowId = "";
 $(document).ready(function () {
-    $('#ItemSearch').on('keyup', function () {       
+    $('#ItemSearch').on('keyup', function () {
         const query = $(this).val().trim();
         const productList = document.getElementById('product-list');
+
         if (query.length >= 2) {
-            $.ajax({                
+            $.ajax({
                 url: '/Order/GetItems',
                 method: 'GET',
                 data: { item: query },
                 dataType: 'json',
-                success: function (response) {                                   
-                    if (response.data.length > 0)
-                    {
-                        $("#titleHeder").html("Item Information");                        
-                        products = [];
+                success: function (response) {
+                    if (response.data.length > 0) {                     
+
                         products = response.data.map(item => ({
                             id: item.ItemId,
                             name: item.ItemName,
@@ -25,41 +24,37 @@ $(document).ready(function () {
                             mrp: item.MRP,
                             imagePath: item.ImagePath,
                             itemDescription: item.ItemDescription
+                        }));
+                        productList.innerHTML = ''; {
+                            response.data.forEach(function (item) {
+                                const productDiv = document.createElement('div');
+                                productDiv.className = 'product';
+                                productDiv.innerHTML =
+                                    '<img src="' + item.ImagePath + '" alt="' + item.ItemName + '">' +
+                                    '<div class="product-details">' +
+                                    '<h3>' + item.ItemName + '</h3>' +
+                                    '<p>' + item.ItemDescription + '</p>' +
+                                    '<p class="product-price">Best Price: ৳' + item.UnitPrice + '</p>' +
+                                    '</div>' +
+                                    '<button class="btn" onclick="OrderHelper.addToCart(' + item.ItemId + ')">Add to Cart</button>';
 
-                        }));                       
-                        
-                        productList.innerHTML = '';
-                        response.data.forEach(item => {
-                            const productDiv = document.createElement('div');
-                            productDiv.className = 'product';
-                            productDiv.innerHTML =
-                                '<img src="' + item.ImagePath + '" alt="' + item.ItemName + '">' +
-                                '<div class="product-details">' +
-                                '<h3>' + item.ItemName + '</h3>' +                               
-                                '<p>' + item.ItemDescription + '</p>' +
-                                '<p>Price: $' + item.UnitPrice + '</p>' +
-                                '<p>MRP: $' + item.MRP + '</p>' +
-                                '</div>' +
-                                '<button onclick="OrderHelper.addToCart(' + item.ItemId + ')">Add to Cart</button>';
-
-                            productList.appendChild(productDiv);
-                        });
-
-                    } else {  
-                       
-                        productList.appendChild("NO data Found");
+                                productList.appendChild(productDiv);
+                            });                             
+                        }
+                    } else {
+                        productList.innerHTML = '<p>No data found.</p>';
                     }
                 },
                 error: function () {
                     console.error('Search failed.');
                 }
             });
-        } else {
-            $("#titleHeder").html("");  
+        }
+        else {           
             productList.innerHTML = '';
-            products = [];          
         }
     });
+
 
     OrderHelper.loadCartFromCache();   
     $("#btnSaveOrder").click(function () {

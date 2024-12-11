@@ -7,14 +7,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rice Store</title>
     <style>
+
+        #product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .cart-icon {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+
+        .icon {
+            fill: #555;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: red;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transform: translate(50%, -50%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
         .product {
-            margin-bottom: 20px;
+            max-width: 300px;
+            margin: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 10px;
         }
 
-        .cart {
-            margin-top: 30px;
-        }
+            .product img {
+                max-width: 100%;
+                height: auto;
+                margin-bottom: 12px;
+            }
 
+            .product .product-details {
+                margin-bottom: 12px;
+            }
+
+            .product:hover {
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+                transform: scale(1.02);
+                transition: all 0.2s ease-in-out;
+            }
+
+            .product .btn {
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                padding: 8px 12px;
+                font-size: 14px;
+                cursor: pointer;
+                margin-top: 10px;
+            }
+
+                .product .btn:hover {
+                    background-color: #0056b3;
+                }
     </style>
 </head>
 <section class="content">
@@ -25,26 +102,15 @@
         <div class="col-sm-12">
             <div class="box box-solid box-primary" style="margin-top:15px;">
                 <div class="box-header">
-                    <h3 class="box-title">Order Information</h3>
-                    <input type="text" id="medexSearch" placeholder="Search generics..." class="form-control">
+                    <h3 class="box-title">Items Information</h3>
+                    <input type="text" id="ItemSearch" placeholder="Search Items..." class="form-control">
                     <ul id="searchResults" class="list-group"></ul>
 
                 </div>
                 <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
-                    <h1>Rice Store</h1>
+                    <h3 id="titleHeder"></h3>
                     <div id="product-list">
                     </div>
-
-                    <div class="cart">
-                        <h2>Your Cart</h2>
-                        <div id="cart-items">
-
-                        </div>
-                        <p>Total: $<span id="cart-total">0</span></p>
-                        <p>Total Item: $<span id="cart-totalItem">0</span></p>
-                    </div>
-                    <button id="btnSaveOrder">Save Order</button>
-                    <button id="btnClear">Clear Order</button>
                 </div>
             </div>
         </div>
@@ -52,7 +118,6 @@
 </section>
 
 @section Scripts {
-    @Scripts.Render("~/Scripts/eMedicine/Item/UIItemList.js")
-    <script src="~/Scripts/jquery.validate.min.js"></script>
+    @Scripts.Render("~/Scripts/eMedicine/Item/UIItemList.js");   
 
 }

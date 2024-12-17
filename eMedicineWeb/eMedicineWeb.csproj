@@ -138,6 +138,7 @@
     <Compile Include="Models\BrandViewModel.cs" />
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\DropdownListViewModel.cs" />
+    <Compile Include="Models\EntityDefaultParameter.cs" />
     <Compile Include="Models\GenericsViewModel.cs" />
     <Compile Include="Models\ItemViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />

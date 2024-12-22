@@ -1,7 +1,9 @@
 ﻿using eMedicine.IRepository;
 using eMedicine.Models;
+using FastMember;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Data;
 
 namespace eMedicine.Controllers
@@ -171,8 +173,8 @@ namespace eMedicine.Controllers
             try
             {
 
-                var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEOFFER",offer.OfferId, offer.OfferDate, offer.OfferFromDate, offer.OfferToDate, offer.OfferDescriptions,
-                    offer.OfferImagePath, offer.OfferPersent, offer.IsActive, offer.CreatedBy, offer.CreatedDate);
+                var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEOFFER",offer.OfferId, offer.OfferName, offer.OfferNameBN, offer.StartDate, offer.EndDate, offer.OfferDescriptions,
+                    offer.OfferDescriptionsBN,  offer.OfferType, offer.OfferValue, offer.OfferImagePath, offer.IsActive, offer.CreatedBy, offer.CreatedDate);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -194,5 +196,237 @@ namespace eMedicine.Controllers
                 });
             }
         }
+
+        [HttpGet("GetAllIOffers")]
+        public async Task<IActionResult> GetAllIOffers()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "GETALLIOFFERS");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Offers>(), Message = "No offers found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Offers()
+                                      {
+                                          OfferId = dr["OfferId"].ToString(),
+                                          OfferName = dr["OfferName"].ToString(),
+                                          OfferNameBN = dr["OfferNameBN"].ToString(),
+                                          StartDate = dr["StartDate"].ToString(),
+                                          EndDate = dr["EndDate"].ToString(),
+                                          OfferDescriptions = dr["OfferDescriptions"].ToString(),
+                                          OfferDescriptionsBN = dr["OfferDescriptionsBN"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(),
+                                          OfferValue = dr["OfferValue"].ToString(),
+                                          OfferImagePath = dr["OfferImagePath"].ToString(),                                         
+                                          IsActive = dr["IsActive"].ToString()
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the offers.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("GetOfferById/{OfferId}")]
+        public async Task<IActionResult> GetOfferById(string OfferId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectItem", "GETOFFERBYID", OfferId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Offers>(), Message = "No offer found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Offers()
+                                      {
+                                          OfferId = dr["OfferId"].ToString(),
+                                          OfferName = dr["OfferName"].ToString(),
+                                          OfferNameBN = dr["OfferNameBN"].ToString(),
+                                          StartDate = dr["StartDate"].ToString(),
+                                          EndDate = dr["EndDate"].ToString(),
+                                          OfferDescriptions = dr["OfferDescriptions"].ToString(),
+                                          OfferDescriptionsBN = dr["OfferDescriptionsBN"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(),
+                                          OfferValue = dr["OfferValue"].ToString(),
+                                          OfferImagePath = dr["OfferImagePath"].ToString(),
+                                          IsActive = dr["IsActive"].ToString()
+                                      }).ToList();
+
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the offer.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
+        [HttpPost("UpdateOfferById")]
+        public async Task<IActionResult> UpdateOfferById([FromBody] Offers offer)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_EntryItem", "UPDATEOFFERBYID", offer.OfferId, offer.OfferName, offer.OfferNameBN, offer.StartDate, offer.EndDate, offer.OfferDescriptions,
+                    offer.OfferDescriptionsBN, offer.OfferType, offer.OfferValue, offer.OfferImagePath, offer.IsActive, offer.Updatedby, offer.UpdatedDate);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Offers>(), Message = "Offers Update Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Offers>(), Message = "Offers Update Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Offers.",
+                    Details = ex.Message
+                });
+            }
+        }
+       
+        [HttpGet("AddOfferItems/{OfferId}")]
+        public async Task<IActionResult> AddOfferItems(string OfferId)
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "ADDOFFERITEMS",OfferId);
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Item>(), Message = "No Item found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Item()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          ItemName = dr["ItemName"].ToString(),
+                                          ItemNameBN = dr["ItemNameBN"].ToString(),
+                                          ItemDescription = dr["ItemDescription"].ToString(),
+                                          ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                          UnitPrice = dr["UnitPrice"].ToString(),                                         
+                                          MRP = dr["MRP"].ToString(),                                          
+                                          UnitName = dr["UnitName"].ToString(),
+                                          IsActive = dr["IsActive"].ToString()                                          
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("SaveOfferItems")]
+        public async Task<IActionResult> SaveOfferItems([FromBody] List<OfferItems> offerItems)
+        {
+            try
+            {
+                DataTable itemListdt = new DataTable();
+                try
+                {
+                    using (var reader = ObjectReader.Create(offerItems))
+                    {
+                        itemListdt.Load(reader);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    //
+                }
+                itemListdt.TableName = "Table";
+
+                DataSet dstrnd = new DataSet("dsItemList");
+                dstrnd.Tables.Add(itemListdt);
+
+                var ds = await this.repo.SaveUsingDataSet("", "sp_EntryOrder", "SAVEOFFERITEMS", dstrnd);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<OfferItems>(), Message = "Items Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<OfferItems>(), Message = "Items Create Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Items.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("GetItemsByOfferId/{OfferId}")]
+        public async Task<IActionResult> GetItemsByOfferId(string OfferId)
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "GETITEMSBYOFFERID", OfferId);
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Item>(), Message = "No Item found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Item()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          ItemName = dr["ItemName"].ToString(),
+                                          ItemNameBN = dr["ItemNameBN"].ToString(),
+                                          ItemDescription = dr["ItemDescription"].ToString(),
+                                          ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                          UnitPrice = dr["UnitPrice"].ToString(),
+                                          OfferPrice = dr["OfferPrice"].ToString(),
+                                          OfferValue = dr["OfferValue"].ToString(),
+                                          MRP = dr["MRP"].ToString(),                                          
+                                          ImagePath = dr["ImagePath"].ToString()  
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
+
     }
 }

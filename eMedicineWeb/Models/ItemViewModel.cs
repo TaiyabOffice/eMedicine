@@ -39,14 +39,16 @@ namespace eMedicineWeb.Models
     public class OffersViewModel
     {       
         public string OfferId { get; set; }
-        public string OfferDate { get; set; }
-        public string OfferFromDate { get; set; }
-        public string OfferToDate { get; set; }
+        public string OfferName { get; set; }        
+        public string OfferNameBN { get; set; }        
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public string OfferDescriptions { get; set; }
-        public string OfferPersent { get; set; }        
-        public string OfferItemId { get; set; }        
-        public string OfferItemPersent { get; set; }        
+        public string OfferDescriptionsBN { get; set; }
+        public string OfferType { get; set; }
+        public string OfferValue { get; set; }
         public string OfferImagePath { get; set; }
+        public string PreImagePath { get; set; }
         public string IsActive { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }
@@ -60,5 +62,19 @@ namespace eMedicineWeb.Models
         public bool Success { get; set; }
         public string Message { get; set; }
         public List<OffersViewModel> Data { get; set; }
+    }
+
+    public class OfferItemsViewModel
+    {
+        public string OfferId { get; set; }
+        public string OfferItemId { get; set; } 
+        public string MinimumQty { get; set; } 
+        public string MaximumQty { get; set; }         
+    }
+    public class OfferItemsResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public List<OfferItemsViewModel> Data { get; set; }
     }
 }

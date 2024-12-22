@@ -8,6 +8,8 @@
         public string ItemDescription { get; set; }
         public string ItemDescriptionBN { get; set; }
         public string UnitPrice { get; set; }
+        public string OfferPrice { get; set; }
+        public string OfferValue { get; set; }
         public string MRP { get; set; }
         public string BrandId { get; set; }
         public string BrandName { get; set; }
@@ -18,6 +20,7 @@
         public string ImagePath { get; set; }        
         public string ItemCategoryId { get; set; }
         public string ItemCategoryName { get; set; }
+        
         public string IsActive { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }
@@ -29,13 +32,14 @@
     public class Offers
     {
         public string OfferId { get; set; }
-        public string OfferDate { get; set; }
-        public string OfferFromDate { get; set; }
-        public string OfferToDate { get; set; }
+        public string OfferName { get; set; }
+        public string OfferNameBN { get; set; }
+        public string StartDate { get; set; }
+        public string EndDate { get; set; }
         public string OfferDescriptions { get; set; }
-        public string OfferPersent { get; set; }
-        public string OfferItemId { get; set; }
-        public string OfferItemPersent { get; set; }
+        public string OfferDescriptionsBN { get; set; }
+        public string OfferType { get; set; }
+        public string OfferValue { get; set; }
         public string OfferImagePath { get; set; }
         public string IsActive { get; set; }
         public string CreatedBy { get; set; }
@@ -43,6 +47,13 @@
         public string Updatedby { get; set; }
         public string UpdatedDate { get; set; }
 
+    }
+    public class OfferItems
+    {
+        public string OfferId { get; set; }
+        public string OfferItemId { get; set; }
+        public string MinimumQty { get; set; }
+        public string MaximumQty { get; set; }        
     }
 
 }

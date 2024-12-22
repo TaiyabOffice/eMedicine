@@ -9,12 +9,17 @@ $(document).ready(function () {
         url: "/Common/GetCurrentDate",
         type: "POST",
         success: function (result) {
-            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#hdnDateToday").datepicker('setDate', new Date(result));
+            $("#txtOffeFrom").datepicker({ format: "dd-M-yyyy", autoclose: true });
+            $("#txtOffeFrom").datepicker('setDate', new Date(result));
+
+            $("#txtOffeTo").datepicker({ format: "dd-M-yyyy", autoclose: true });
+            $("#txtOffeTo").datepicker('setDate', new Date(result));
         }
     });
-
-    OfferHelper.GenerateCombo($("#cmbUnitId"), "SP_SelectGetAllDropDown", "GETALLUNIT", "0", "0", "0", "0", "0");
+    OfferHelper.BuildTbl("");
+    OfferHelper.ValidateOffer();
+    OfferHelper.GetAllIOffers();
+   // OfferHelper.GenerateCombo($("#cmbUnitId"), "SP_SelectGetAllDropDown", "GETALLUNIT", "0", "0", "0", "0", "0");
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
@@ -27,6 +32,24 @@ $("#btnUpdate").click(function (event) {
 $("#btnClear").click(function (event) {
     event.preventDefault();
     location.reload();
+});
+
+$("#btnAddTolIst").click(function (event) {
+    OfferHelper.SaveOfferItems();
+});
+$('#SelectAll').on('click', function () {
+    var table = $('#tblOfferItems').DataTable();
+    var rows = table.rows({ 'search': 'applied' }).nodes();
+    $('input[type="checkbox"]', rows).prop('checked', this.checked);
+});
+
+$('#tblOfferItems tbody').on('change', 'input[type="checkbox"]', function () {
+    if (!this.checked) {
+        var el = $('#SelectAll').get(0);
+        if (el && el.checked && ('indeterminate' in el)) {
+            el.indeterminate = true;
+        }
+    }
 });
 
 var OfferHelper = {
@@ -64,7 +87,7 @@ var OfferHelper = {
             columns: [
                 { "data": "SL" },
                 {
-                    "data": "ImagePath",
+                    "data": "OfferImagePath",
                     "render": function (data, type, row) {
                         if (data) {
                             return '<img src="' + data + '" alt="Offer Image" style="width:50px; height:auto;"/>';
@@ -73,19 +96,21 @@ var OfferHelper = {
                     }
                 },
                 { data: 'OfferId' },
-                { data: 'OfferName' },
-                { data: 'OfferDescription' },
-                { data: 'OfferCategoryName' },
-                { data: 'UnitName' },                
-                { data: 'UnitPrice' },                
-                { data: 'MRP' },                
-                { data: 'BrandName' },
-                { data: 'SupplierName' },                              
-                { data: 'IsActive' },                
+                { data: 'OfferName' },                
+                { data: 'StartDate' },
+                { data: 'EndDate' },                
+                { data: 'OfferType' },                
+                { data: 'OfferValue' },                
+                { data: 'IsActive' },                           
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetOfferID(\'' + row.OfferId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetDetailsByOfferID(\'' + row.OfferId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetOfferID(\'' + row.OfferId + '\')" class="btn btn-sm btn-danger">' +
+                            '<i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
+                            '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetDetailsByOfferID(\'' + row.OfferId + '\')" class="btn btn-sm btn-warning">' +
+                            '<i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>'+
+                        '<button id="btnDetails" name="btnAddItems" type="button" title="Add Items" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.AddOfferItems(\'' + row.OfferId + '\')" class="btn btn-sm btn-success">' +
+                            '<i class="fa fa-plus" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -96,7 +121,7 @@ var OfferHelper = {
                     render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
                 },
                 { "targets": [1], "width": "10%" }, // Image Column
-                { "className": "dt-center", "targets": [0, 10] },
+                { "className": "dt-center", "targets": [] },
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [] },
                 { "targets": [], "visible": false, "searchable": false },
@@ -104,40 +129,186 @@ var OfferHelper = {
             ]
         });
     },
+    BuildOfferTbl: function (tbldata) {
+        $('#tblOfferItems').DataTable({
+            data: tbldata,
+            "responsive": true,
+            "bDestroy": true,
+            columns: [
+                { "data": "SL" },
+                {
+                    "data": "IsActive",
+                    "render": function (data, type, row) {
+                        return '<input type="checkbox" id="txtCheck"' + (data == "0" ? '' : ' checked') + '>';
+                    }
+                },
+                {
+                    "data": "ImagePath",
+                    "render": function (data, type, row) {
+                        if (data) {
+                            return '<img src="' + data + '" alt="Offer Image" style="width:50px; height:auto;"/>';
+                        }
+                        return '<span>No image</span>';
+                    }
+                },               
+                { data: 'ItemId' },
+                { data: 'ItemName' },
+                { data: 'UnitName' }
+               
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "width": "2%",
+                    render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
+                },
+                { "targets": [2], "width": "10%" }, // Image Column
+                { "targets": [4], "width": "88%" },
+                { "className": "dt-center", "targets": [] },
+                { "className": "dt-center", "targets": [] },
+                { "className": "dt-left", "targets": [1] },
+                { "targets": [3], "visible": false, "searchable": false },
+
+            ]
+        });
+    },
+    GetAllIOffers: function () {
+        var serviceUrl = "/Item/GetAllIOffers";
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            success: function (result) {
+                if (result.success) {
+                    OfferHelper.BuildTbl(result.data);
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving Items.!" + result.message,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving Items.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
+            }
+        });
+    },
+    AddOfferItems: function (OfferId) {
+        $("#btnAddTolIst").val("");        
+        $("#btnAddTolIst").val(OfferId);        
+        var jsonParam = { OfferId: OfferId };
+        var serviceUrl = "/Item/AddOfferItems";
+
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (result) {
+                if (result.success) {
+                    OfferHelper.BuildOfferTbl(result.data);
+                    $("#modal-AddItem").modal("show");
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving Items.!" + result.message,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving Items.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
+            }
+        });
+    },    
+    GetOfferID: function (OfferId) {
+        $("#btnSave").hide();
+        $("#btnUpdate").show();
+        var jsonParam = { OfferId: OfferId };
+        var serviceUrl = "/Item/GetOfferById";
+
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (response) {
+                //console.log(response.data);
+                if (response.Success) {
+                    var Item = response.data;
+                    $('#txtOfferId').val(Item.OfferId);
+                    $('#txtOfferName').val(Item.OfferName);
+                    $('#txtNameBN').val(Item.OfferNameBN);
+                    $('#txtDescription').val(Item.OfferDescriptions);
+                    $('#txtDescriptionBN').val(Item.OfferDescriptionsBN);
+                    $('#txtOffeFrom').val(Item.StartDate);
+                    $('#txtOffeTo').val(Item.EndDate);
+                    $('#txtOffeValue').val(Item.OfferValue);
+                    $("#CmbType").val(Item.OfferType).select2();                    
+                    $('#CmbIsActive').val(Item.IsActive).select2();
+                    $('#lblimgPreview').val(Item.OfferImagePath);
+                    
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "No offer data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "No offer data found.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
+            }
+        });
+    },
     SaveCollectionData: function () {
+
         if ($("#validateOffer").valid()) {
             var formData = new FormData();
            
             formData.append("OfferId", $('#txtOfferId').val() || "000000000000");
-            formData.append("OfferName", $('#txtName').val());
+            formData.append("OfferName", $('#txtOfferName').val());
             formData.append("OfferNameBN", $('#txtNameBN').val());
-            formData.append("OfferDescription", $('#txtDescription').val());
-            formData.append("OfferDescriptionBN", $('#txtDescriptionBN').val());
-            formData.append("UnitPrice", $('#txtUnitPrice').val());
-            formData.append("MRP", $('#txtMRP').val());
-            formData.append("BrandId", $('#cmbBrandId').val());
-            formData.append("BrandName", $('#cmbBrandId').val());
-            formData.append("UnitId", $('#cmbUnitId').val());
-            formData.append("UnitName", $('#cmbUnitId').val());
-            formData.append("SupplierId", $('#cmbSupplierId').val());
-            formData.append("SupplierName", $('#cmbSupplierId').val());
-            formData.append("OfferCategoryId", $('#cmbCategoryId').val());
-            formData.append("OfferCategoryName", $('#cmbCategoryId').val());
+            formData.append("OfferDescriptions", $('#txtDescription').val());
+            formData.append("OfferDescriptionsBN", $('#txtDescriptionBN').val());
+            formData.append("StartDate", $('#txtOffeFrom').val());
+            formData.append("EndDate", $('#txtOffeTo').val());
+            formData.append("OfferType", $('#CmbType').val());
+            formData.append("OfferValue", $('#txtOffeValue').val());            
             formData.append("IsActive", $('#CmbIsActive').val());
             formData.append("CreatedBy", $('#hdnUserId').val());
             formData.append("CreatedDate", $('#hdnDateToday').val());
-            formData.append("UpdatedBy", $('#hdnUserId').val());
-            formData.append("UpdatedDate", $('#hdnDateToday').val());
-
-            
+            formData.append("Updatedby", $('#hdnUserId').val());
+            formData.append("UpdatedDate", $('#hdnDateToday').val());            
             var fileInput = $('#fileUpload')[0];
             if (fileInput.files.length > 0) {
                 formData.append("imageFile", fileInput.files[0]);
             }
-
             
             $.ajax({
-                url: '/Offer/CreateOffer', 
+                url: '/Item/CreateOffer', 
                 type: 'POST',
                 processData: false, 
                 contentType: false,
@@ -154,7 +325,7 @@ var OfferHelper = {
                         });
                         location.reload();
 
-                        OfferHelper.GetAllOffer();
+                        OfferHelper.GetAllIOffers();
                     } else {
                         swal({
                             title: "Sorry!",
@@ -181,33 +352,27 @@ var OfferHelper = {
             var formData = new FormData();
             // Collect form data
             formData.append("OfferId", $('#txtOfferId').val());
-            formData.append("OfferName", $('#txtName').val());
+            formData.append("OfferName", $('#txtOfferName').val());
             formData.append("OfferNameBN", $('#txtNameBN').val());
-            formData.append("OfferDescription", $('#txtDescription').val());
-            formData.append("OfferDescriptionBN", $('#txtDescriptionBN').val());
-            formData.append("UnitPrice", $('#txtUnitPrice').val());
-            formData.append("MRP", $('#txtMRP').val());
-            formData.append("BrandId", $('#cmbBrandId').val());
-            formData.append("BrandName", $('#cmbBrandId').val());
-            formData.append("UnitId", $('#cmbUnitId').val());
-            formData.append("UnitName", $('#cmbUnitId').val());
-            formData.append("SupplierId", $('#cmbSupplierId').val());
-            formData.append("SupplierName", $('#cmbSupplierId').val());
-            formData.append("OfferCategoryId", $('#cmbCategoryId').val());
-            formData.append("OfferCategoryName", $('#cmbCategoryId').val());
+            formData.append("OfferDescriptions", $('#txtDescription').val());
+            formData.append("OfferDescriptionsBN", $('#txtDescriptionBN').val());
+            formData.append("StartDate", $('#txtOffeFrom').val());
+            formData.append("EndDate", $('#txtOffeTo').val());
+            formData.append("OfferType", $('#CmbType').val());
+            formData.append("OfferValue", $('#txtOffeValue').val());
             formData.append("IsActive", $('#CmbIsActive').val());
             formData.append("CreatedBy", $('#hdnUserId').val());
             formData.append("CreatedDate", $('#hdnDateToday').val());
-            formData.append("UpdatedBy", $('#hdnUserId').val());
-            formData.append("UpdatedDate", $('#hdnDateToday').val());          
-            formData.append("PreImagePath", $('#lblimgPreview').html());          
+            formData.append("Updatedby", $('#hdnUserId').val());
+            formData.append("UpdatedDate", $('#hdnDateToday').val());
+            formData.append("PreImagePath", $('#lblimgPreview').val());
             var fileInput = $('#fileUpload')[0];
             if (fileInput.files.length > 0) {
                 formData.append("imageFile", fileInput.files[0]);
             }
            
             $.ajax({
-                url: '/Offer/UpdateOfferById',
+                url: '/Item/UpdateOfferById',
                 type: 'POST',
                 processData: false,
                 contentType: false,
@@ -284,48 +449,93 @@ var OfferHelper = {
 
         $("#validateOffer").validate({
             rules: {
-                txtName: "required",
+                txtOfferName: "required",
                 txtDescription: "required",                
                 txtNameBN: "required",
                 txtDescriptionBN: "required",                
-                txtUnitPrice: "required",                
-                txtMRP: "required",                
+                txtOffeFrom: "required",                
+                txtOffeTo: "required",                
                 fileUpload: "required",                
-                cmbBrandId: {
+                CmbType: {
                     required: true,
                     notZero: "" 
-                },
-                cmbCategoryId: {
-                    required: true,
-                    notZero: "" 
-                },
-                cmbUnitId: {
-                    required: true,
-                    notZero: ""
-                },
-                cmbSupplierId: {
-                    required: true,
-                    notZero: ""
-                },                
+                },                                
                 CmbIsActive: "required"
             },
             messages: {
-                txtName: "Offer Name is required",
+                txtOfferName: "Offer Name is required",
                 txtDescription: "Offer Description is required",                
-                txtUnitPrice: "Offer Unit Price is required",                
-                txtMRP: "Offer MRP is required",                
+                txtOffeFrom: "From date is required",                
+                txtOffeTo: "To date is required",                
                 fileUpload: "File is  required",                
                 txtNameBN: "নাম প্রয়োজন",
-                txtDescriptionBN: "বর্ণনা প্রয়োজন",               
-                cmbSupplierId: "Please select a Supplier company",
-                cmbBrandId: "Please select a valid Brand name",
-                cmbUnitId: "Please select a valid Unit name",
-                cmbCategoryId: "Please select a valid Category name",
+                txtDescriptionBN: "বর্ণনা প্রয়োজন",                 
                 CmbIsActive: "Please select the active status"
             },
             errorPlacement: function (label, element) {
                 label.addClass('error');
                 element.parent().append(label);
+            }
+        });
+    },
+    CreateDetailsObject: function () {
+        var table = $('#tblOfferItems').DataTable();
+        var detaildata = table.data();
+        var datalist = [];
+        for (var i = 0; i < detaildata.length; i++) {
+            var obj = new Object();            
+            obj.OfferItemId = table.cell(i, 3).data();
+            obj.OfferId = $("#btnAddTolIst").val();
+            obj.MinimumQty = "0";
+            obj.MaximumQty = "0";            
+            if (table.cell(i, 1).nodes().to$().find('input:checked').val() === "on")
+            {
+                datalist.push(obj);
+            }
+            
+        }
+        return datalist;
+    },
+    SaveOfferItems: function () {
+        const OfferItems = OfferHelper.CreateDetailsObject();
+        if (OfferItems.length == 0) {
+            swal({
+                title: "Sorry!",
+                text: "No Items Found!",
+                type: "error",
+                closeOnConfirm: false,
+            });
+            return;
+        }
+        $.ajax({
+            url: '/Item/SaveOfferItems',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(OfferItems),
+            success: function (response) {
+                if (response.success) {
+                    swal({
+                        title: "Congratulations",
+                        text: "Saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    $("#modal-AddItem").modal("hide");
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Saved Failde!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error saving order:', error);
+                alert('An error occurred while saving the items.');
             }
         });
     },

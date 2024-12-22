@@ -34,6 +34,11 @@ namespace eMedicineWeb.Controllers
             return View();
         }
 
+        public ActionResult UIEntryOffer()
+        {
+            return View();
+        }
+
         public async Task<ActionResult> GetAllItem()
         {
             List<ItemViewModel> ItemList = new List<ItemViewModel>();
@@ -196,6 +201,51 @@ namespace eMedicineWeb.Controllers
                     ModelState.AddModelError("", "Unable to update Item. Please try again.");
                     return Json(new { success = false, message = "Failed to retrieve Item details." });
                 }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
+        }
+
+
+        [HttpPost]
+        public async Task<ActionResult> CreateOffer(OffersViewModel Offer, HttpPostedFileBase imageFile)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed Insert Offer." });
+            }
+            if (imageFile == null || imageFile.ContentLength == 0)
+            {
+                return Json(new { success = false, message = "Image file is required." });
+            }
+            try
+            {
+                string uploadsFolder = Server.MapPath("~/OffersImg");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                imageFile.SaveAs(filePath);
+                Offer.OfferImagePath = client.BaseAddress + $"/OffersImg/{uniqueFileName}";
+
+                string data = JsonConvert.SerializeObject(Offer);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateOffer", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Offer create Successfully" });
+                }
+                ModelState.AddModelError("", "Unable to create Offer. Please try again.");
+                return Json(new { success = false, message = "Failed to retrieve Offer." });
             }
             catch (Exception ex)
             {

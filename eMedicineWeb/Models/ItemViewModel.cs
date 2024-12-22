@@ -36,4 +36,29 @@ namespace eMedicineWeb.Models
         public string Message { get; set; }
         public List<ItemViewModel> Data { get; set; }
     }
+    public class OffersViewModel
+    {       
+        public string OfferId { get; set; }
+        public string OfferDate { get; set; }
+        public string OfferFromDate { get; set; }
+        public string OfferToDate { get; set; }
+        public string OfferDescriptions { get; set; }
+        public string OfferPersent { get; set; }        
+        public string OfferItemId { get; set; }        
+        public string OfferItemPersent { get; set; }        
+        public string OfferImagePath { get; set; }
+        public string IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public string CreatedDate { get; set; }
+        public string Updatedby { get; set; }
+        public string UpdatedDate { get; set; }
+
+    }
+
+    public class OffersResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public List<OffersViewModel> Data { get; set; }
+    }
 }

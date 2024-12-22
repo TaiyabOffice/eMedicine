@@ -1,0 +1,87 @@
+﻿@{
+    ViewBag.Title = "Entry Offer Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="content">
+    <div class="box box-solid box-primary">
+        <div class="box-body">
+            <input type="hidden" id="hdnUserId" value="@Request.RequestContext.HttpContext.Session["UserID"]">
+            <input type="hidden" id="hdnTermID" value="@Request.RequestContext.HttpContext.Session["TerminalId"]">
+            <input type="hidden" id="hdnDateToday" value="@Request.RequestContext.HttpContext.Session["DateToday"]">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box box-solid box-primary" style="margin-top:15px;">
+                            <div class="box-header">
+                                <h3 class="box-title">Item Information</h3>
+                            </div>
+                            <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
+                                <form id="validateItem">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-2">
+                                                <label for="txtOfferId">Offer Id</label>
+                                                <input type="text" id="txtOfferId" name="txtOfferId" class="form-control input-sm" autocomplete="off" disabled>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="txtOfferDate">Offer Date</label>
+                                                <input type="text" id="txtOfferDate" name="txtOfferDate" value="" class="form-control input-sm" readonly>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="txtOffeFrom">Offer From</label>
+                                                <input type="text" id="txtOffeFrom" name="txtOffeFrom" value="" class="form-control input-sm" readonly>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="txtOffeTo">Offer To</label>
+                                                <input type="text" id="txtOffeTo" name="txtOffeTo" value="" class="form-control input-sm" readonly>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="txtOffePer">Offer %</label>
+                                                <input type="text" id="txtOffePer" name="txtOffePer" value="" class="form-control input-sm">
+                                            </div>                                            
+                                            <div class="col-sm-2">
+                                                <label for="">Upload File</label>
+                                                <input type="file" id="fileUpload" name="fileUpload" accept="image/png, image/jpeg" />
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <label for="txtDescription">Description</label>
+                                                <input type="text" id="txtDescription" name="txtDescription" value="" class="form-control input-sm" autocomplete="off">
+                                            </div><div class="col-sm-4">
+                                                <label for="txtDescriptionBN">বর্ণনা</label>
+                                                <input type="text" id="txtDescriptionBN" name="txtDescriptionBN" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CmbIsActive">Is Active</label>
+                                                <select id="CmbIsActive" name="CmbIsActive" class="form-control input-sm">
+                                                    <option value="1">Yes</option>
+                                                    <option value="0">No</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-sm-2" style="margin-top: 25px;">
+                                                <button id="btnSave" type="button" class="btn btn-success">Save</button>
+                                                <button id="btnUpdate" type="button" class="btn btn-warning" style="display:none">Update</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/eMedicine/Item/UIEntryOffer.js")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
+
+

@@ -164,5 +164,35 @@ namespace eMedicine.Controllers
                 });
             }
         }
+
+        [HttpPost("CreateOffer")]
+        public async Task<IActionResult> CreateOffer([FromBody] Offers offer)
+        {
+            try
+            {
+
+                var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEOFFER",offer.OfferId, offer.OfferDate, offer.OfferFromDate, offer.OfferToDate, offer.OfferDescriptions,
+                    offer.OfferImagePath, offer.OfferPersent, offer.IsActive, offer.CreatedBy, offer.CreatedDate);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Offers>(), Message = "Offers Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Offers>(), Message = "Offers Create Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Offers.",
+                    Details = ex.Message
+                });
+            }
+        }
     }
 }

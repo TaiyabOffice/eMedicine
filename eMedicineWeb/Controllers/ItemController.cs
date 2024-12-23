@@ -29,6 +29,11 @@ namespace eMedicineWeb.Controllers
             return View();
         }
 
+        public ActionResult ItemDemo()
+        {
+            return View();
+        }
+
         public ActionResult UIItemList()
         {
             return View();
@@ -39,6 +44,7 @@ namespace eMedicineWeb.Controllers
             return View();
         }
 
+        #region Items
         public async Task<ActionResult> GetAllItem()
         {
             List<ItemViewModel> ItemList = new List<ItemViewModel>();
@@ -208,6 +214,9 @@ namespace eMedicineWeb.Controllers
             }
         }
 
+        #endregion
+
+        #region Offers
         [HttpPost]
         public async Task<ActionResult> CreateOffer(OffersViewModel Offer, HttpPostedFileBase imageFile)
         {
@@ -429,5 +438,53 @@ namespace eMedicineWeb.Controllers
             return Json(new { success = false, message = "Failed to save orders." });
         }
 
+        public async Task<ActionResult> GetItemsByOfferId(string OfferId)
+        {
+            List<ItemViewModel> ItemList = new List<ItemViewModel>();
+            OffersViewModel Offer = null;                    
+            try
+            {
+                HttpResponseMessage OfferResponse = client.GetAsync(client.BaseAddress + "/GetOfferById/" + OfferId).Result;
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetItemsByOfferId/" + OfferId).Result;
+                if (OfferResponse.IsSuccessStatusCode)
+                {
+                    string data = await OfferResponse.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<OffersResponse>(data);
+                    if (Response.Success)
+                    {
+
+                        var Items = Response?.Data ?? new List<OffersViewModel>();
+                        Offer = Items.FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Item. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<ItemResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            ItemList = Response?.Data ?? new List<ItemViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Item. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = true, data = Offer, data1 = ItemList }, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
     }
 }

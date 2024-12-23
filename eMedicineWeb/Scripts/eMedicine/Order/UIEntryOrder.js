@@ -36,7 +36,7 @@ $(document).ready(function () {
                                     '<p>' + item.ItemDescription + '</p>' +
                                     '<p class="product-price">Best Price: ৳' + item.UnitPrice + '</p>' +
                                     '</div>' +
-                                    '<button class="btn" onclick="OrderHelper.addToCart(' + item.ItemId + ')">Add to Cart</button>';
+                                    '<button class="btnCart btn-sm btn-success" onclick="OrderHelper.addToCart(' + item.ItemId + ')">Add to Cart</button>';
 
                                 productList.appendChild(productDiv);
                             });                             
@@ -160,7 +160,6 @@ var OrderHelper = {
         cartItemsTableBody.appendChild(totalRow);              
         cartBadge.textContent = cart.length;
     },
-
     decreaseQuantity: function (productId) {
         const cartItem = cart.find(item => item.id == productId);
 

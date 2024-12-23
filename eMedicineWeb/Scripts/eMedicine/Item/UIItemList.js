@@ -14,7 +14,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     if (response.data.length > 0) {
-                        //$("#titleHeder").html("Item Information");
+                        $("#titleHeder").html("Products ( " + response.data.length + " )");
 
                         products = response.data.map(item => ({
                             id: item.ItemId,
@@ -51,6 +51,7 @@ $(document).ready(function () {
             });
         } else {           
             productList.innerHTML = '';
+            ItemListHelper.GetallItems();
         }
     });
     $("#btnClear").click(function () {
@@ -67,7 +68,7 @@ var ItemListHelper =
             type: "POST",
             success: function (response) {
                 if (response.data.length > 0) {
-                    //$("#titleHeder").html("Item Information");
+                    $("#titleHeder").html("Products ( " + response.data.length+" )");
 
                     products = response.data.map(item => ({
                         id: item.ItemId,

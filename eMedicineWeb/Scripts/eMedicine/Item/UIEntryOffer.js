@@ -1,4 +1,5 @@
 ﻿let rowId = "";
+
 $(document).ready(function () {
 
     $(".select2").select2();
@@ -37,6 +38,7 @@ $("#btnClear").click(function (event) {
 $("#btnAddTolIst").click(function (event) {
     OfferHelper.SaveOfferItems();
 });
+
 $('#SelectAll').on('click', function () {
     var table = $('#tblOfferItems').DataTable();
     var rows = table.rows({ 'search': 'applied' }).nodes();
@@ -168,6 +170,46 @@ var OfferHelper = {
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [1] },
                 { "targets": [3], "visible": false, "searchable": false },
+
+            ]
+        });
+    },
+    BuildDiscountTbl: function (tbldata) {
+        $('#tblDiscountItems').DataTable({
+            data: tbldata,
+            "responsive": true,
+            "bDestroy": true,
+            columns: [
+                { "data": "SL" },                
+                {
+                    "data": "ImagePath",
+                    "render": function (data, type, row) {
+                        if (data) {
+                            return '<img src="' + data + '" alt="Offer Image" style="width:50px; height:auto;"/>';
+                        }
+                        return '<span>No image</span>';
+                    }
+                },
+                { data: 'ItemName' },
+                { data: 'UnitName' },
+                { data: 'UnitPrice' },
+                { data: 'OfferType' },
+                { data: 'OfferValue' },
+                { data: 'OfferPrice' },
+                { data: 'MRP' }
+
+            ],
+            "columnDefs": [
+                {
+                    "targets": [0],
+                    "width": "2%",
+                    render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
+                },
+                { "targets": [1], "width": "10%" },// Image Column
+                { "className": "dt-center", "targets": [] },
+                { "className": "dt-center", "targets": [] },
+                { "className": "dt-left", "targets": [1] },
+                { "targets": [], "visible": false, "searchable": false },
 
             ]
         });
@@ -539,5 +581,48 @@ var OfferHelper = {
             }
         });
     },
+    GetDetailsByOfferID: function (OfferId) {        
+        var jsonParam = { OfferId: OfferId };
+        var serviceUrl = "/Item/GetItemsByOfferId";
 
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (result) {
+                if (result.success) {
+                    var Item = result.data;
+                    $('#mdlTitle').html("Offer Name: " + Item.OfferName + ", Offer Id: " +Item.OfferId);
+                    $('#MdlOfferName').html("Offer Name: "+Item.OfferName);
+                    $('#MdlOfferNameBN').html("অফার নাম: "+Item.OfferNameBN);
+                    $('#MdlDescription').html("Description: " + Item.OfferDescriptions);
+                    $('#MdlDescriptionBN').html("বর্ণনা: " + Item.OfferDescriptionsBN);
+                    $('#MdlOffeFrom').html("Offe From: " + Item.StartDate);
+                    $('#MdlOffeTo').html("Offe To: " + Item.EndDate);
+                    $('#MdlCmbType').html("Type: " + (Item.OfferType == "P" ? 'Percentage' : 'Fixed'));
+                    $('#MdlOffeValue').html("Offe Value: " + Item.OfferValue);
+
+                    OfferHelper.BuildDiscountTbl(result.data1);
+                    $("#modal-default").modal("show");
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error retrieving Items.!" + result.message,
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "Error retrieving Items.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
+            }
+        });
+    },
 };

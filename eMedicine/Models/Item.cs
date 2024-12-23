@@ -10,6 +10,7 @@
         public string UnitPrice { get; set; }
         public string OfferPrice { get; set; }
         public string OfferValue { get; set; }
+        public string OfferType { get; set; }
         public string MRP { get; set; }
         public string BrandId { get; set; }
         public string BrandName { get; set; }
@@ -19,8 +20,7 @@
         public string SupplierName { get; set; }
         public string ImagePath { get; set; }        
         public string ItemCategoryId { get; set; }
-        public string ItemCategoryName { get; set; }
-        
+        public string ItemCategoryName { get; set; }        
         public string IsActive { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }

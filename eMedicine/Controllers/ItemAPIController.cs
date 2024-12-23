@@ -329,6 +329,7 @@ namespace eMedicine.Controllers
                                           UnitPrice = dr["UnitPrice"].ToString(),                                         
                                           MRP = dr["MRP"].ToString(),                                          
                                           UnitName = dr["UnitName"].ToString(),
+                                          ImagePath = dr["ImagePath"].ToString(),
                                           IsActive = dr["IsActive"].ToString()                                          
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
@@ -412,6 +413,7 @@ namespace eMedicine.Controllers
                                           UnitPrice = dr["UnitPrice"].ToString(),
                                           OfferPrice = dr["OfferPrice"].ToString(),
                                           OfferValue = dr["OfferValue"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(),
                                           MRP = dr["MRP"].ToString(),                                          
                                           ImagePath = dr["ImagePath"].ToString()  
                                       }).ToList();

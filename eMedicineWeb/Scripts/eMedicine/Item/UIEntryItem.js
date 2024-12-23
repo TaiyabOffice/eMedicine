@@ -121,6 +121,9 @@ var ItemHelper = {
             formData.append("ItemDescription", $('#txtDescription').val());
             formData.append("ItemDescriptionBN", $('#txtDescriptionBN').val());
             formData.append("UnitPrice", $('#txtUnitPrice').val());
+            formData.append("OfferPrice", $('#txtUnitPrice').val());
+            formData.append("OfferValue", $('#txtUnitPrice').val());
+            formData.append("OfferType", $('#txtUnitPrice').val());
             formData.append("MRP", $('#txtMRP').val());
             formData.append("BrandId", $('#cmbBrandId').val());
             formData.append("BrandName", $('#cmbBrandId').val());

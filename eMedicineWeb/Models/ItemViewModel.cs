@@ -13,6 +13,9 @@ namespace eMedicineWeb.Models
         public string ItemDescription { get; set; }
         public string ItemDescriptionBN { get; set; }
         public string UnitPrice { get; set; }
+        public string OfferPrice { get; set; }
+        public string OfferValue { get; set; }
+        public string OfferType { get; set; }
         public string MRP { get; set; }
         public string BrandId { get; set; }
         public string BrandName { get; set; }

@@ -25,6 +25,10 @@
                         <div class="box box-solid box-primary" style="margin-top:15px;">
                             <div class="box-header">
                                 <h3 class="box-title">Item Information</h3>
+                                <h3 class="box-title pull-right" style="">
+                                    <button id="btnSave" type="button" class="btn btn-success pull-right">Save Info</button>
+                                    <button id="btnUpdate" type="button" class="btn btn-warning pull-right" style="display:none">Update Info</button>
+                                </h3>
                             </div>
                             <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
                                 <form id="validateItem">
@@ -72,7 +76,7 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="txtMRP">MRP</label>
-                                                <input type="txtMRP" id="txtMRP" name="txtMRP" value="" class="form-control input-sm" autocomplete="off" onkeypress="return ItemHelper.isDeciaml(this, event, 2)">
+                                                <input type="text" id="txtMRP" name="txtMRP" value="" class="form-control input-sm" autocomplete="off" onkeypress="return ItemHelper.isDeciaml(this, event, 2)">
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="cmbBrandId">Brand Name</label>
@@ -96,10 +100,6 @@
                                             <div class="col-sm-1">
                                                 <label for="">Upload File</label>
                                                 <input type="file" id="fileUpload" name="fileUpload" accept="image/png, image/jpeg"/>
-                                            </div>
-                                            <div class="col-sm-1" style="margin-top: 25px;">
-                                                <button id="btnSave" type="button" class="btn btn-success pull-right">Save Info</button>
-                                                <button id="btnUpdate" type="button" class="btn btn-warning pull-right" style="display:none">Update Info</button>
                                             </div>
                                         </div>
                                     </div>

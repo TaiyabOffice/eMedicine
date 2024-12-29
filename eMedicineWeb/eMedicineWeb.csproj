@@ -7360,6 +7360,7 @@
     <Content Include="Scripts\eMedicine\DashBoard\UIDashBoard.js" />
     <Content Include="Scripts\eMedicine\Item\UIEntryOffer.js" />
     <Content Include="Scripts\eMedicine\Item\UIEntryItem.js" />
+    <Content Include="Scripts\eMedicine\Item\UIOfferDetails.js" />
     <Content Include="Scripts\eMedicine\Item\UIItemList.js" />
     <Content Include="Scripts\eMedicine\Order\UIOrderList.js" />
     <Content Include="Scripts\eMedicine\Order\UIEntryOrder.js" />
@@ -7413,6 +7414,7 @@
     <Content Include="Views\Order\UIOrderList.cshtml" />
     <Content Include="Views\Item\UIEntryOffer.cshtml" />
     <Content Include="Views\Item\ItemDemo.cshtml" />
+    <Content Include="Views\Item\UIOfferDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

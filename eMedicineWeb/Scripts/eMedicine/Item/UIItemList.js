@@ -14,17 +14,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function (response) {
                     if (response.data.length > 0) {
-                        $("#titleHeder").html("Products ( " + response.data.length + " )");
-
-                        products = response.data.map(item => ({
-                            id: item.ItemId,
-                            name: item.ItemName,
-                            price: item.UnitPrice,
-                            quantity: 1,
-                            mrp: item.MRP,
-                            imagePath: item.ImagePath,
-                            itemDescription: item.ItemDescription
-                        }));
+                        $("#titleHeder").html("Products ( " + response.data.length + " )");                        
                         productList.innerHTML = ''; {
                             response.data.forEach(function (item) {
                                 const productDiv = document.createElement('div');
@@ -69,16 +59,6 @@ var ItemListHelper =
             success: function (response) {
                 if (response.data.length > 0) {
                     $("#titleHeder").html("Products ( " + response.data.length+" )");
-
-                    products = response.data.map(item => ({
-                        id: item.ItemId,
-                        name: item.ItemName,
-                        price: item.UnitPrice,
-                        quantity: 1,
-                        mrp: item.MRP,
-                        imagePath: item.ImagePath,
-                        itemDescription: item.ItemDescription
-                    }));
                     productList.innerHTML = ''; {
                         response.data.forEach(function (item) {
                             const productDiv = document.createElement('div');

@@ -44,6 +44,11 @@ namespace eMedicineWeb.Controllers
             return View();
         }
 
+        public ActionResult UIOfferDetails()
+        {
+            return View();
+        }
+
         #region Items
         public async Task<ActionResult> GetAllItem()
         {
@@ -283,7 +288,7 @@ namespace eMedicineWeb.Controllers
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Failed to retrieve Item. Please try again later." }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = false, message = "Failed to retrieve Offer. Please try again later." }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)

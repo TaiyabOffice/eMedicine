@@ -23,6 +23,20 @@ namespace eMedicineWeb.Controllers
         {
             client = new HttpClient();
             client.BaseAddress = baseAddress;
+            var userAgent = ConfigurationManager.AppSettings["UserAgent"];
+            var acceptHeader = ConfigurationManager.AppSettings["AcceptHeader"];
+            client = new HttpClient
+            {
+                BaseAddress = baseAddress
+            };
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+            }
+            if (!string.IsNullOrEmpty(acceptHeader))
+            {
+                client.DefaultRequestHeaders.Add("Accept", acceptHeader);
+            }
 
         }
         public ActionResult UIEntryRegister()

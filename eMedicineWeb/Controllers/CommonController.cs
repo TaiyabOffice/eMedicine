@@ -22,6 +22,20 @@ namespace eMedicineWeb.Controllers
         {
             client = new HttpClient();
             client.BaseAddress = baseAddress;
+            var userAgent = ConfigurationManager.AppSettings["UserAgent"];
+            var acceptHeader = ConfigurationManager.AppSettings["AcceptHeader"];
+            client = new HttpClient
+            {
+                BaseAddress = baseAddress
+            };
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+            }
+            if (!string.IsNullOrEmpty(acceptHeader))
+            {
+                client.DefaultRequestHeaders.Add("Accept", acceptHeader);
+            }
 
         }
         public ActionResult GenerateCombo(string ProcedureName, string CallName, string Param1, string Param2, string Param3, string Param4, string Param5)

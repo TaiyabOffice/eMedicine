@@ -24,12 +24,23 @@ namespace eMedicineWeb.Controllers
         Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "LoginAPI");
         HttpClient client;
         public LoginController()
-        {
-            client = new HttpClient();
-            client.BaseAddress = baseAddress;
-
-        }
-        // GET: Login
+        {            
+            baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"] + "LoginAPI");
+            var userAgent = ConfigurationManager.AppSettings["UserAgent"];
+            var acceptHeader = ConfigurationManager.AppSettings["AcceptHeader"];          
+            client = new HttpClient
+            {
+                BaseAddress = baseAddress
+            };           
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+            }
+            if (!string.IsNullOrEmpty(acceptHeader))
+            {
+                client.DefaultRequestHeaders.Add("Accept", acceptHeader);
+            }
+        }      
         public ActionResult Login()
         {
             return View();
@@ -41,8 +52,7 @@ namespace eMedicineWeb.Controllers
             string a = GetVisitorDetails();
             string b = GetMachineNameUsingIPAddress(a);
             LoginViewModel loginModel = null;
-            string requestUrl = $"{client.BaseAddress}/LogIn?UserName={Uri.EscapeDataString(UserName)}&UserPassword={Uri.EscapeDataString(UserPassword)}";
-
+            string requestUrl = $"{client.BaseAddress}/LogIn?UserName={Uri.EscapeDataString(UserName)}&UserPassword={Uri.EscapeDataString(UserPassword)}";           
             HttpResponseMessage response = client.GetAsync(requestUrl).Result;
 
             if (response.IsSuccessStatusCode)
@@ -80,6 +90,9 @@ namespace eMedicineWeb.Controllers
 
             return Json(status, JsonRequestBehavior.AllowGet);
         }
+
+       
+
 
         public void GetMenuById(string UserId)
         {         

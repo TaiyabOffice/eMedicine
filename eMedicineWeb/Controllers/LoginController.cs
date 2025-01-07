@@ -25,7 +25,7 @@ namespace eMedicineWeb.Controllers
         HttpClient client;
         public LoginController()
         {            
-            baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"] + "LoginAPI");
+           
             var userAgent = ConfigurationManager.AppSettings["UserAgent"];
             var acceptHeader = ConfigurationManager.AppSettings["AcceptHeader"];          
             client = new HttpClient

@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace eMedicineWeb.Models
+﻿namespace eMedicineAdmin.Models
 {
     public class LoginViewModel
     {
+        public string UserName { get; set; }
+        public string UserPassword { get; set; }
         public string UserId { get; set; }
-        public string Password { get; set; }
-        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; }       
         public string Email { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public string LocationId { get; set; } = string.Empty;
         public string CityId { get; set; } = string.Empty;
         public string TerminalId { get; set; } = string.Empty;
-    }
-    public class LoginResponse
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
         public List<LoginViewModel> Data { get; set; }
     }
 
@@ -31,11 +22,6 @@ namespace eMedicineWeb.Models
         public string PageName { get; set; }
         public string PageUrl { get; set; }
         public string MenuSequenceNo { get; set; }
-    }
-    public class MenuResponse
-    {
-        public bool Success { get; set; }
-        public string Message { get; set; }
         public List<MenuViewModel> Data { get; set; }
     }
 }

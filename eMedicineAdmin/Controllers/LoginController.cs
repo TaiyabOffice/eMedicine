@@ -19,58 +19,63 @@ namespace eMedicineAdmin.Controllers
         }
         public ActionResult Login()
         {
+           
             return View();
-        }
+        }       
         [HttpPost]
-        public JsonResult Login([FromBody] LoginViewModel loginData)
+        public async Task<IActionResult> Login([FromBody] LoginViewModel loginData)
         {
-            LoginViewModel loginModel = null;
-            if (loginData == null || string.IsNullOrEmpty(loginData.UserName) || string.IsNullOrEmpty(loginData.UserPassword))
+            if (loginData == null || string.IsNullOrWhiteSpace(loginData.UserName) || string.IsNullOrWhiteSpace(loginData.Password))
             {
-                return Json(new { success = false, message = "Login failed. Please check your credentials." });
+                return Json(new { success = false, message = "Invalid login data." });
             }
+
             try
-            {
-                string requestUrl = $"{_httpClient.BaseAddress}LoginAPI/LogIn?UserName={Uri.EscapeDataString(loginData.UserName)}&UserPassword={Uri.EscapeDataString(loginData.UserPassword)}";
-                HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
-
-                if (response.IsSuccessStatusCode)
+            {                
+                var requestUrl = $"{_httpClient.BaseAddress}LoginAPI/LogIn?UserName={Uri.EscapeDataString(loginData.UserName)}&UserPassword={Uri.EscapeDataString(loginData.Password)}";
+                               
+                var response = await _httpClient.GetAsync(requestUrl);
+                if (!response.IsSuccessStatusCode)
                 {
-                    string data = response.Content.ReadAsStringAsync().Result;
-                    var loginResponse = JsonConvert.DeserializeObject<LoginViewModel>(data);
-                    List<LoginViewModel> loginViewModels = loginResponse?.Data ?? new List<LoginViewModel>();
-                    loginModel = loginViewModels.FirstOrDefault();
-                    HttpContext.Session.SetString("UserID", loginModel.UserId);
-                    HttpContext.Session.SetString("UserName", loginModel.UserName);
-                    HttpContext.Session.SetString("Email", loginModel.Email);
-                    HttpContext.Session.SetString("PhoneNumber", loginModel.PhoneNumber);
-                    HttpContext.Session.SetString("DateToday", DateTime.Now.ToString("dd-MM-yyyy"));
+                    return Json(new { success = false, message = "Invalid credentials or server error." });
+                }
+                
+                var data = await response.Content.ReadAsStringAsync();
+                var loginResponse = JsonConvert.DeserializeObject<LoginViewModel>(data);
+                var loginModel = loginResponse?.Data?.FirstOrDefault();
 
-                    HttpResponseMessage MenuResponse = _httpClient.GetAsync(_httpClient.BaseAddress + "LoginAPI/GetMenuById/" + loginData.UserName).Result;
-                    if (MenuResponse.IsSuccessStatusCode)
-                    {
-                        string Menudata = MenuResponse.Content.ReadAsStringAsync().Result;
-                        var MenuRes = JsonConvert.DeserializeObject<MenuViewModel>(Menudata);
-                        List<MenuViewModel> menuLists = MenuRes?.Data ?? new List<MenuViewModel>();
-                        HttpContext.Session.SetString("MenuData", JsonConvert.SerializeObject(menuLists));
-                        //ViewBag.MenuData = menuLists;
-                        return Json(new { success = true, message = "Login successful." });
-                    }
-                    else
-                    {
-                        return Json(new { success = false, message = "Login failed. Please check your credentials." });
-                    }
-                }
-                else
+                if (loginModel == null)
                 {
-                    return Json(new { success = false, message = "Login failed. Please check your credentials." });
+                    return Json(new { success = false, message = "Login failed. User data not found." });
                 }
+                
+                HttpContext.Session.SetString("UserID", loginModel.UserId);
+                HttpContext.Session.SetString("UserName", loginModel.UserName);
+                HttpContext.Session.SetString("Email", loginModel.Email);
+                HttpContext.Session.SetString("PhoneNumber", loginModel.PhoneNumber);
+                HttpContext.Session.SetString("DateToday", DateTime.Now.ToString("dd-MM-yyyy"));
+                
+                var menuResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}LoginAPI/GetMenuById/{Uri.EscapeDataString(loginData.UserName)}");
+                if (!menuResponse.IsSuccessStatusCode)
+                {
+                    return Json(new { success = false, message = "Login successful, but menu data could not be retrieved." });
+                }
+
+                var menuData = await menuResponse.Content.ReadAsStringAsync();
+                var menuRes = JsonConvert.DeserializeObject<MenuViewModel>(menuData);
+                var menuLists = menuRes?.Data ?? new List<MenuViewModel>();
+
+                HttpContext.Session.SetString("MenuData", JsonConvert.SerializeObject(menuLists));
+                //ViewBag.MenuData = JsonConvert.SerializeObject(menuLists);
+
+                return Json(new { success = true, message = "Login successful." });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "An error occurred during login.", error = ex.Message });
             }
         }
+
 
     }
 }

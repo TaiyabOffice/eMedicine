@@ -58,17 +58,7 @@ namespace eMedicineWeb.Controllers
                         {
                             dropdownList = Response?.Data ?? new List<DropdownListViewModel>();
                         }
-                    }
-                    //try
-                    //{
-                    //    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);                   
-                    //    return Json(dropdownModal, JsonRequestBehavior.AllowGet);
-                    //}
-                    //catch (JsonSerializationException)
-                    //{
-                    //    var dropdownModal = JsonConvert.DeserializeObject<List<DropdownListViewModel>>(data);
-                    //    dropdownList = dropdownModal.FirstOrDefault();
-                    //}
+                    }                    
                 }
                 else
                 {

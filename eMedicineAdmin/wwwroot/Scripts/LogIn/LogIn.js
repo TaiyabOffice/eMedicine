@@ -1,9 +1,4 @@
-﻿var dataSet = [];
-
-
-
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     $("#txtUserName").on("keydown", function (e) {
         if (e.keyCode == 13) {
             $("#txtPassword").focus();
@@ -19,7 +14,6 @@ $(document).ready(function () {
     $("#btnLogin").on("keydown", function (e) {
         if (e.keyCode == 13) {
             $("#btnLogin").click();
-
         }
     });
 
@@ -33,7 +27,6 @@ $(document).ready(function () {
         $("#lblMessage").val("");
     });
 });
-
 
 
 var LoginHelper = {
@@ -52,33 +45,38 @@ var LoginHelper = {
             c.setAttribute("class", "fa fa-eye-slash field-icon2");
         }
     },
-
     LogInData: function () {
         var UserName = $("#txtUserName").val();
         var UserPassword = $("#txtPassword").val();
 
-        var json = { UserName: UserName, UserPassword: UserPassword };
+        var json = { UserName: UserName, Password: UserPassword };
 
         $.ajax({
             type: "POST",
-            url: "/LogIn/LogIn", // Adjust the URL if needed based on your routing setup
-            data: JSON.stringify(json), // Send data as JSON
-            contentType: "application/json; charset=utf-8", // Specify the content type
-            dataType: "json", // Expect a JSON response
+            url: "/LogIn/LogIn",
+            data: JSON.stringify(json),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
             success: function (data) {
                 if (data.success) {
-                    $("body").removeClass("loading");                   
+                    $("body").removeClass("loading");
                     window.location.href = '/DashBoard/Dashboard';
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Your action was successful.',
+                        timer: 1000
+                    });
                 }
                 else {
                     $("body").removeClass("loading");
-                    $("#lblMessage").html("Invalid Username or Password");                    
+                    $("#lblMessage").html("Invalid Username or Password");
                     $("#btnLogin").show();
                 }
             },
             error: function (data) {
                 $("body").removeClass("loading");
-                $("#lblMessage").html("Something Went Wrong !!!");               
+                $("#lblMessage").html("Something Went Wrong !!!");
                 $("#btnLogin").show();
             }
         });

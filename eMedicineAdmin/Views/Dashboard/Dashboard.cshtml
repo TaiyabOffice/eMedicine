@@ -1,9 +1,13 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
-
+    ViewBag.Title = "";
+    Layout = "~/views/shared/_layout.cshtml";
 }
+<script type="text/javascript">
+    function preventBack() { window.history.forward(); }
+    setTimeout("preventBack()", 0);
+    window.onunload = function () { null };
+    sessionStorage.clear();
+</script>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome EmedicineBd</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+<section class="content"></section>

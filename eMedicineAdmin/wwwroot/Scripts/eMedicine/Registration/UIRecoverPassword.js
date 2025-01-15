@@ -1,9 +1,7 @@
-﻿$(document).ready(function () {
-    $(".select2").select2();
+﻿$(document).ready(function () {   
     PasswordRecoveryHelper.ValidatePasswordRecovery();
 
 });
-
 $("#btnRecoverPassword").click(function () {
     if ($("#passwordRecoveryForm").valid()) {
         PasswordRecoveryHelper.RecoverPassword();
@@ -19,34 +17,7 @@ $("#txtPhone, #txtPassword, #txtConfirmPassword").on("keydown", function (e) {
 });
 
 
-var PasswordRecoveryHelper = {
-
-    GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
-
-        objcmb.empty();
-        var json = { ProcedureName: proName, CallName: callName, Param1: param1, Param2: param2, Param3: param3, Param4: param4, Param5: param5 };
-        jQuery.ajax({
-            type: "POST",
-            url: "/Common/GenerateCombo",
-            data: json,
-            success: function (data) {
-                if (data.data.length == 1) {
-                    $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
-                    });
-                }
-                else {
-                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
-                    $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
-                    });
-
-                }
-                // this is for to work onchange event when only one data is returned
-                objcmb.change();
-            }
-        });
-    },
+var PasswordRecoveryHelper = {    
     ShowPassword: function (fieldId, eyeIcon) {
         var field = document.getElementById(fieldId);
         var icon = eyeIcon;
@@ -60,9 +31,6 @@ var PasswordRecoveryHelper = {
     },
 
     ValidatePasswordRecovery: function () {
-        //$.validator.addMethod("passwordMatch", function (value, element) {
-        //    return value === $("#txtPassword").val();
-        //}, "Passwords do not match");
 
         $("#passwordRecoveryForm").validate({
             rules: {
@@ -128,7 +96,7 @@ var PasswordRecoveryHelper = {
                         closeOnConfirm: false,
 
                     });
-                    window.location.href = response.RedirectUrl;
+                    window.location.href = '/Login/Login';
                     //location.reload();
                     $("body").removeClass("loading");
                 }

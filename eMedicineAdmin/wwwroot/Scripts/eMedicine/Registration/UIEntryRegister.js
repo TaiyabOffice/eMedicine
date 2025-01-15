@@ -1,5 +1,4 @@
-﻿$(document).ready(function () {
-    alert();
+﻿$(document).ready(function () {   
     RegistrationHelper.ValidateRegistration();
     RegistrationHelper.GenerateCombo($("#cmbDistrictId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
 });
@@ -26,7 +25,6 @@ $("#cmbDistrictId").on("change", function (e)
 });
 
 var RegistrationHelper = {
-
     GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
         objcmb.empty();
@@ -38,17 +36,18 @@ var RegistrationHelper = {
             success: function (data) {
                 if (data.data.length == 1) {
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
 
                 }
                 // this is for to work onchange event when only one data is returned
+                objcmb.select2();
                 objcmb.change();
             }
         });
@@ -64,7 +63,6 @@ var RegistrationHelper = {
             icon.className = "fa fa-eye-slash field-icon2";
         }
     },
-
     ValidateRegistration: function () {
         //$.validator.addMethod("passwordMatch", function (value, element) {
         //    return value === $("#txtPassword").val();
@@ -130,33 +128,28 @@ var RegistrationHelper = {
             }
         });
     },
-
     RegisterData: function () {
-        var obj = new Object();
 
-        //obj.DESC1 = $("#txtUserId").val();
-        obj.PhoneNumber = $("#txtPhone").val();
-        obj.UserName = $("#txtUserName").val();
-        obj.Email = $("#txtEmail").val();
-        obj.Password = $("#txtConfirmPassword").val();
-        obj.DistrictId = $("#cmbDistrictId").val();
-        obj.DistrictName = $("#cmbDistrictId").val();
-        obj.UpazilasId = $("#cmbUpazilasId").val();
-        obj.UpazilasName = $("#cmbUpazilasId").val();
-        obj.IsActive = "1";
+        var json = {            
+            PhoneNumber : $("#txtPhone").val(),
+            UserName : $("#txtUserName").val(),
+            Email : $("#txtEmail").val(),
+            Password : $("#txtConfirmPassword").val(),
+            DistrictId : $("#cmbDistrictId").val(),
+            DistrictName : $("#cmbDistrictId").val(),
+            UpazilasId : $("#cmbUpazilasId").val(),
+            UpazilasName : $("#cmbUpazilasId").val(),
+            IsActive : "1"
+        };
 
-
-        var objDetails = JSON.stringify(obj);
-
-        var serviceUrl = "/Registration/CreateRegistration";
-        jQuery.ajax({
-            url: serviceUrl,
+        $.ajax({
             type: "POST",
-            data: objDetails,
-            dataType: "json",
+            url: "/Registration/CreateRegistration",
+            data: JSON.stringify(json),
             contentType: "application/json; charset=utf-8",
-            success: function (response) {
-                if (response.success) {
+            dataType: "json",
+            success: function (data) {
+                if (data.success) {
                     swal({
                         title: "Congratulation!!",
                         text: "Registration Successfull",
@@ -164,7 +157,7 @@ var RegistrationHelper = {
                         closeOnConfirm: false,
 
                     });
-                    window.location.href = response.RedirectUrl;
+                    window.location.href = '/Login/Login';
                     //location.reload();
                     $("body").removeClass("loading");
                 } else {

@@ -138,7 +138,7 @@ namespace eMedicineAdmin.Controllers
             bool status = false;
             try
             {
-                string requestUrl = $"{_httpClient.BaseAddress}/RecoverPassword?PhoneNumber={Uri.EscapeDataString(PhoneNumber)}&UserPass={Uri.EscapeDataString(UserPass)}";
+                string requestUrl = $"{_httpClient.BaseAddress}RegistrationAPI/RecoverPassword?PhoneNumber={Uri.EscapeDataString(PhoneNumber)}&UserPass={Uri.EscapeDataString(UserPass)}";
 
                 HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
                 string data = response.Content.ReadAsStringAsync().Result;
@@ -147,10 +147,10 @@ namespace eMedicineAdmin.Controllers
                 {
                     status = true;
                 }
-                else if (loginResponse.Message == "NE")
+                else
                 {
                     status = false;                    
-                    return Json(new { success = false, message = "User Update Successfully" });
+                    return Json(new { success = false, message = "User Update Failed" });
                 }
 
             }

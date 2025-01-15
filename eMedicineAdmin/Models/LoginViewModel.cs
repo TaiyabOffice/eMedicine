@@ -10,6 +10,7 @@
         public string LocationId { get; set; } = string.Empty;
         public string CityId { get; set; } = string.Empty;
         public string TerminalId { get; set; } = string.Empty;
+        public string IsActive { get; set; }
         public List<LoginViewModel> Data { get; set; }
     }
 
@@ -36,6 +37,7 @@
         public string IsActive { get; set; }
         public List<RegistrationViewModel> Data { get; set; }
         public bool Success { get; set; }
+        public string Message { get; set; }
     }
     public class DropdownListViewModel
     {

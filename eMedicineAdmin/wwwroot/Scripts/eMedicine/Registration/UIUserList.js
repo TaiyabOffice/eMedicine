@@ -1,7 +1,6 @@
 ﻿let rowId = "";
 $(document).ready(function () {
-
-    $(".select2").select2();
+  
     UserHelper.BuildTbl("");
     UserHelper.GetAllUser();
 });
@@ -45,13 +44,13 @@ var UserHelper = {
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'PhoneNumber' },
-                { data: 'UserName' },
-                { data: 'Email' },
-                { data: 'PhoneNumber' },
-                { data: 'DistrictName' },
-                { data: 'UpazilasName' },               
-                { data: 'IsActive' },
+                { data: 'phoneNumber' },
+                { data: 'userName' },
+                { data: 'email' },
+                { data: 'phoneNumber' },
+                { data: 'districtName' },
+                { data: 'upazilasName' },               
+                { data: 'isActive' },
                 {
                     data: null,
                     render: function (data, type, row, meta)
@@ -71,8 +70,8 @@ var UserHelper = {
                     render: function (data, type, row, meta) {  
                         const isActive = row.IsActive || 0;
                         return '<select id="CmbIsActive_' + meta.row + '" name="CmbIsActive" class="form-control input-sm">' +
-                            '<option value="1" ' + (row.IsActive === '1' ? 'selected' : '') + '>Yes</option>' +
-                            '<option value="0" ' + (row.IsActive === '0' ? 'selected' : '') + '>No</option>' +
+                            '<option value="1" ' + (row.isActive === '1' ? 'selected' : '') + '>Yes</option>' +
+                            '<option value="0" ' + (row.isActive === '0' ? 'selected' : '') + '>No</option>' +
                             '</select>';
                     }
                 },
@@ -85,12 +84,14 @@ var UserHelper = {
         });
 
     },  
-    GetAllUser: function () {
+    GetAllUser: function ()
+    {
         var serviceUrl = "/Registration/GetAllUser";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
-            success: function (result) {
+            success: function (result)
+            {              
                 if (result.success) {
                     UserHelper.BuildTbl(result.data);
                 } else {
@@ -123,7 +124,8 @@ var UserHelper = {
             url: "/Registration/UpdateUserById",
             data: json,
             success: function (data) {
-                if (data == '1') {
+                console.log(data)
+                if (data.status) {
                     $("body").removeClass("loading");
                     swal({
                         title: "Congratulations",

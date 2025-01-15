@@ -21,7 +21,6 @@ namespace eMedicineAdmin.Controllers
         {
             return View();
         }
-
         public IActionResult UIUserList1()
         {
             return View();
@@ -67,7 +66,6 @@ namespace eMedicineAdmin.Controllers
                 });
             }
         }
-
         public async Task<ActionResult> GetAllUser()
         {
             List<RegistrationViewModel> userList = new List<RegistrationViewModel>();
@@ -107,6 +105,61 @@ namespace eMedicineAdmin.Controllers
                 });
             }
             return Json(new { success = true, data = userList });
+        }
+
+        [HttpPost]
+        public ActionResult UpdateUserById(string UserId, string isActive)
+        {
+            bool status = false;
+            try
+            {
+                string requestUrl = $"{_httpClient.BaseAddress}RegistrationAPI/UpdateUserById?UserId={Uri.EscapeDataString(UserId)}&isActive={Uri.EscapeDataString(isActive)}";
+
+                HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    status = true;
+
+                }
+            }
+            catch (JsonSerializationException)
+            {
+                status = false;
+            }
+
+            //return Json(status, JsonRequestBehavior.AllowGet);
+            return Json(new { status, message = "User Update Successfully" });
+        }
+
+        [HttpPost]
+        public ActionResult RecoverPassword(string PhoneNumber, string UserPass)
+        {
+            bool status = false;
+            try
+            {
+                string requestUrl = $"{_httpClient.BaseAddress}/RecoverPassword?PhoneNumber={Uri.EscapeDataString(PhoneNumber)}&UserPass={Uri.EscapeDataString(UserPass)}";
+
+                HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
+                string data = response.Content.ReadAsStringAsync().Result;
+                var loginResponse = JsonConvert.DeserializeObject<RegistrationViewModel>(data);
+                if (loginResponse.Success)
+                {
+                    status = true;
+                }
+                else if (loginResponse.Message == "NE")
+                {
+                    status = false;                    
+                    return Json(new { success = false, message = "User Update Successfully" });
+                }
+
+            }
+            catch (JsonSerializationException)
+            {
+                status = false;
+            }
+
+            return Json(new { success = true, RedirectUrl = Url.Action("Login", "Login") });
         }
 
     }

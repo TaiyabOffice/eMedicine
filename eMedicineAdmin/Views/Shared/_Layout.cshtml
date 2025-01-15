@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIMS</title>
+    <title>eMedicineBd</title>
     <link rel="icon" href="~/images/CC_Blue.png" type="image/x-icon">
     <link href="~/content/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/content/bower_components/font-awesome/css/font-awesome.min.css"> 
@@ -90,9 +90,9 @@
             <!-- Logo -->
             <a href="/CommonDashBoard/RequsitionDashBoard" class="logo">
                 <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini"><b>PIMS</b></span>
+                <span class="logo-mini"><b>eMedBd</b></span>
                 <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg"><b>PIMS</b></span>
+                <span class="logo-lg"><b>eMedicineBd</b></span>
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top">
@@ -153,7 +153,7 @@
                         {
                             var children = GetChildMenus(menu.MenuID);
                             <li class="@(children.Any() ? "treeview" : "nav-link")">
-                                <a href="@menu.PageUrl" class="#">
+                                <a href="/@menu.PageUrl" class="#">
                                     <i class="@(children.Any() ? "fa fa-laptop" : "fa fa-circle-o")"></i>
                                     <span>
                                         @menu.MenuName

@@ -1,9 +1,7 @@
 ﻿$(document).ready(function () {
-    $(".select2").select2();
+    alert();
     RegistrationHelper.ValidateRegistration();
     RegistrationHelper.GenerateCombo($("#cmbDistrictId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
-
-
 });
 
 $("#btnRegister").click(function () {

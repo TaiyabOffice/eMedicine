@@ -1,0 +1,171 @@
+﻿
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frozen Foods</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            height: 100vh;
+        }
+
+            .sidebar h2 {
+                margin-top: 0;
+            }
+
+            .sidebar ul {
+                list-style-type: none;
+                padding: 0;
+            }
+
+                .sidebar ul li {
+                    margin: 10px 0;
+                }
+
+                    .sidebar ul li a {
+                        color: white;
+                        text-decoration: none;
+                    }
+
+                        .sidebar ul li a:hover {
+                            text-decoration: underline;
+                        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 20px;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            width: 250px;
+            padding: 15px;
+            text-align: center;
+        }
+
+            .product-card img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+            }
+
+        button.add-to-cart {
+            background-color: #28a745;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            button.add-to-cart:hover {
+                background-color: #218838;
+            }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar -->
+        <div class="sidebar">
+            <h2>Categories</h2>
+            <ul>
+                <li><a href="#">Frozen Meat</a></li>
+                <li><a href="#">Frozen Vegetables</a></li>
+                <li><a href="#">Frozen Desserts</a></li>
+            </ul>
+            <h2>Sub Categories</h2>
+            <ul>
+                <li><a href="#">Chicken</a></li>
+                <li><a href="#">Beef</a></li>
+                <li><a href="#">Fish</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h1>Frozen Foods</h1>
+            </header>
+            <section class="product-grid">
+                <div class="product-card">
+                    <img src="dummy-image.jpg" alt="Frozen Food 1">
+                    <h2>Frozen Food 1</h2>
+                    <p>$5.99</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <img src="dummy-image.jpg" alt="Frozen Food 2">
+                    <h2>Frozen Food 2</h2>
+                    <p>$7.99</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+                <!-- More product cards -->
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Frozen Foods Store</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+@section Scripts {   
+    <script src="~/Scripts/eMedicine/Item/UIItemList.js"></script>
+
+}

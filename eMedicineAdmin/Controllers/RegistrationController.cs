@@ -29,9 +29,9 @@ namespace eMedicineAdmin.Controllers
         {
             return View();
         }
-
+        
         [HttpPost]
-        public async Task<IActionResult> CreateRegistration([FromBody] RegistrationViewModel objDetails)
+        public async Task<JsonResult> CreateRegistration([FromBody] RegistrationViewModel objDetails)
         {
             if (!ModelState.IsValid)
             {
@@ -39,128 +39,106 @@ namespace eMedicineAdmin.Controllers
             }
 
             try
-            {               
-                var data = JsonConvert.SerializeObject(objDetails);
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
-                
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(objDetails), Encoding.UTF8, "application/json");
                 var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}RegistrationAPI/CreateRegistration", content);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return Json(new
-                    {
-                        success = true,
-                        message = "Registration created successfully.",                       
-                    });
-                }
-               
-                return Json(new { success = false, message = "Failed to create registration. Please try again." });
-            }
-            catch (Exception ex)
-            {                
                 return Json(new
                 {
-                    success = false,
-                    message = "An error occurred while processing your request.",
-                    error = ex.Message
+                    success = response.IsSuccessStatusCode,
+                    message = response.IsSuccessStatusCode
+                        ? "Registration created successfully."
+                        : "Failed to create registration. Please try again."
                 });
             }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while processing your request.", error = ex.Message });
+            }
         }
-        public async Task<ActionResult> GetAllUser()
+
+        public async Task<JsonResult> GetAllUser()
         {
-            List<RegistrationViewModel> userList = new List<RegistrationViewModel>();
             try
             {
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "RegistrationAPI/GetAllUser").Result;
+                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}RegistrationAPI/GetAllUser");
+
                 if (!response.IsSuccessStatusCode)
                 {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "Failed to retrieve user List list. Please try again later."
-                    });
+                    return Json(new { success = false, message = "Failed to retrieve user list. Please try again later." });
                 }
 
-                string responseData = response.Content.ReadAsStringAsync().Result;
+                var responseData = await response.Content.ReadAsStringAsync();
                 var dropdownResponse = JsonConvert.DeserializeObject<RegistrationViewModel>(responseData);
-                if (dropdownResponse?.Success == true)
+
+                if (dropdownResponse?.Success == true && dropdownResponse.Data != null)
                 {
-                    userList = dropdownResponse.Data ?? new List<RegistrationViewModel>();
+                    return Json(new { success = true, data = dropdownResponse.Data });
                 }
-                else
-                {
-                    return Json(new
-                    {
-                        success = false,
-                        message = "user List list is empty or could not be loaded."
-                    });
-                }
+
+                return Json(new { success = false, message = "User list is empty or could not be loaded." });
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    success = false,
-                    message = $"An error occurred: {ex.Message}"
-                });
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
-            return Json(new { success = true, data = userList });
         }
 
         [HttpPost]
-        public ActionResult UpdateUserById(string UserId, string isActive)
+        public async Task<JsonResult> UpdateUserById(string userId, string isActive)
         {
-            bool status = false;
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(isActive))
+            {
+                return Json(new { success = false, message = "Invalid parameters." });
+            }
+
             try
             {
-                string requestUrl = $"{_httpClient.BaseAddress}RegistrationAPI/UpdateUserById?UserId={Uri.EscapeDataString(UserId)}&isActive={Uri.EscapeDataString(isActive)}";
+                string requestUrl = $"{_httpClient.BaseAddress}RegistrationAPI/UpdateUserById?UserId={Uri.EscapeDataString(userId)}&isActive={Uri.EscapeDataString(isActive)}";
+                var response = await _httpClient.GetAsync(requestUrl);
 
-                HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    status = true;
-
-                }
+                return response.IsSuccessStatusCode
+                    ? Json(new { success = true, message = "User updated successfully." })
+                    : Json(new { success = false, message = "Failed to update user. Please try again." });
             }
-            catch (JsonSerializationException)
+            catch (Exception ex)
             {
-                status = false;
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
-
-            //return Json(status, JsonRequestBehavior.AllowGet);
-            return Json(new { status, message = "User Update Successfully" });
         }
 
         [HttpPost]
-        public ActionResult RecoverPassword(string PhoneNumber, string UserPass)
+        public async Task<JsonResult> RecoverPassword(string phoneNumber, string userPass)
         {
-            bool status = false;
+            if (string.IsNullOrEmpty(phoneNumber) || string.IsNullOrEmpty(userPass))
+            {
+                return Json(new { success = false, message = "Invalid parameters." });
+            }
+
             try
             {
-                string requestUrl = $"{_httpClient.BaseAddress}RegistrationAPI/RecoverPassword?PhoneNumber={Uri.EscapeDataString(PhoneNumber)}&UserPass={Uri.EscapeDataString(UserPass)}";
+                string requestUrl = $"{_httpClient.BaseAddress}RegistrationAPI/RecoverPassword?PhoneNumber={Uri.EscapeDataString(phoneNumber)}&UserPass={Uri.EscapeDataString(userPass)}";
+                var response = await _httpClient.GetAsync(requestUrl);
 
-                HttpResponseMessage response = _httpClient.GetAsync(requestUrl).Result;
-                string data = response.Content.ReadAsStringAsync().Result;
-                var loginResponse = JsonConvert.DeserializeObject<RegistrationViewModel>(data);
-                if (loginResponse.Success)
+                if (!response.IsSuccessStatusCode)
                 {
-                    status = true;
-                }
-                else
-                {
-                    status = false;                    
-                    return Json(new { success = false, message = "User Update Failed" });
+                    return Json(new { success = false, message = "User update failed." });
                 }
 
+                var responseData = await response.Content.ReadAsStringAsync();
+                var loginResponse = JsonConvert.DeserializeObject<RegistrationViewModel>(responseData);
+
+                if (loginResponse?.Success == true)
+                {
+                    return Json(new { success = true, redirectUrl = Url.Action("Login", "Login") });
+                }
+
+                return Json(new { success = false, message = "User update failed." });
             }
-            catch (JsonSerializationException)
+            catch (Exception ex)
             {
-                status = false;
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
-
-            return Json(new { success = true, RedirectUrl = Url.Action("Login", "Login") });
         }
-
     }
 }

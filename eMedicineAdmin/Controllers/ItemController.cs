@@ -1,0 +1,511 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text;
+using eMedicineAdmin.Models;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web;
+using System.IO;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.AspNetCore.Hosting.Server;
+
+namespace eMedicineAdmin.Controllers
+{
+    public class ItemController : Controller
+    {
+        private readonly HttpClient _httpClient;
+
+        public ItemController(IHttpClientFactory httpClientFactory)
+        {
+            _httpClient = httpClientFactory.CreateClient("eMedicineClient");
+        }
+        public IActionResult UIEntryItem()
+        {
+            return View();
+        }
+
+        public IActionResult UIItemList()
+        {
+            string menuDataJson = HttpContext.Session.GetString("MenuData");
+            var menuLists = string.IsNullOrEmpty(menuDataJson)
+                ? new List<MenuViewModel>()
+                : JsonConvert.DeserializeObject<List<MenuViewModel>>(menuDataJson);
+
+            ViewBag.MenuData = menuLists;
+            return View();
+        }
+
+        public IActionResult UIEntryOffer()
+        {
+            string menuDataJson = HttpContext.Session.GetString("MenuData");
+            var menuLists = string.IsNullOrEmpty(menuDataJson)
+                ? new List<MenuViewModel>()
+                : JsonConvert.DeserializeObject<List<MenuViewModel>>(menuDataJson);
+
+            ViewBag.MenuData = menuLists;
+            return View();
+        }
+        public IActionResult UIOfferDetails()
+        {
+            string menuDataJson = HttpContext.Session.GetString("MenuData");
+            var menuLists = string.IsNullOrEmpty(menuDataJson)
+                ? new List<MenuViewModel>()
+                : JsonConvert.DeserializeObject<List<MenuViewModel>>(menuDataJson);
+
+            ViewBag.MenuData = menuLists;
+            return View();
+        }
+
+        public async Task<JsonResult> GetAllItem()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}ItemAPI/GetAllItem");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Item List. Please try again later." });
+                }
+
+                var responseData = JsonConvert.DeserializeObject<ItemViewModel>(await response.Content.ReadAsStringAsync());
+
+                if (responseData?.Success == true && responseData.Data != null)
+                {
+                    return Json(new { success = true, data = responseData.Data });
+                }
+
+                return Json(new { success = false, message = "Item List is empty or could not be loaded." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateItem(ItemViewModel item, IFormFile imageFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid item details." });
+            }
+
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                return Json(new { success = false, message = "Image file is required." });
+            }
+
+            try
+            {
+                
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+                
+                string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+               
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                item.ImagePath = $"/Uploads/{uniqueFileName}";
+                
+                var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+                
+                var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}ItemAPI/CreateItem", content);
+
+                return Json(new
+                {
+                    success = response.IsSuccessStatusCode,
+                    message = response.IsSuccessStatusCode ? "Item created successfully." : "Failed to create item. Please try again."
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> GetItemById(string ItemId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}ItemAPI/GetItemById/{ItemId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Item. Please try again later." });
+                }
+
+                var responseData = await response.Content.ReadAsStringAsync();
+
+                if (JsonConvert.DeserializeObject<ItemViewModel>(responseData) is { } Item && Item.Data != null)
+                {
+                    return Json(new { success = true, data = Item.Data.FirstOrDefault() });
+                }
+
+                if (JsonConvert.DeserializeObject<List<ItemViewModel>>(responseData) is { } Items)
+                {
+                    return Json(new { success = true, data = Items.FirstOrDefault() });
+                }
+
+                return Json(new { success = false, message = "Item data is not in the expected format." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> UpdateItemById(ItemViewModel item, IFormFile imageFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid item details." });
+            }
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                try
+                {                    
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Uploads");
+                    
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    
+                    string fileExtension = Path.GetExtension(imageFile.FileName);
+                    string uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                   
+                    if (!string.IsNullOrEmpty(item.PreImagePath))
+                    {
+                        string preImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", item.PreImagePath.TrimStart('/'));
+                        if (System.IO.File.Exists(preImagePath))
+                        {
+                            System.IO.File.Delete(preImagePath);
+                        }
+                    }
+                    
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    item.ImagePath = $"/Uploads/{uniqueFileName}";
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "An error occurred while uploading the image.", error = ex.Message });
+                }
+            }
+
+            try
+            {               
+                var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+
+               
+                var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/UpdateItemById", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Item updated successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to update item. Please try again." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateOffer(OffersViewModel item, IFormFile imageFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid item details." });
+            }
+
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                return Json(new { success = false, message = "Image file is required." });
+            }
+
+            try
+            {
+
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "OffersImg");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string uniqueFileName = $"{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                item.OfferImagePath = $"/OffersImg/{uniqueFileName}";
+
+                var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}ItemAPI/CreateOffer", content);
+
+                return Json(new
+                {
+                    success = response.IsSuccessStatusCode,
+                    message = response.IsSuccessStatusCode ? "Item created successfully." : "Failed to create item. Please try again."
+                });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
+        }
+
+        public async Task<JsonResult> GetAllIOffers()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}ItemAPI/GetAllIOffers");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Item List. Please try again later." });
+                }
+
+                var responseData = JsonConvert.DeserializeObject<OffersViewModel>(await response.Content.ReadAsStringAsync());
+
+                if (responseData?.Success == true && responseData.Data != null)
+                {
+                    return Json(new { success = true, data = responseData.Data });
+                }
+
+                return Json(new { success = false, message = "Item List is empty or could not be loaded." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        public async Task<JsonResult> GetOfferById(string OfferId)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}ItemAPI/GetOfferById/{OfferId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Item. Please try again later." });
+                }
+
+                var responseData = await response.Content.ReadAsStringAsync();
+
+                if (JsonConvert.DeserializeObject<OffersViewModel>(responseData) is { } Item && Item.Data != null)
+                {
+                    return Json(new { success = true, data = Item.Data.FirstOrDefault() });
+                }
+
+                if (JsonConvert.DeserializeObject<List<OffersViewModel>>(responseData) is { } Items)
+                {
+                    return Json(new { success = true, data = Items.FirstOrDefault() });
+                }
+
+                return Json(new { success = false, message = "Item data is not in the expected format." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateOfferById(OffersViewModel item, IFormFile imageFile)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Invalid item details." });
+            }
+
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                try
+                {
+                    string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "OffersImg");
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    string fileExtension = Path.GetExtension(imageFile.FileName);
+                    string uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    if (!string.IsNullOrEmpty(item.PreImagePath))
+                    {
+                        string preImagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", item.PreImagePath.TrimStart('/'));
+                        if (System.IO.File.Exists(preImagePath))
+                        {
+                            System.IO.File.Delete(preImagePath);
+                        }
+                    }
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await imageFile.CopyToAsync(stream);
+                    }
+
+                    item.OfferImagePath = $"/OffersImg/{uniqueFileName}";
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "An error occurred while uploading the image.", error = ex.Message });
+                }
+            }
+
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(item), Encoding.UTF8, "application/json");
+
+
+                var response = await _httpClient.PostAsync($"{_httpClient.BaseAddress}/UpdateItemById", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Item updated successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to update item. Please try again." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
+        }
+        public async Task<IActionResult> AddOfferItems(string OfferId)
+        {
+            List<ItemViewModel> itemList = new List<ItemViewModel>();
+
+            try
+            {                
+                HttpResponseMessage response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}ItemAPI/AddOfferItems/{OfferId}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var responseData = JsonConvert.DeserializeObject<ItemViewModel>(data);
+
+                    if (responseData?.Success == true)
+                    {                       
+                        itemList = responseData.Data ?? new List<ItemViewModel>();
+                    }
+                    else
+                    {                        
+                        itemList = new List<ItemViewModel>();
+                    }
+                }
+                else
+                {                   
+                    return Json(new { success = false, message = "Failed to retrieve Item. Please try again later." });
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {               
+                return Json(new { success = false, message = $"HTTP request error: {httpEx.Message}" });
+            }
+            catch (Exception ex)
+            {                
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }            
+            return Json(new { success = true, data = itemList });
+        }
+        [HttpPost]
+        public async Task<ActionResult> SaveOfferItems(List<OfferItemsViewModel> OfferItems)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed to validate input." });
+            }
+            string data = JsonConvert.SerializeObject(OfferItems);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + "ItemAPI/SaveOfferItems", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Order create Successfully" });
+            }
+
+            ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
+            return Json(new { success = false, message = "Failed to save orders." });
+        }
+        public async Task<ActionResult> GetItemsByOfferId(string OfferId)
+        {
+            List<ItemViewModel> ItemList = new List<ItemViewModel>();
+            OffersViewModel Offer = null;
+            try
+            {
+                HttpResponseMessage OfferResponse = _httpClient.GetAsync(_httpClient.BaseAddress + "ItemAPI/GetOfferById/" + OfferId).Result;
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "ItemAPI/GetItemsByOfferId/" + OfferId).Result;
+                if (OfferResponse.IsSuccessStatusCode)
+                {
+                    string data = await OfferResponse.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<OffersViewModel>(data);
+                    if (Response.Success)
+                    {
+
+                        var Items = Response?.Data ?? new List<OffersViewModel>();
+                        Offer = Items.FirstOrDefault();
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Item data is not in the expected format." });
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<ItemViewModel>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            ItemList = Response?.Data ?? new List<ItemViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Item data is not in the expected format." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Item data is not in the expected format." });
+            }
+            return Json(new { success = true, data = Offer, data1 = ItemList, message = "Item data is not in the expected format." });            
+        }
+
+    }
+}

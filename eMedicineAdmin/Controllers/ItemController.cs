@@ -26,6 +26,12 @@ namespace eMedicineAdmin.Controllers
         }
         public IActionResult UIEntryItem()
         {
+            string menuDataJson = HttpContext.Session.GetString("MenuData");
+            var menuLists = string.IsNullOrEmpty(menuDataJson)
+                ? new List<MenuViewModel>()
+                : JsonConvert.DeserializeObject<List<MenuViewModel>>(menuDataJson);
+
+            ViewBag.MenuData = menuLists;
             return View();
         }
 

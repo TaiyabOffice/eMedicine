@@ -1,18 +1,9 @@
 ﻿let rowId = "";
 $(document).ready(function () {
-
+   
     $(".select2").select2();
     $("#btnSave").show();
-    $("#btnUpdate").hide();  
-
-    jQuery.ajax({
-        url: "/Common/GetCurrentDate",
-        type: "POST",
-        success: function (result) {
-            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#hdnDateToday").datepicker('setDate', new Date(result));
-        }
-    });
+    $("#btnUpdate").hide(); 
 
     BrandHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
     BrandHelper.GenerateCombo($("#cmbGenericId"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
@@ -47,13 +38,13 @@ var BrandHelper = {
             success: function (data) {
                 if (data.data.length == 1) {
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
 
                 }
@@ -69,19 +60,19 @@ var BrandHelper = {
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'BrandId' },
-                { data: 'BrandName' },
-                { data: 'GenericName' },
-                { data: 'CategoryName' },
-                { data: 'CompanyName' },                
-                { data: 'DosageForm' },
-                { data: 'Strength' },
-                { data: 'BrandDescription' },                
-                { data: 'IsActive' },
+                { data: 'brandId' },
+                { data: 'brandName' },
+                { data: 'genericName' },
+                { data: 'categoryName' },
+                { data: 'companyName' },                
+                { data: 'dosageForm' },
+                { data: 'strength' },
+                { data: 'brandDescription' },                
+                { data: 'isActive' },
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetBrandID(\'' + row.BrandId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetDetailsByBrandID(\'' + row.BrandId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetBrandID(\'' + row.brandId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="BrandHelper.GetDetailsByBrandID(\'' + row.brandId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -267,21 +258,21 @@ var BrandHelper = {
             data: jsonParam,
             success: function (response) {
                 //console.log(response.data);
-                if (response.Success) {
+                if (response.success) {
                     var Brand = response.data;
-                    $('#txtBrandId').val(Brand.BrandId);
-                    $('#txtName').val(Brand.BrandName);
-                    $('#txtNameBN').val(Brand.BrandNameBN);
-                    $('#txtDescription').val(Brand.BrandDescription);
-                    $('#txtDescriptionBN').val(Brand.BrandDescriptionBN);
-                    $("#cmbCompanyId").val(Brand.CompanyId).select2();
-                    $("#cmbCategoryId").val(Brand.CategoryId).select2();
-                    $("#cmbGenericId").val(Brand.GenericId).select2();
-                    $('#txtDosageForm').val(Brand.DosageForm);
-                    $('#txtDosageFormBN').val(Brand.DosageFormBN);
-                    $('#txtStrength').val(Brand.Strength);
-                    $('#txtStrengthBN').val(Brand.StrengthBN);
-                    $('#CmbIsActive').val(Brand.IsActive).select2();
+                    $('#txtBrandId').val(Brand.brandId);
+                    $('#txtName').val(Brand.brandName);
+                    $('#txtNameBN').val(Brand.brandNameBN);
+                    $('#txtDescription').val(Brand.brandDescription);
+                    $('#txtDescriptionBN').val(Brand.brandDescriptionBN);
+                    $("#cmbCompanyId").val(Brand.companyId).select2();
+                    $("#cmbCategoryId").val(Brand.categoryId).select2();
+                    $("#cmbGenericId").val(Brand.genericId).select2();
+                    $('#txtDosageForm').val(Brand.dosageForm);
+                    $('#txtDosageFormBN').val(Brand.dosageFormBN);
+                    $('#txtStrength').val(Brand.strength);
+                    $('#txtStrengthBN').val(Brand.strengthBN);
+                    $('#CmbIsActive').val(Brand.isActive).select2();
                 } else {
                     swal({
                         title: "Sorry!",
@@ -314,22 +305,23 @@ var BrandHelper = {
             data: jsonParam,
             success: function (response) {
                 //console.log(response.data);
-                if (response.Success) {
+                if (response.success) {
                     var Brand = response.data;
                     BrandHelper.clrMdl();
-                    $('#mdlTitle').html("Brand Details for: " + Brand.BrandId + " - " + Brand.BrandName + " - " + Brand.BrandNameBN);                    
-                    $('#MdlName').html("Name: " + Brand.BrandName);
-                    $('#MdlNameBN').html("ব্র্যান্ড নাম: " + Brand.BrandNameBN);
-                    $('#MdlDescription').html("Description: " + Brand.BrandDescription);
-                    $('#MdlDescriptionBN').html("বর্ণনা: " + Brand.BrandDescriptionBN);
-                    $('#MdlDosageForm').html("Dosage Form: " + Brand.DosageForm);
-                    $('#MdlDosageFormBN').html("ডোজ ফর্ম: " + Brand.DosageFormBN);
-                    $('#MdlStrength').html("Strength: " + Brand.Strength);
-                    $('#MdlStrengthBN').html("প্রতিরোধশক্তি: " + Brand.StrengthBN);
-                    $('#MdlCompanyName').html("Company Name: " + Brand.CompanyName);
-                    $('#MdlGenericName').html("Generic Name: " + Brand.GenericName);
-                    $('#MdlCategoryName').html("Category Name: " + Brand.CategoryName);
+                    $('#mdlTitle').html("Brand Details for: " + Brand.brandId + " - " + Brand.brandName + " - " + Brand.brandNameBN);                    
+                    $('#MdlName').html("Name: " + Brand.brandName);
+                    $('#MdlNameBN').html("ব্র্যান্ড নাম: " + Brand.brandNameBN);
+                    $('#MdlDescription').html("Description: " + Brand.brandDescription);
+                    $('#MdlDescriptionBN').html("বর্ণনা: " + Brand.brandDescriptionBN);
+                    $('#MdlDosageForm').html("Dosage Form: " + Brand.dosageForm);
+                    $('#MdlDosageFormBN').html("ডোজ ফর্ম: " + Brand.dosageFormBN);
+                    $('#MdlStrength').html("Strength: " + Brand.strength);
+                    $('#MdlStrengthBN').html("প্রতিরোধশক্তি: " + Brand.strengthBN);
+                    $('#MdlCompanyName').html("Company Name: " + Brand.companyName);
+                    $('#MdlGenericName').html("Generic Name: " + Brand.genericName);
+                    $('#MdlCategoryName').html("Category Name: " + Brand.categoryName);
                     $("#modal-default").modal("show");
+
                 }
                 else {
                     swal({

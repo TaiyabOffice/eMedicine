@@ -16,14 +16,16 @@ namespace eMedicineAdmin.Controllers
         }
         public IActionResult UIEntryOrder()
         {
-            string menuDataJson = HttpContext.Session.GetString("MenuData");
-            var menuLists = string.IsNullOrEmpty(menuDataJson)
-                ? new List<MenuViewModel>()
-                : JsonConvert.DeserializeObject<List<MenuViewModel>>(menuDataJson);
+            var menuDataJson = HttpContext.Session.GetString("MenuData");
+
+            var menuLists = !string.IsNullOrWhiteSpace(menuDataJson)
+                ? JsonConvert.DeserializeObject<List<MenuViewModel>>(menuDataJson) ?? new List<MenuViewModel>()
+                : new List<MenuViewModel>();
 
             ViewBag.MenuData = menuLists;
             return View();
         }
+
         public IActionResult UIOrderList()
         {
             string menuDataJson = HttpContext.Session.GetString("MenuData");
@@ -35,24 +37,31 @@ namespace eMedicineAdmin.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<ActionResult> SaveOrderList(List<OrderViewModel> OrderItems)
+        public async Task<IActionResult> SaveOrderList([FromBody] List<OrderViewModel> orderItems)
         {
-            if (!ModelState.IsValid)
+            if (orderItems == null || orderItems.Count == 0)
             {
-                return Json(new { success = false, message = "Failed to validate input." });
-            }
-            string data = JsonConvert.SerializeObject(OrderItems);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + "OrderAPI/SaveOrders", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return Json(new { success = true, message = "Order create Successfully" });
+                return Json(new { success = false, message = "Order list cannot be empty." });
             }
 
-            ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
-            return Json(new { success = false, message = "Failed to save orders." });
-        }     
+            try
+            {
+                var content = new StringContent(JsonConvert.SerializeObject(orderItems), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("OrderAPI/SaveOrders", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Order created successfully." });
+                }
+
+                return Json(new { success = false, message = "Failed to save orders. Please try again." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while processing your request.", error = ex.Message });
+            }
+        }
+
 
         [HttpPost]
         public async Task<JsonResult> GetItems(string item)
@@ -166,25 +175,31 @@ namespace eMedicineAdmin.Controllers
             }
         }
 
-        public ActionResult ChangeStatusByOrderID(string OrderId, string statusType)
+        public async Task<IActionResult> ChangeStatusByOrderID(string orderId, string statusType)
         {
-            bool status = false;
+            if (string.IsNullOrEmpty(orderId) || string.IsNullOrEmpty(statusType))
+            {
+                return Json(new { success = false, message = "Invalid order ID or status type." });
+            }
+
             try
             {
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/ChangeStatusByOrderID/{OrderId}/{statusType}").Result;
+                var response = await _httpClient.GetAsync($"OrderAPI/ChangeStatusByOrderID/{Uri.EscapeDataString(orderId)}/{Uri.EscapeDataString(statusType)}");
 
                 if (response.IsSuccessStatusCode)
                 {
-                    status = true;
-
+                    return Json(new { success = true, message = "Order status updated successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to update order status. Please try again." });
                 }
             }
-            catch (JsonSerializationException)
+            catch (Exception ex)
             {
-                status = false;
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
             }
-            return Json(new { status});
-            
         }
+
     }
 }

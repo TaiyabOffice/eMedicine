@@ -409,109 +409,98 @@ namespace eMedicineAdmin.Controllers
                 return Json(new { success = false, message = "An error occurred.", error = ex.Message });
             }
         }
-        public async Task<IActionResult> AddOfferItems(string OfferId)
+        public async Task<IActionResult> AddOfferItems(string offerId)
         {
-            List<ItemViewModel> itemList = new List<ItemViewModel>();
+            if (string.IsNullOrWhiteSpace(offerId))
+            {
+                return Json(new { success = false, message = "Offer ID cannot be empty." });
+            }
 
             try
-            {                
-                HttpResponseMessage response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}ItemAPI/AddOfferItems/{OfferId}");
+            {
+                var response = await _httpClient.GetAsync($"ItemAPI/AddOfferItems/{offerId}");
 
-                if (response.IsSuccessStatusCode)
+                if (!response.IsSuccessStatusCode)
                 {
-                    string data = await response.Content.ReadAsStringAsync();
-                    var responseData = JsonConvert.DeserializeObject<ItemViewModel>(data);
+                    return Json(new { success = false, message = "Failed to retrieve items. Please try again later." });
+                }
 
-                    if (responseData?.Success == true)
-                    {                       
-                        itemList = responseData.Data ?? new List<ItemViewModel>();
-                    }
-                    else
-                    {                        
-                        itemList = new List<ItemViewModel>();
-                    }
-                }
-                else
-                {                   
-                    return Json(new { success = false, message = "Failed to retrieve Item. Please try again later." });
-                }
+                var data = await response.Content.ReadAsStringAsync();
+                var responseData = JsonConvert.DeserializeObject<ItemViewModel>(data);
+
+                var itemList = responseData?.Success == true ? responseData.Data ?? new List<ItemViewModel>() : new List<ItemViewModel>();
+
+                return Json(new { success = true, data = itemList });
             }
             catch (HttpRequestException httpEx)
-            {               
-                return Json(new { success = false, message = $"HTTP request error: {httpEx.Message}" });
+            {
+                return Json(new { success = false, message = "HTTP request error.", error = httpEx.Message });
             }
             catch (Exception ex)
-            {                
-                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
-            }            
-            return Json(new { success = true, data = itemList });
+            {
+                return Json(new { success = false, message = "An unexpected error occurred.", error = ex.Message });
+            }
         }
         [HttpPost]
-        public async Task<ActionResult> SaveOfferItems(List<OfferItemsViewModel> OfferItems)
+        public async Task<IActionResult> SaveOfferItems([FromBody] List<OfferItemsViewModel> offerItems)
         {
-            if (!ModelState.IsValid)
+            if (offerItems == null || offerItems.Count == 0)
             {
-                return Json(new { success = false, message = "Failed to validate input." });
-            }
-            string data = JsonConvert.SerializeObject(OfferItems);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + "ItemAPI/SaveOfferItems", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                return Json(new { success = true, message = "Order create Successfully" });
+                return Json(new { success = false, message = "Offer items cannot be empty." });
             }
 
-            ModelState.AddModelError("", "Unable to create one or more orders. Please try again.");
-            return Json(new { success = false, message = "Failed to save orders." });
-        }
-        public async Task<ActionResult> GetItemsByOfferId(string OfferId)
-        {
-            List<ItemViewModel> ItemList = new List<ItemViewModel>();
-            OffersViewModel Offer = null;
             try
             {
-                HttpResponseMessage OfferResponse = _httpClient.GetAsync(_httpClient.BaseAddress + "ItemAPI/GetOfferById/" + OfferId).Result;
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "ItemAPI/GetItemsByOfferId/" + OfferId).Result;
-                if (OfferResponse.IsSuccessStatusCode)
-                {
-                    string data = await OfferResponse.Content.ReadAsStringAsync();
-                    var Response = JsonConvert.DeserializeObject<OffersViewModel>(data);
-                    if (Response.Success)
-                    {
-
-                        var Items = Response?.Data ?? new List<OffersViewModel>();
-                        Offer = Items.FirstOrDefault();
-                    }
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Item data is not in the expected format." });
-                }
+                var content = new StringContent(JsonConvert.SerializeObject(offerItems), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("ItemAPI/SaveOfferItems", content);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string data = await response.Content.ReadAsStringAsync();
-                    var Response = JsonConvert.DeserializeObject<ItemViewModel>(data);
-                    if (Response.Success)
-                    {
-                        if (!string.IsNullOrEmpty(data))
-                        {
-                            ItemList = Response?.Data ?? new List<ItemViewModel>();
-                        }
-                    }
+                    return Json(new { success = true, message = "Offer items saved successfully." });
                 }
-                else
-                {
-                    return Json(new { success = false, message = "Item data is not in the expected format." });
-                }
+
+                return Json(new { success = false, message = "Failed to save offer items. Please try again." });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Item data is not in the expected format." });
+                return Json(new { success = false, message = "An error occurred while processing the request.", error = ex.Message });
             }
-            return Json(new { success = true, data = Offer, data1 = ItemList, message = "Item data is not in the expected format." });            
         }
+
+        public async Task<IActionResult> GetItemsByOfferId(string offerId)
+        {
+            if (string.IsNullOrWhiteSpace(offerId))
+            {
+                return Json(new { success = false, message = "Offer ID cannot be empty." });
+            }
+
+            try
+            {
+                var offerResponse = await _httpClient.GetAsync($"ItemAPI/GetOfferById/{offerId}");
+                var itemsResponse = await _httpClient.GetAsync($"ItemAPI/GetItemsByOfferId/{offerId}");
+
+                if (!offerResponse.IsSuccessStatusCode || !itemsResponse.IsSuccessStatusCode)
+                {
+                    return Json(new { success = false, message = "Failed to retrieve offer or item data." });
+                }
+
+                var offerData = await offerResponse.Content.ReadAsStringAsync();
+                var itemsData = await itemsResponse.Content.ReadAsStringAsync();
+
+                var offerResult = JsonConvert.DeserializeObject<OffersViewModel>(offerData);
+                var itemsResult = JsonConvert.DeserializeObject<ItemViewModel>(itemsData);
+
+                var offer = offerResult?.Success == true ? offerResult.Data?.FirstOrDefault() : null;
+                var itemList = itemsResult?.Success == true ? itemsResult.Data ?? new List<ItemViewModel>() : new List<ItemViewModel>();
+
+                return Json(new { success = true, offer, items = itemList, message = "Data retrieved successfully." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while processing the request.", error = ex.Message });
+            }
+        }
+
 
     }
 }

@@ -3,15 +3,7 @@ $(document).ready(function () {
   
     $(".select2").select2();
     $("#btnSave").show();
-    $("#btnUpdate").hide();
-    jQuery.ajax({
-        url: "/Common/GetCurrentDate",
-        type: "POST",
-        success: function (result) {
-            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#hdnDateToday").datepicker('setDate', new Date(result));            
-        }
-    });
+    $("#btnUpdate").hide();   
 
     SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
     SalesPersonHelper.BuildTbl("");
@@ -45,13 +37,13 @@ var SalesPersonHelper = {
             success: function (data) {
                 if (data.data.length == 1) {
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
 
                 }
@@ -67,17 +59,17 @@ var SalesPersonHelper = {
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'SalesPersonId' },
-                { data: 'SalesPersonName' },
-                { data: 'SalesPersonDescription' },
-                { data: 'SalesPersonPhone' },
-                { data: 'CompanyId' },
-                { data: 'CompanyName' },                
-                { data: 'IsActive' },
+                { data: 'salesPersonId' },
+                { data: 'salesPersonName' },
+                { data: 'salesPersonDescription' },
+                { data: 'salesPersonPhone' },
+                { data: 'companyId' },
+                { data: 'companyName' },                
+                { data: 'isActive' },
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="SalesPersonHelper.GetSalesPersonID(\'' + row.SalesPersonId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="SalesPersonHelper.GetSalesPersonID(\'' + row.salesPersonId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -226,13 +218,13 @@ var SalesPersonHelper = {
                 if (response.success && response.data01 && response.data01.length > 0) {
                     var SalesPerson = response.data01[0];
                     //$("#cmbCompanyId").empty();
-                    $('#txtSalesPersonId').val(SalesPerson.SalesPersonId);
-                    $('#txtSalesPersonName').val(SalesPerson.SalesPersonName);
-                    $('#txtDescription').val(SalesPerson.SalesPersonDescription);
-                    $('#txtPhone').val(SalesPerson.SalesPersonPhone);
-                    $('#CompanyPhone').val(SalesPerson.CompanyPhone);
-                    $("#cmbCompanyId").val(SalesPerson.CompanyId).select2();
-                    $('#CmbIsActive').val(SalesPerson.IsActive);                                    
+                    $('#txtSalesPersonId').val(SalesPerson.salesPersonId);
+                    $('#txtSalesPersonName').val(SalesPerson.salesPersonName);
+                    $('#txtDescription').val(SalesPerson.salesPersonDescription);
+                    $('#txtPhone').val(SalesPerson.salesPersonPhone);
+                    $('#CompanyPhone').val(SalesPerson.companyPhone);
+                    $("#cmbCompanyId").val(SalesPerson.companyId).select2();
+                    $('#CmbIsActive').val(SalesPerson.isActive);                                    
                 } else {
                     swal({
                         title: "Sorry!",

@@ -42,17 +42,16 @@ var GenericsHelper = {
             success: function (data) {
                 if (data.data.length == 1) {
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
 
-                }
-                // this is for to work onchange event when only one data is returned
+                }         
                 objcmb.change();
             }
         });
@@ -64,20 +63,20 @@ var GenericsHelper = {
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'GenericsId' },
-                { data: 'GenericsName' },
-                { data: 'GenericsDescription' },
-                { data: 'Indications' },
-                { data: 'Contraindications' },
-                { data: 'TherapeuticClass' },
-                { data: 'SideEffects' },
-                { data: 'Precautions' },
-                { data: 'Interactions' },
-                { data: 'IsActive' },
+                { data: 'genericsId' },
+                { data: 'genericsName' },
+                { data: 'genericsDescription' },
+                { data: 'indications' },
+                { data: 'contraindications' },
+                { data: 'therapeuticClass' },
+                { data: 'sideEffects' },
+                { data: 'precautions' },
+                { data: 'interactions' },
+                { data: 'isActive' },
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="GenericsHelper.GetGenericsID(\'' + row.GenericsId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="GenericsHelper.GetDetailsByGenericsID(\'' + row.GenericsId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="GenericsHelper.GetGenericsID(\'' + row.genericsId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="GenericsHelper.GetDetailsByGenericsID(\'' + row.genericsId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -263,27 +262,27 @@ var GenericsHelper = {
             data: jsonParam,
             success: function (response) {
                 //console.log(response.data);
-                if (response.Success) {
+                if (response.success) {
                     var Generics = response.data;
 
-                    $('#txtGenericsId').val(Generics.GenericsId);
-                    $('#txtName').val(Generics.GenericsName);
-                    $('#txtNameBN').val(Generics.GenericsNameBN);
-                    $('#txtDescription').val(Generics.GenericsDescription);
-                    $('#txtDescriptionBN').val(Generics.GenericsDescriptionBN);
-                    $('#txtIndications').val(Generics.Indications);
-                    $('#txtIndicationsBN').val(Generics.IndicationsBN);
-                    $('#txtContraindications').val(Generics.Contraindications);
-                    $('#txtContraindicationsBN').val(Generics.ContraindicationsBN);
-                    $('#txtTherapeuticClass').val(Generics.TherapeuticClass);
-                    $('#txtTherapeuticClassBN').val(Generics.TherapeuticClassBN);
-                    $('#txtSideEffects').val(Generics.SideEffects);
-                    $('#txtSideEffectsBN').val(Generics.SideEffectsBN);
-                    $('#txtPrecautions').val(Generics.Precautions);
-                    $('#txtPrecautionsBN').val(Generics.PrecautionsBN);
-                    $('#txtInteractions').val(Generics.Interactions);
-                    $('#txtInteractionsBN').val(Generics.InteractionsBN);
-                    $('#CmbIsActive').val(Generics.IsActive);
+                    $('#txtGenericsId').val(Generics.genericsId);
+                    $('#txtName').val(Generics.genericsName);
+                    $('#txtNameBN').val(Generics.genericsNameBN);
+                    $('#txtDescription').val(Generics.genericsDescription);
+                    $('#txtDescriptionBN').val(Generics.genericsDescriptionBN);
+                    $('#txtIndications').val(Generics.indications);
+                    $('#txtIndicationsBN').val(Generics.indicationsBN);
+                    $('#txtContraindications').val(Generics.contraindications);
+                    $('#txtContraindicationsBN').val(Generics.contraindicationsBN);
+                    $('#txtTherapeuticClass').val(Generics.therapeuticClass);
+                    $('#txtTherapeuticClassBN').val(Generics.therapeuticClassBN);
+                    $('#txtSideEffects').val(Generics.sideEffects);
+                    $('#txtSideEffectsBN').val(Generics.sideEffectsBN);
+                    $('#txtPrecautions').val(Generics.precautions);
+                    $('#txtPrecautionsBN').val(Generics.precautionsBN);
+                    $('#txtInteractions').val(Generics.interactions);
+                    $('#txtInteractionsBN').val(Generics.interactionsBN);
+                    $('#CmbIsActive').val(Generics.isActive);
                 } else {
                     swal({
                         title: "Sorry!",
@@ -319,24 +318,24 @@ var GenericsHelper = {
                 if (response.Success) {
                     var Generics = response.data;
                     GenericsHelper.clrMdl();
-                    $('#mdlTitle').html("Generics Details for: " + Generics.GenericsId + " - " + Generics.GenericsName + " - " + Generics.GenericsNameBN);                    
-                    $('#MdlName').html("Name: " + Generics.GenericsName);
-                    $('#MdlNameBN').html("জেনেরিক নাম: " + Generics.GenericsNameBN);
-                    $('#MdlDescription').html("Description: " + Generics.GenericsDescription);
-                    $('#MdlDescriptionBN').html("বর্ণনা: " + Generics.GenericsDescriptionBN);
-                    $('#MdlIndications').html("Indications: " + Generics.Indications);
-                    $('#MdlIndicationsBN').html("ইঙ্গিত: " + Generics.IndicationsBN);
-                    $('#MdlContraindications').html("Contraindications: " + Generics.Contraindications);
-                    $('#MdlContraindicationsBN').html("বিপরীত: " + Generics.ContraindicationsBN);
-                    $('#MdlTherapeuticClass').html("Therapeutic-Class: " + Generics.TherapeuticClass);
-                    $('#MdlTherapeuticClassBN').html("থেরাপিউটিক ক্লাস: " + Generics.TherapeuticClassBN);
-                    $('#MdlSideEffects').html("Side-Effects: " + Generics.SideEffects);
-                    $('#MdlSideEffectsBN').html("পার্শ্ব প্রতিক্রিয়া: " + Generics.SideEffectsBN);
-                    $('#MdlPrecautions').html("Precautions: " + Generics.Precautions);
-                    $('#MdlPrecautionsBN').html("সতর্কতা: " + Generics.PrecautionsBN);
-                    $('#MdlInteractions').html("Interactions: " + Generics.Interactions);
-                    $('#MdlInteractionsBN').html("মিথষ্ক্রিয়া: " + Generics.InteractionsBN);
-                    if (Generics.IsActive == "1") {
+                    $('#mdlTitle').html("Generics Details for: " + Generics.genericsId + " - " + Generics.genericsName + " - " + Generics.genericsNameBN);                    
+                    $('#MdlName').html("Name: " + Generics.genericsName);
+                    $('#MdlNameBN').html("জেনেরিক নাম: " + Generics.genericsNameBN);
+                    $('#MdlDescription').html("Description: " + Generics.genericsDescription);
+                    $('#MdlDescriptionBN').html("বর্ণনা: " + Generics.genericsDescriptionBN);
+                    $('#MdlIndications').html("Indications: " + Generics.indications);
+                    $('#MdlIndicationsBN').html("ইঙ্গিত: " + Generics.indicationsBN);
+                    $('#MdlContraindications').html("Contraindications: " + Generics.contraindications);
+                    $('#MdlContraindicationsBN').html("বিপরীত: " + Generics.contraindicationsBN);
+                    $('#MdlTherapeuticClass').html("Therapeutic-Class: " + Generics.iherapeuticClass);
+                    $('#MdlTherapeuticClassBN').html("থেরাপিউটিক ক্লাস: " + Generics.iherapeuticClassBN);
+                    $('#MdlSideEffects').html("Side-Effects: " + Generics.sideEffects);
+                    $('#MdlSideEffectsBN').html("পার্শ্ব প্রতিক্রিয়া: " + Generics.sideEffectsBN);
+                    $('#MdlPrecautions').html("Precautions: " + Generics.precautions);
+                    $('#MdlPrecautionsBN').html("সতর্কতা: " + Generics.precautionsBN);
+                    $('#MdlInteractions').html("Interactions: " + Generics.interactions);
+                    $('#MdlInteractionsBN').html("মিথষ্ক্রিয়া: " + Generics.interactionsBN);
+                    if (Generics.isActive == "1") {
                         $('#mdlIsActive').html("Status: Active");
                     }
                     else {

@@ -17,26 +17,26 @@ $(document).ready(function () {
                     if (response.data.length > 0) {                     
 
                         products = response.data.map(item => ({
-                            id: item.ItemId,
-                            name: item.ItemName,
-                            price: item.UnitPrice,
+                            id: item.itemId,
+                            name: item.itemName,
+                            price: item.unitPrice,
                             quantity: 1,
-                            mrp: item.MRP,
-                            imagePath: item.ImagePath,
-                            itemDescription: item.ItemDescription
+                            mrp: item.mRP,
+                            imagePath: item.imagePath,
+                            itemDescription: item.itemDescription
                         }));
                         productList.innerHTML = ''; {
                             response.data.forEach(function (item) {
                                 const productDiv = document.createElement('div');
                                 productDiv.className = 'product';
                                 productDiv.innerHTML =
-                                    '<img src="' + item.ImagePath + '" alt="' + item.ItemName + '">' +
+                                    '<img src="' + item.imagePath + '" alt="' + item.itemName + '">' +
                                     '<div class="product-details">' +
-                                    '<h3>' + item.ItemName + '</h3>' +
-                                    '<p>' + item.ItemDescription + '</p>' +
-                                    '<p class="product-price">Best Price: ৳' + item.UnitPrice + '</p>' +
+                                    '<h3>' + item.itemName + '</h3>' +
+                                    '<p>' + item.itemDescription + '</p>' +
+                                    '<p class="product-price">Best Price: ৳' + item.unitPrice + '</p>' +
                                     '</div>' +
-                                    '<button class="btnCart btn-sm btn-success" onclick="OrderHelper.addToCart(' + item.ItemId + ')">Add to Cart</button>';
+                                    '<button class="btnCart btn-sm btn-success" onclick="OrderHelper.addToCart(' + item.itemId + ')">Add to Cart</button>';
 
                                 productList.appendChild(productDiv);
                             });                             

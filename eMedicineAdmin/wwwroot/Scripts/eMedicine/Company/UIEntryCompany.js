@@ -2,15 +2,7 @@
 $(document).ready(function () {
     $(".select2").select2();
     $("#btnSave").show();
-    $("#btnUpdate").hide();
-    jQuery.ajax({
-        url: "/Common/GetCurrentDate",
-        type: "POST",
-        success: function (result) {
-            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#hdnDateToday").datepicker('setDate', new Date(result)); 
-        }
-    });
+    $("#btnUpdate").hide();    
 
     CompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "0", "0", "0", "0", "0");
     CompanyHelper.BuildComanyTbl("");
@@ -30,6 +22,7 @@ $("#btnClear").click(function (event) {
     location.reload();
 });
 
+
 var CompanyHelper = {
     GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
@@ -42,13 +35,13 @@ var CompanyHelper = {
             success: function (data) {
                 if (data.length == 1) {
                     $.each(data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
 
                 }
@@ -64,16 +57,16 @@ var CompanyHelper = {
             "bDestroy": true,
             "columns": [
                 { "data": "SL" },//0
-                { data: 'CompanyId' },//1
-                { data: 'CompanyName' },//2
-                { data: 'CompanyAddress' },//3
-                { data: 'CompanyDescription' },//4
-                { data: 'CompanyPhone' },//5               
-                { data: 'IsActive' },//6
+                { data: 'companyId' },//1
+                { data: 'companyName' },//2
+                { data: 'companyAddress' },//3
+                { data: 'companyDescription' },//4
+                { data: 'companyPhone' },//5               
+                { data: 'isActive' },//6
                 {
                     data: null,//7
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetDetailsByCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetCompanyID(\'' + row.companyId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetDetailsByCompanyID(\'' + row.companyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -96,10 +89,16 @@ var CompanyHelper = {
             url: serviceUrl,
             type: "POST",
             success: function (result) {
-                if (result.Success) {
+                if (result.success) {
                     CompanyHelper.BuildComanyTbl(result.data);
                 } else {
-                    alert(result.message);
+                    swal({
+                        title: "Sorry!",
+                        text: "No company data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
                 }
             },
             error: function () {
@@ -218,17 +217,18 @@ var CompanyHelper = {
             type: "POST",
             data: jsonParam,
             success: function (response) {
-                if (response.Success) {
+                if (response.success) {
+                    console.log(response.data);
                     var company = response.data;
-                    $('#CompanyId').val(company.CompanyId);
-                    $('#CompanyName').val(company.CompanyName);
-                    $('#CompanyAddress').val(company.CompanyAddress);
-                    $('#CompanyDescription').val(company.CompanyDescription);
-                    $('#CompanyNameBN').val(company.CompanyNameBN);
-                    $('#CompanyAddressBN').val(company.CompanyAddressBN);
-                    $('#CompanyDescriptionBN').val(company.CompanyDescriptionBN);
-                    $('#CompanyPhone').val(company.CompanyPhone);
-                    $('#IsActive').val(company.IsActive);                   
+                    $('#CompanyId').val(company.companyId);
+                    $('#CompanyName').val(company.companyName);
+                    $('#CompanyAddress').val(company.companyAddress);
+                    $('#CompanyDescription').val(company.companyDescription);
+                    $('#CompanyNameBN').val(company.companyNameBN);
+                    $('#CompanyAddressBN').val(company.companyAddressBN);
+                    $('#CompanyDescriptionBN').val(company.companyDescriptionBN);
+                    $('#CompanyPhone').val(company.companyPhone);
+                    $('#IsActive').val(company.isActive);                   
                 } else { 
                     swal({
                         title: "Sorry!",
@@ -250,29 +250,28 @@ var CompanyHelper = {
             }
         });
     },
-
     GetDetailsByCompanyID: function (CompanyId) {
       
         var jsonParam = { companyId: CompanyId };
         var serviceUrl = "/Company/GetCompanyById";
-
+        
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
             data: jsonParam,
             success: function (response) {
-                if (response.Success) {
+                if (response.success) {
                     var company = response.data;
                     CompanyHelper.clrMdl()
-                    $('#mdlTitle').html("Company Details for: " + company.CompanyId + " - " + company.CompanyName + " - " + company.CompanyNameBN);
-                    $('#MdlCompanyName').html("Company Name: " + company.CompanyName);
-                    $('#MdlCompanyNameBN').html("কোম্পানির নাম: " + company.CompanyNameBN);
-                    $('#MdlCompanyAddress').html("Company Address: " + company.CompanyAddress);
-                    $('#MdlCompanyAddressBN').html("কোম্পানির ঠিকানা: " + company.CompanyAddressBN);
-                    $('#MdlICompanyDescription').html("Description: " + company.CompanyDescription);
-                    $('#MdlICompanyDescriptionBN').html("কোম্পানির বিবরণ: " + company.CompanyDescriptionBN);                   
-                    $('#mdlCompanyPhone').html("Company Phone: " + company.CompanyPhone);
-                    if (company.IsActive == "1") {
+                    $('#mdlTitle').html("Company Details for: " + company.companyId + " - " + company.companyName + " - " + company.companyNameBN);
+                    $('#MdlCompanyName').html("Company Name: " + company.companyName);
+                    $('#MdlCompanyNameBN').html("কোম্পানির নাম: " + company.companyNameBN);
+                    $('#MdlCompanyAddress').html("Company Address: " + company.companyAddress);
+                    $('#MdlCompanyAddressBN').html("কোম্পানির ঠিকানা: " + company.companyAddressBN);
+                    $('#MdlICompanyDescription').html("Description: " + company.companyDescription);
+                    $('#MdlICompanyDescriptionBN').html("কোম্পানির বিবরণ: " + company.companyDescriptionBN);                   
+                    $('#mdlCompanyPhone').html("Company Phone: " + company.companyPhone);
+                    if (company.isActive == "1") {
                         $('#mdlIsActive').html("Status: Active");
                     }
                     else
@@ -335,7 +334,6 @@ var CompanyHelper = {
             e.preventDefault();
         }
     },
-
     ValidateCompany: function () {
         $("#validateCompany").validate({
             rules: {
@@ -374,7 +372,7 @@ var CompanyHelper = {
             }
         });
     },
-        AllowPhoneNumbersOnly: function (e) {
+    AllowPhoneNumbersOnly: function (e) {
             var code = (e.which) ? e.which : e.keyCode;
 
             if ((code >= 48 && code <= 57) || code === 43) {

@@ -48,17 +48,16 @@ var ItemHelper = {
             success: function (data) {
                 if (data.data.length == 1) {
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, item) {
-                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                        objcmb.append($("<option></option>").attr("value", item.id).text(item.name));
                     });
 
-                }
-                // this is for to work onchange event when only one data is returned
+                }               
                 objcmb.change();
             }
         });
@@ -71,7 +70,7 @@ var ItemHelper = {
             columns: [
                 { "data": "SL" },
                 {
-                    "data": "ImagePath",
+                    "data": "imagePath",
                     "render": function (data, type, row) {
                         if (data) {
                             return '<img src="' + data + '" alt="Item Image" style="width:50px; height:auto;"/>';
@@ -79,20 +78,20 @@ var ItemHelper = {
                         return '<span>No image</span>';
                     }
                 },
-                { data: 'ItemId' },
-                { data: 'ItemName' },
-                { data: 'ItemDescription' },
-                { data: 'ItemCategoryName' },
-                { data: 'UnitName' },                
-                { data: 'UnitPrice' },                
-                { data: 'MRP' },                
-                { data: 'BrandName' },
-                { data: 'SupplierName' },                              
-                { data: 'IsActive' },                
+                { data: 'itemId' },
+                { data: 'itemName' },
+                { data: 'itemDescription' },
+                { data: 'itemCategoryName' },
+                { data: 'unitName' },                
+                { data: 'unitPrice' },                
+                { data: 'mRP' },                
+                { data: 'brandName' },
+                { data: 'supplierName' },                              
+                { data: 'isActive' },                
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetItemID(\'' + row.ItemId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetDetailsByItemID(\'' + row.ItemId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetItemID(\'' + row.itemId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetDetailsByItemID(\'' + row.itemId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -301,21 +300,21 @@ var ItemHelper = {
                 //console.log(response.data);
                 if (response.Success) {
                     var Item = response.data;
-                    $('#txtItemId').val(Item.ItemId);
-                    $('#txtName').val(Item.ItemName);
-                    $('#txtNameBN').val(Item.ItemNameBN);
-                    $('#txtDescription').val(Item.ItemDescription);
-                    $('#txtDescriptionBN').val(Item.ItemDescriptionBN);
-                    $('#txtUnitPrice').val(Item.UnitPrice);
-                    $('#txtMRP').val(Item.MRP);                    
-                    $("#cmbBrandId").val(Item.BrandId).select2();
-                    $("#cmbUnitId").val(Item.UnitId).select2();
-                    $("#cmbSupplierId").val(Item.SupplierId).select2();
-                    $('#cmbCategoryId').val(Item.ItemCategoryId).select2();                   
-                    $('#CmbIsActive').val(Item.IsActive).select2();
-                    $('#lblimgPreview').html(Item.ImagePath);
-                    if (Item.ImagePath) {
-                        $('#imgPreview').attr('src', Item.ImagePath).show();
+                    $('#txtItemId').val(Item.itemId);
+                    $('#txtName').val(Item.itemName);
+                    $('#txtNameBN').val(Item.itemNameBN);
+                    $('#txtDescription').val(Item.itemDescription);
+                    $('#txtDescriptionBN').val(Item.itemDescriptionBN);
+                    $('#txtUnitPrice').val(Item.unitPrice);
+                    $('#txtMRP').val(Item.mRP);                    
+                    $("#cmbBrandId").val(Item.brandId).select2();
+                    $("#cmbUnitId").val(Item.unitId).select2();
+                    $("#cmbSupplierId").val(Item.supplierId).select2();
+                    $('#cmbCategoryId').val(Item.itemCategoryId).select2();                   
+                    $('#CmbIsActive').val(Item.isActive).select2();
+                    $('#lblimgPreview').html(Item.imagePath);
+                    if (Item.imagePath) {
+                        $('#imgPreview').attr('src', Item.imagePath).show();
                     } else {
                         $('#imgPreview').hide();
                     }
@@ -354,21 +353,21 @@ var ItemHelper = {
                 if (response.Success) {
                     var Item = response.data;
                     ItemHelper.clrMdl();
-                    $('#mdlTitle').html("Item Details for: " + Item.ItemId + " - " + Item.ItemName + " - " + Item.ItemNameBN);                    
-                    $('#MdlName').html("Name: " + Item.ItemName);
-                    $('#MdlNameBN').html("নাম: " + Item.ItemNameBN);
-                    $('#MdlDescription').html("Description: " + Item.ItemDescription);
-                    $('#MdlDescriptionBN').html("বর্ণনা: " + Item.ItemDescriptionBN);
-                    $('#MdlUnitPrice').html("Unit Price: " + Item.UnitPrice);
-                    $('#MdlMRP').html("MRP: " + Item.MRP);
-                    $('#MdlBrandName').html("Brand Name: " + Item.BrandName);
-                    $('#MdlItemCategoryName').html("Category Name: " + Item.ItemCategoryName);
-                    $('#MdlUnitName').html("Unit: " + Item.UnitName);                   
-                    $('#MdlSupplierName').html("Supplier Name: " + Item.SupplierName);  
-                    if (Item.ImagePath) {
-                        $('#MdlImage').attr("src", Item.ImagePath).show();
+                    $('#mdlTitle').html("Item Details for: " + Item.itemId + " - " + Item.itemName + " - " + Item.itemNameBN);                    
+                    $('#MdlName').html("Name: " + Item.itemName);
+                    $('#MdlNameBN').html("নাম: " + Item.itemNameBN);
+                    $('#MdlDescription').html("Description: " + Item.itemDescription);
+                    $('#MdlDescriptionBN').html("বর্ণনা: " + Item.itemDescriptionBN);
+                    $('#MdlUnitPrice').html("Unit Price: " + Item.unitPrice);
+                    $('#MdlMRP').html("MRP: " + Item.mRP);
+                    $('#MdlBrandName').html("Brand Name: " + Item.brandName);
+                    $('#MdlItemCategoryName').html("Category Name: " + Item.itemCategoryName);
+                    $('#MdlUnitName').html("Unit: " + Item.unitName);                   
+                    $('#MdlSupplierName').html("Supplier Name: " + Item.supplierName);  
+                    if (Item.imagePath) {
+                        $('#MdlImage').attr("src", Item.imagePath).show();
                     } else {
-                        $('#MdlImage').hide(); // Hide the image element if no image is available
+                        $('#MdlImage').hide();
                     }
                     $("#modal-default").modal("show");
                 }

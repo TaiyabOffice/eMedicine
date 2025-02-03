@@ -25,9 +25,9 @@ $(document).ready(function () {
 
                         response.data.forEach(function (item) {                         
                             if (item.ItemName.length == 1) {                             
-                                select.append('<option value="' + item.ItemId + '">' + item.ItemName + '</option>');
+                                select.append('<option value="' + item.itemId + '">' + item.itemName + '</option>');
                             } else {                               
-                                select.append('<option value="' + item.ItemId + '">' + item.ItemName + '</option>');
+                                select.append('<option value="' + item.itemId + '">' + item.itemName + '</option>');
                             }
                         });
                     } else {                    
@@ -73,19 +73,19 @@ var OrderListHelper = {
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'OrderId' },
-                { data: 'OrderDate' },
-                { data: 'CustomerName' },
-                { data: 'CustomerPhone' },                
-                { data: 'OrderBy' },
-                { data: 'SalesPersonName' },                
-                { data: 'IsDelivered' },
+                { data: 'orderId' },
+                { data: 'orderDate' },
+                { data: 'customerName' },
+                { data: 'customerPhone' },                
+                { data: 'orderBy' },
+                { data: 'salesPersonName' },                
+                { data: 'isDelivered' },
                 {
                     data: null,
                     render: function (data, type, row, meta) {
-                        return '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.OrderId + '\',' + meta.row + ')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>' +
-                            '<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'D\')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button>' +
-                            '<button id="btnReject" name="btnReject" type="button" title="Reject" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'R\')" > <i class="fa fa-close" style="font-size:15px;color:red;padding:0px;"></i></button>';
+                        return '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.orderId + '\',' + meta.row + ')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>' +
+                            '<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.orderId + '\',' + meta.row + ', \'D\')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button>' +
+                            '<button id="btnReject" name="btnReject" type="button" title="Reject" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.orderId + '\',' + meta.row + ', \'R\')" > <i class="fa fa-close" style="font-size:15px;color:red;padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -135,13 +135,13 @@ var OrderListHelper = {
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'OrderId' },
-                { data: 'ItemId' },
-                { data: 'Name' },
-                { data: 'UnitPrice' },
-                { data: 'Quantity' },
-                { data: 'Total' },
-                { data: 'RowId' },
+                { data: 'orderId' },
+                { data: 'itemId' },
+                { data: 'name' },
+                { data: 'unitPrice' },
+                { data: 'quantity' },
+                { data: 'total' },
+                { data: 'rowId' },
                 {
                     data: null,
                     render: function (data, type, row, meta) {

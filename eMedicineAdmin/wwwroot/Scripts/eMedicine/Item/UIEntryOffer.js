@@ -6,21 +6,15 @@ $(document).ready(function () {
     $("#btnSave").show();
     $("#btnUpdate").hide();  
 
-    jQuery.ajax({
-        url: "/Common/GetCurrentDate",
-        type: "POST",
-        success: function (result) {
-            $("#txtOffeFrom").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#txtOffeFrom").datepicker('setDate', new Date(result));
+    $("#txtOffeFrom").datepicker({ format: "dd-M-yyyy", autoclose: true });
+    $("#txtOffeFrom").datepicker('setDate', new Date());
 
-            $("#txtOffeTo").datepicker({ format: "dd-M-yyyy", autoclose: true });
-            $("#txtOffeTo").datepicker('setDate', new Date(result));
-        }
-    });
+    $("#txtOffeTo").datepicker({ format: "dd-M-yyyy", autoclose: true });
+    $("#txtOffeTo").datepicker('setDate', new Date());
+
     OfferHelper.BuildTbl("");
     OfferHelper.ValidateOffer();
-    OfferHelper.GetAllIOffers();
-   // OfferHelper.GenerateCombo($("#cmbUnitId"), "SP_SelectGetAllDropDown", "GETALLUNIT", "0", "0", "0", "0", "0");
+    OfferHelper.GetAllIOffers();   
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
@@ -66,13 +60,13 @@ var OfferHelper = {
             success: function (data) {
                 if (data.data.length == 1) {
                     $.each(data.data, function (key, Offer) {
-                        objcmb.append($("<option></option>").attr("value", Offer.Id).text(Offer.Name));
+                        objcmb.append($("<option></option>").attr("value", Offer.id).text(Offer.name));
                     });
                 }
                 else {
                     objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
                     $.each(data.data, function (key, Offer) {
-                        objcmb.append($("<option></option>").attr("value", Offer.Id).text(Offer.Name));
+                        objcmb.append($("<option></option>").attr("value", Offer.id).text(Offer.name));
                     });
 
                 }
@@ -89,7 +83,7 @@ var OfferHelper = {
             columns: [
                 { "data": "SL" },
                 {
-                    "data": "OfferImagePath",
+                    "data": "offerImagePath",
                     "render": function (data, type, row) {
                         if (data) {
                             return '<img src="' + data + '" alt="Offer Image" style="width:50px; height:auto;"/>';
@@ -97,21 +91,21 @@ var OfferHelper = {
                         return '<span>No image</span>';
                     }
                 },
-                { data: 'OfferId' },
-                { data: 'OfferName' },                
-                { data: 'StartDate' },
-                { data: 'EndDate' },                
-                { data: 'OfferType' },                
-                { data: 'OfferValue' },                
-                { data: 'IsActive' },                           
+                { data: 'offerId' },
+                { data: 'offerName' },                
+                { data: 'startDate' },
+                { data: 'endDate' },                
+                { data: 'offerType' },                
+                { data: 'offerValue' },                
+                { data: 'isActive' },                           
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetOfferID(\'' + row.OfferId + '\')" class="btn btn-sm btn-danger">' +
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetOfferID(\'' + row.offerId + '\')" class="btn btn-sm btn-danger">' +
                             '<i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>' +
-                            '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetDetailsByOfferID(\'' + row.OfferId + '\')" class="btn btn-sm btn-warning">' +
+                            '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.GetDetailsByOfferID(\'' + row.offerId + '\')" class="btn btn-sm btn-warning">' +
                             '<i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>'+
-                        '<button id="btnDetails" name="btnAddItems" type="button" title="Add Items" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.AddOfferItems(\'' + row.OfferId + '\')" class="btn btn-sm btn-success">' +
+                        '<button id="btnDetails" name="btnAddItems" type="button" title="Add Items" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OfferHelper.AddOfferItems(\'' + row.offerId + '\')" class="btn btn-sm btn-success">' +
                             '<i class="fa fa-plus" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
@@ -139,13 +133,13 @@ var OfferHelper = {
             columns: [
                 { "data": "SL" },
                 {
-                    "data": "IsActive",
+                    "data": "isActive",
                     "render": function (data, type, row) {
                         return '<input type="checkbox" id="txtCheck"' + (data == "0" ? '' : ' checked') + '>';
                     }
                 },
                 {
-                    "data": "ImagePath",
+                    "data": "imagePath",
                     "render": function (data, type, row) {
                         if (data) {
                             return '<img src="' + data + '" alt="Offer Image" style="width:50px; height:auto;"/>';
@@ -153,9 +147,9 @@ var OfferHelper = {
                         return '<span>No image</span>';
                     }
                 },               
-                { data: 'ItemId' },
-                { data: 'ItemName' },
-                { data: 'UnitName' }
+                { data: 'itemId' },
+                { data: 'itemName' },
+                { data: 'unitName' }
                
             ],
             "columnDefs": [
@@ -182,7 +176,7 @@ var OfferHelper = {
             columns: [
                 { "data": "SL" },                
                 {
-                    "data": "ImagePath",
+                    "data": "imagePath",
                     "render": function (data, type, row) {
                         if (data) {
                             return '<img src="' + data + '" alt="Offer Image" style="width:50px; height:auto;"/>';
@@ -190,13 +184,13 @@ var OfferHelper = {
                         return '<span>No image</span>';
                     }
                 },
-                { data: 'ItemName' },
-                { data: 'UnitName' },
-                { data: 'UnitPrice' },
-                { data: 'OfferType' },
-                { data: 'OfferValue' },
-                { data: 'OfferPrice' },
-                { data: 'MRP' }
+                { data: 'itemName' },
+                { data: 'unitName' },
+                { data: 'unitPrice' },
+                { data: 'offerType' },
+                { data: 'offerValue' },
+                { data: 'offerPrice' },
+                { data: 'mRP' }
 
             ],
             "columnDefs": [
@@ -290,19 +284,19 @@ var OfferHelper = {
             data: jsonParam,
             success: function (response) {
                 //console.log(response.data);
-                if (response.Success) {
+                if (response.success) {
                     var Item = response.data;
-                    $('#txtOfferId').val(Item.OfferId);
-                    $('#txtOfferName').val(Item.OfferName);
-                    $('#txtNameBN').val(Item.OfferNameBN);
-                    $('#txtDescription').val(Item.OfferDescriptions);
-                    $('#txtDescriptionBN').val(Item.OfferDescriptionsBN);
-                    $('#txtOffeFrom').val(Item.StartDate);
-                    $('#txtOffeTo').val(Item.EndDate);
-                    $('#txtOffeValue').val(Item.OfferValue);
-                    $("#CmbType").val(Item.OfferType).select2();                    
-                    $('#CmbIsActive').val(Item.IsActive).select2();
-                    $('#lblimgPreview').val(Item.OfferImagePath);
+                    $('#txtOfferId').val(Item.offerId);
+                    $('#txtOfferName').val(Item.offerName);
+                    $('#txtNameBN').val(Item.offerNameBN);
+                    $('#txtDescription').val(Item.offerDescriptions);
+                    $('#txtDescriptionBN').val(Item.offerDescriptionsBN);
+                    $('#txtOffeFrom').val(Item.startDate);
+                    $('#txtOffeTo').val(Item.endDate);
+                    $('#txtOffeValue').val(Item.offerValue);
+                    $("#CmbType").val(Item.offerType).select2();                    
+                    $('#CmbIsActive').val(Item.isActive).select2();
+                    $('#lblimgPreview').val(Item.offerImagePath);
                     
                 } else {
                     swal({
@@ -592,15 +586,15 @@ var OfferHelper = {
             success: function (result) {
                 if (result.success) {
                     var Item = result.data;
-                    $('#mdlTitle').html("Offer Name: " + Item.OfferName + ", Offer Id: " +Item.OfferId);
-                    $('#MdlOfferName').html("Offer Name: "+Item.OfferName);
-                    $('#MdlOfferNameBN').html("অফার নাম: "+Item.OfferNameBN);
-                    $('#MdlDescription').html("Description: " + Item.OfferDescriptions);
-                    $('#MdlDescriptionBN').html("বর্ণনা: " + Item.OfferDescriptionsBN);
-                    $('#MdlOffeFrom').html("Offe From: " + Item.StartDate);
-                    $('#MdlOffeTo').html("Offe To: " + Item.EndDate);
-                    $('#MdlCmbType').html("Type: " + (Item.OfferType == "P" ? 'Percentage' : 'Fixed'));
-                    $('#MdlOffeValue').html("Offe Value: " + Item.OfferValue);
+                    $('#mdlTitle').html("Offer Name: " + Item.offerName + ", Offer Id: " +Item.offerId);
+                    $('#MdlOfferName').html("Offer Name: "+Item.offerName);
+                    $('#MdlOfferNameBN').html("অফার নাম: "+Item.offerNameBN);
+                    $('#MdlDescription').html("Description: " + Item.offerDescriptions);
+                    $('#MdlDescriptionBN').html("বর্ণনা: " + Item.offerDescriptionsBN);
+                    $('#MdlOffeFrom').html("Offe From: " + Item.startDate);
+                    $('#MdlOffeTo').html("Offe To: " + Item.endDate);
+                    $('#MdlCmbType').html("Type: " + (Item.offerType == "P" ? 'Percentage' : 'Fixed'));
+                    $('#MdlOffeValue').html("Offe Value: " + Item.offerValue);
 
                     OfferHelper.BuildDiscountTbl(result.data1);
                     $("#modal-default").modal("show");

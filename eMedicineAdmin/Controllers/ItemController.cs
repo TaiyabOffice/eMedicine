@@ -342,7 +342,6 @@ namespace eMedicineAdmin.Controllers
                 return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> UpdateOfferById(OffersViewModel item, IFormFile imageFile)
         {

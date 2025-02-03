@@ -64,13 +64,13 @@ var ItemListHelper =
                             const productDiv = document.createElement('div');
                             productDiv.className = 'product';
                             productDiv.innerHTML =
-                                '<img src="' + item.ImagePath + '" alt="' + item.ItemName + '">' +
+                                '<img src="' + item.imagePath + '" alt="' + item.itemName + '">' +
                                 '<div class="product-details">' +
-                                '<h3>' + item.ItemName + '</h3>' +
-                                '<p>' + item.ItemDescription + '</p>' +
-                                '<p class="product-price">Best Price: ৳' + item.UnitPrice + '</p>' +
+                                '<h3>' + item.itemName + '</h3>' +
+                                '<p>' + item.itemDescription + '</p>' +
+                                '<p class="product-price">Best Price: ৳' + item.unitPrice + '</p>' +
                                 '</div>' +
-                            '<button class="btn" onclick="OrderHelper.ViewDetails(' + item.ItemId + ')">View Details</button>';
+                            '<button class="btn" onclick="OrderHelper.ViewDetails(' + item.itemId + ')">View Details</button>';
 
                             productList.appendChild(productDiv);
                         });

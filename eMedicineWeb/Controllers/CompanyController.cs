@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -73,23 +74,68 @@ namespace eMedicineWeb.Controllers
             return Json(new { Success = true, data = companyList }, JsonRequestBehavior.AllowGet);
         }
 
+        //[HttpPost] // old company save without image
+        //public async Task<ActionResult> CreateCompany(CompanyViewModel company)
+        //{
+        //    bool Satus = false;
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(company);
+        //    }
+        //    string data = JsonConvert.SerializeObject(company);
+        //    StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+        //    HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return Json(new { success = true, message = "Company create Successfully" });
+        //    }
+        //    ModelState.AddModelError("", "Unable to create Company. Please try again.");
+        //    return Json(new { success = false, message = "Failed to retrieve Company details." });
+        //}
+
         [HttpPost]
-        public async Task<ActionResult> CreateCompany(CompanyViewModel company)
-        {   bool Satus = false;
+        public async Task<ActionResult> CreateCompany(CompanyViewModel company, HttpPostedFileBase imageFile)
+        {
+
             if (!ModelState.IsValid)
             {
-                return View(company);
+                return Json(new { success = false, message = "Failed Insert company details." });
             }
-            string data = JsonConvert.SerializeObject(company);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
-            if (response.IsSuccessStatusCode)
+            if (imageFile == null || imageFile.ContentLength == 0)
             {
-                return Json(new { success = true, message = "Company create Successfully" });
+                return Json(new { success = false, message = "Image file is required." });
             }
-            ModelState.AddModelError("", "Unable to create Company. Please try again.");
-            return Json(new { success = false, message = "Failed to retrieve Company details." });
+            try
+            {
+                string uploadsFolder = Server.MapPath("~/Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                imageFile.SaveAs(filePath);
+                company.ImagePath = $"/Uploads/{uniqueFileName}";
+
+                string data = JsonConvert.SerializeObject(company);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Company create Successfully" });
+                }
+                ModelState.AddModelError("", "Unable to create Company. Please try again.");
+                return Json(new { success = false, message = "Failed to retrieve Company details." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
         }
 
         [HttpPost] 
@@ -137,24 +183,74 @@ namespace eMedicineWeb.Controllers
             }
         }
 
+        //[HttpPost] // Old update without image
+        //public async Task<ActionResult> UpdateCompanyById(CompanyViewModel company)
+        //{
+        //    bool Satus = false;
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(company);
+        //    }
+        //    string data = JsonConvert.SerializeObject(company);
+        //    StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+        //    HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return Json(new { success = true, message = "Update Successfully" });
+        //    }
+        //    ModelState.AddModelError("", "Unable to Update Company. Please try again.");
+        //    return Json(new { success = false, message = "Failed to retrieve Update details." });
+        //}
         [HttpPost]
-        public async Task<ActionResult> UpdateCompanyById(CompanyViewModel company)
+        public async Task<ActionResult> UpdateCompanyById(CompanyViewModel Item, HttpPostedFileBase imageFile)
         {
-            bool Satus = false;
             if (!ModelState.IsValid)
             {
-                return View(company);
+                return Json(new { success = false, message = "Failed Insert Company details." });
             }
-            string data = JsonConvert.SerializeObject(company);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
-            if (response.IsSuccessStatusCode)
+            if (imageFile == null || imageFile.ContentLength == 0)
             {
-                return Json(new { success = true, message = "Update Successfully" });
+                return Json(new { success = false, message = "Image file is required." });
             }
-            ModelState.AddModelError("", "Unable to Update Company. Please try again.");
-            return Json(new { success = false, message = "Failed to retrieve Update details." });
+            try
+            {
+                string uploadsFolder = Server.MapPath("~/Uploads");
+
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+                string fileExtension = Path.GetExtension(imageFile.FileName);
+                string baseFileName = Guid.NewGuid().ToString();
+
+                string uniqueFileName = baseFileName + fileExtension;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                string preImagePath = Server.MapPath(Item.PreImagePath);
+                if (System.IO.File.Exists(preImagePath))
+                {
+                    System.IO.File.Delete(preImagePath);
+                }
+                imageFile.SaveAs(filePath);
+                Item.ImagePath = $"/Uploads/{uniqueFileName}";
+                string data = JsonConvert.SerializeObject(Item);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Company updated successfully" });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to update Company. Please try again.");
+                    return Json(new { success = false, message = "Failed to retrieve Company details." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
         }
     }
 }

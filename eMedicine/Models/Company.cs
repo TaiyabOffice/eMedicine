@@ -9,7 +9,8 @@
         public string CompanyNameBN { get; set; } = string.Empty;
         public string CompanyAddressBN { get; set; } = string.Empty;
         public string CompanyDescriptionBN { get; set; } = string.Empty;
-        public string CompanyPhone { get; set; } = string.Empty;        
+        public string CompanyPhone { get; set; } = string.Empty;
+        public string ImagePath { get; set; }        
         public string IsActive { get; set; } = string.Empty;
         public string CreatedBy { get; set; } = string.Empty;
         public string CreatedDate { get; set; } = string.Empty;

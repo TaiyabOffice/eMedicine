@@ -19,17 +19,28 @@ namespace eMedicineWeb.Controllers
     public class LoginController : Controller
     {
         // GET: Company
-        private DataSet ds;      
+            
         public DataSet MenuData = new DataSet();
         Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "LoginAPI");
         HttpClient client;
         public LoginController()
-        {
-            client = new HttpClient();
-            client.BaseAddress = baseAddress;
-
-        }
-        // GET: Login
+        {            
+           
+            var userAgent = ConfigurationManager.AppSettings["UserAgent"];
+            var acceptHeader = ConfigurationManager.AppSettings["AcceptHeader"];          
+            client = new HttpClient
+            {
+                BaseAddress = baseAddress
+            };           
+            if (!string.IsNullOrEmpty(userAgent))
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", userAgent);
+            }
+            if (!string.IsNullOrEmpty(acceptHeader))
+            {
+                client.DefaultRequestHeaders.Add("Accept", acceptHeader);
+            }
+        }      
         public ActionResult Login()
         {
             return View();
@@ -41,31 +52,38 @@ namespace eMedicineWeb.Controllers
             string a = GetVisitorDetails();
             string b = GetMachineNameUsingIPAddress(a);
             LoginViewModel loginModel = null;
-            string requestUrl = $"{client.BaseAddress}/LogIn?UserName={Uri.EscapeDataString(UserName)}&UserPassword={Uri.EscapeDataString(UserPassword)}";
-
+            string requestUrl = $"{client.BaseAddress}/LogIn?UserName={Uri.EscapeDataString(UserName)}&UserPassword={Uri.EscapeDataString(UserPassword)}";           
             HttpResponseMessage response = client.GetAsync(requestUrl).Result;
 
             if (response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
+                var loginResponse = JsonConvert.DeserializeObject<LoginResponse>(data);
                 try
-                {                   
-                    var loginViewModels = JsonConvert.DeserializeObject<List<LoginViewModel>>(data);
-                    loginModel = loginViewModels.FirstOrDefault();
-                    Session["UserID"] = loginModel.UserId;
-                    Session["UserName"] = loginModel.UserName;
-                    Session["Email"] = loginModel.Email;
-                    Session["PhoneNumber"] = loginModel.PhoneNumber;
-                    Session["LocationId"] = loginModel.LocationId;
-                    Session["TerminalId"] = b.ToUpper();
-                    Session["UserIPc"] = a.ToString();                    
-                    GetMenuById(loginModel.UserId);
-                    status = true;
+                {                                     
+                    if (loginResponse.Success)
+                    {                        
+                        List<LoginViewModel> loginViewModels = loginResponse?.Data ?? new List<LoginViewModel>();
+                        loginModel = loginViewModels.FirstOrDefault();                        
+                        Session["UserID"] = loginModel.UserId;
+                        Session["UserName"] = loginModel.UserName;
+                        Session["Email"] = loginModel.Email;
+                        Session["PhoneNumber"] = loginModel.PhoneNumber;                       
+                        Session["TerminalId"] = b.ToUpper();
+                        Session["UserIPc"] = a.ToString();
+                        Session["DateToday"] = DateTime.Now.ToString("dd-MM-yyyy");
+                        GetMenuById(loginModel.UserId);
+                        status = true;
+                    }
+                    else
+                    {
+                        status = false;
+                    }
                 }
                 catch (JsonSerializationException)
                 {
-                    
-                    var loginViewModels = JsonConvert.DeserializeObject<List<LoginViewModel>>(data);
+
+                    List<LoginViewModel> loginViewModels = loginResponse?.Data ?? new List<LoginViewModel>();
                     loginModel = loginViewModels.FirstOrDefault();                    
                 }
             }
@@ -73,27 +91,36 @@ namespace eMedicineWeb.Controllers
             return Json(status, JsonRequestBehavior.AllowGet);
         }
 
+       
+
+
         public void GetMenuById(string UserId)
-        {
-            List<MenuViewModal> menuList = new List<MenuViewModal>();
+        {         
             try
             {  
-                //string requestUrl = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + "sadf7").Result;
+               HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetMenuById/" + UserId).Result;
 
-                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetMenuById/" + UserId).Result;
-
-                if (response.IsSuccessStatusCode)                {
-                   
+                if (response.IsSuccessStatusCode)                
+                {
+                    Session["MenuData"] = null;
                     string data = response.Content.ReadAsStringAsync().Result;
-                    var menuLists = JsonConvert.DeserializeObject<List<MenuViewModal>>(data);
+                    var menuResponse = JsonConvert.DeserializeObject<MenuResponse>(data);                    
+                    if (menuResponse.Success)
+                    {
+                        List<MenuViewModel> menuLists = menuResponse?.Data ?? new List<MenuViewModel>();
+                        //var menuLists = JsonConvert.DeserializeObject<List<MenuViewModel>>(data);
+                        DataTable menuTable = ConvertListToDataTable(menuLists);
 
-                    DataTable menuTable = ConvertListToDataTable(menuLists);
+                        // Add the DataTable to a DataSet
+                        DataSet ds = new DataSet();
+                        ds.Tables.Add(menuTable);
 
-                    // Add the DataTable to a DataSet
-                    DataSet ds = new DataSet();
-                    ds.Tables.Add(menuTable);
-
-                    Session["MenuData"]= ds;
+                        Session["MenuData"] = ds;
+                    }
+                    else
+                    {
+                        Session["MenuData"] = null;
+                    }
                 }                
             }
             catch (Exception ex)

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -15,126 +16,241 @@ namespace eMedicineWeb.Controllers
     public class CompanyController : Controller
     {
         // GET: Company
-        Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "CompanyAPI");
-        //static string _ServerURL = ConfigurationManager.AppSettings["ServerURL"];
-        HttpClient client;
+        Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "CompanyAPI");        
+        HttpClient client;        
         public CompanyController()
         {
             client = new HttpClient();
             client.BaseAddress = baseAddress;
-
-        }
-        public async Task<ActionResult> GetAllCompany()
-        {
-            List<CompanyViewModal> companyList = new List<CompanyViewModal>();
-
-            try
+            var userAgent = ConfigurationManager.AppSettings["UserAgent"];
+            var acceptHeader = ConfigurationManager.AppSettings["AcceptHeader"];
+            client = new HttpClient
             {
-                // Make the API call asynchronously
-                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllCompany");
-
-                // Check if the response is successful
-                if (response.IsSuccessStatusCode)
-                {
-                    string data = await response.Content.ReadAsStringAsync();
-
-                    // Deserialize data if it's not null or empty
-                    if (!string.IsNullOrEmpty(data))
-                    {
-                        companyList = JsonConvert.DeserializeObject<List<CompanyViewModal>>(data);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Failed to retrieve companies. Please try again later.");
-                }
-            }
-            catch (Exception ex)
+                BaseAddress = baseAddress
+            };
+            if (!string.IsNullOrEmpty(userAgent))
             {
-                // Log the exception (implement your logging mechanism here)
-                ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                client.DefaultRequestHeaders.Add("User-Agent", userAgent);
             }
-
-            // Return the view with either the retrieved list or an empty one in case of failure
-            return View(companyList);
-        }
-        public ActionResult CreateCompany()
-        {
-            return View();
+            if (!string.IsNullOrEmpty(acceptHeader))
+            {
+                client.DefaultRequestHeaders.Add("Accept", acceptHeader);
+            }
         }
 
         public ActionResult UIEntryCompany()
         {
             return View();
         }
+
+        public async Task<JsonResult> GetAllCompany()
+        {
+            List<CompanyViewModel> companyList = new List<CompanyViewModel>();
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllCompany");
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<CompanyResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            companyList = Response?.Data ?? new List<CompanyViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { Success = false, message = "Failed to retrieve Company. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new { Success = true, data = companyList }, JsonRequestBehavior.AllowGet);
+        }
+
+        //[HttpPost] // old company save without image
+        //public async Task<ActionResult> CreateCompany(CompanyViewModel company)
+        //{
+        //    bool Satus = false;
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(company);
+        //    }
+        //    string data = JsonConvert.SerializeObject(company);
+        //    StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+        //    HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return Json(new { success = true, message = "Company create Successfully" });
+        //    }
+        //    ModelState.AddModelError("", "Unable to create Company. Please try again.");
+        //    return Json(new { success = false, message = "Failed to retrieve Company details." });
+        //}
+
         [HttpPost]
-        public async Task<ActionResult> CreateCompany(CompanyViewModal company)
+        public async Task<ActionResult> CreateCompany(CompanyViewModel company, HttpPostedFileBase imageFile)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed Insert company details." });
+            }
+            if (imageFile == null || imageFile.ContentLength == 0)
+            {
+                return Json(new { success = false, message = "Image file is required." });
+            }
+            try
+            {
+                string uploadsFolder = Server.MapPath("~/Uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
+                }
+
+                string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                imageFile.SaveAs(filePath);
+                company.ImagePath = $"/Uploads/{uniqueFileName}";
+
+                string data = JsonConvert.SerializeObject(company);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Company create Successfully" });
+                }
+                ModelState.AddModelError("", "Unable to create Company. Please try again.");
+                return Json(new { success = false, message = "Failed to retrieve Company details." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+            }
+        }
+
+        [HttpPost] 
+        public async Task<JsonResult> GetCompanyById(string companyId)
+        {
+            CompanyViewModel company = null;
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetCompanyById/" + companyId);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<CompanyResponse>(data);
+                    if (Response.Success)
+                    {
+                        try
+                        {
+
+                            var Comapnys = Response?.Data ?? new List<CompanyViewModel>();
+                            company = Comapnys.FirstOrDefault();
+                        }
+                        catch (JsonSerializationException)
+                        {
+                            var Comapnys = JsonConvert.DeserializeObject<List<CompanyViewModel>>(data);
+                            company = Comapnys.FirstOrDefault();
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Failed to retrieve Comapny details." }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    if (company != null)
+                    {
+                        return Json(new { Success = true, data = company }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                return Json(new { Success = false, message = "Failed to retrieve Comapny details." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+
+        //[HttpPost] // Old update without image
+        //public async Task<ActionResult> UpdateCompanyById(CompanyViewModel company)
+        //{
+        //    bool Satus = false;
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(company);
+        //    }
+        //    string data = JsonConvert.SerializeObject(company);
+        //    StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+        //    HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return Json(new { success = true, message = "Update Successfully" });
+        //    }
+        //    ModelState.AddModelError("", "Unable to Update Company. Please try again.");
+        //    return Json(new { success = false, message = "Failed to retrieve Update details." });
+        //}
+        [HttpPost]
+        public async Task<ActionResult> UpdateCompanyById(CompanyViewModel Item, HttpPostedFileBase imageFile)
         {
             if (!ModelState.IsValid)
             {
-                return View(company); // Return the view with validation errors
+                return Json(new { success = false, message = "Failed Insert Company details." });
             }
 
-            string data = JsonConvert.SerializeObject(company);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateCompany", content);
-            if (response.IsSuccessStatusCode)
+            if (imageFile == null || imageFile.ContentLength == 0)
             {
-                return RedirectToAction("GetAllCompany");
+                return Json(new { success = false, message = "Image file is required." });
             }
-
-            // Optionally log the error response
-            ModelState.AddModelError("", "Unable to create company. Please try again.");
-            return View(company); // Return the view with an error message
-        }
-        public ActionResult GetCompanyById(string companyId)
-        {
-            CompanyViewModal company = null;
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetCompanyById/" + "sadf7").Result;
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string data = response.Content.ReadAsStringAsync().Result;
+                string uploadsFolder = Server.MapPath("~/Uploads");
 
-                // Try to deserialize as a single object first
-                try
+                if (!Directory.Exists(uploadsFolder))
                 {
-                    company = JsonConvert.DeserializeObject<CompanyViewModal>(data);
+                    Directory.CreateDirectory(uploadsFolder);
                 }
-                catch (JsonSerializationException)
+                string fileExtension = Path.GetExtension(imageFile.FileName);
+                string baseFileName = Guid.NewGuid().ToString();
+
+                string uniqueFileName = baseFileName + fileExtension;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                string preImagePath = Server.MapPath(Item.PreImagePath);
+                if (System.IO.File.Exists(preImagePath))
                 {
-                    // If it fails, try to deserialize as a list
-                    var companies = JsonConvert.DeserializeObject<List<CompanyViewModal>>(data);
-                    company = companies.FirstOrDefault();
+                    System.IO.File.Delete(preImagePath);
+                }
+                imageFile.SaveAs(filePath);
+                Item.ImagePath = $"/Uploads/{uniqueFileName}";
+                string data = JsonConvert.SerializeObject(Item);
+                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new { success = true, message = "Company updated successfully" });
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Unable to update Company. Please try again.");
+                    return Json(new { success = false, message = "Failed to retrieve Company details." });
                 }
             }
-
-            return View(company);
-        }
-        public ActionResult UpdateCompanyById()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<ActionResult> UpdateCompanyById(CompanyViewModal company)
-        {
-            if (!ModelState.IsValid)
+            catch (Exception ex)
             {
-                return View(company); // Return the view with validation errors
+                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
             }
-
-            string data = JsonConvert.SerializeObject(company);
-            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateCompanyById", content);
-            if (response.IsSuccessStatusCode)
-            {
-                return RedirectToAction("GetAllCompany");
-            }
-            ModelState.AddModelError("", "Unable to create company. Please try again.");
-            return View(company);
         }
-
     }
 }

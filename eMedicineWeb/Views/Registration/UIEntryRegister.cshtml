@@ -1,0 +1,160 @@
+﻿@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_LayoutLogIn_New.cshtml";
+}
+
+
+<style>
+    .error {
+        border-color: red;
+        color: red;
+        text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+        margin: 2px;
+    }
+    .is-invalid {
+        border-color: red;
+    }
+
+    .is-valid {
+        border-color: green;
+    }
+
+    .field-icon {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .field-icon2 {
+        position: absolute;
+        top: 50%;
+        right: 35px;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .TestBody {
+        min-height: calc(100vh - 20px);
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 1.25rem;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 999;
+    }
+
+    body.loading {
+        overflow: hidden;
+    }
+
+        body.loading .overlay {
+            display: block;
+        }
+
+    .loadingBack {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: .6;
+        background: center no-repeat;
+        background-color: white;
+        text-align: center;
+    }
+
+    .loadingBlock {
+        width: 140px;
+        height: 140px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -75px;
+        margin-left: -75px;
+        text-align: center;
+    }
+</style>
+
+<div class="body">
+    <div class="TestBody">
+        <div class="navbar navbar-custom" style="padding:20px 0px 0px 20px">
+            <label style="font-size:32px;font-family:'Times New Roman';font-weight:bold;color:white;margin-right:32px;padding:20px 0px 0px 20px" class="pull-right">eMedicine Registration</label>
+        </div>
+        <div class="container">
+            <div class="col-md-12">
+                <div class="row ">
+                    <div class="col-md-8">
+                    </div>
+                    <div class="col-md-3">
+                        <div>
+                            <label id="lblMessage" style="color: red;font-style: italic"></label>
+                        </div>
+                        <div class="login-wrap">
+                            <h3 class="text-center" style="color: #fff; margin-top: 10px;"><b>Register</b></h3>
+                            <form id="registrationForm">
+                                <div class="form-group">
+                                    <input type="text" id="txtPhone" name="txtPhone" class="form-control" placeholder="Phone Number" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" id="txtUserName" name="txtUserName" class="form-control" placeholder="Username" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" id="txtEmail" name="txtEmail" class="form-control" placeholder="Email Address" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="txtPassword" name="txtPassword" class="form-control" placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="txtConfirmPassword" name="txtConfirmPassword" class="form-control" placeholder="Confirm Password">
+                                </div>
+                                <div class="form-group">
+                                    <select id="cmbDistrictId" name="cmbDistrictId" class="form-control input-sm select2" style="width:100%"></select>
+                                </div>
+                                <div class="form-group">
+                                    <select id="cmbUpazilasId" name="cmbUpazilasId" class="form-control input-sm select2" style="width:100%"></select>
+                                </div>
+                                <div class="form-group pull-right">
+                                    <button type="button" id="btnRegister" class="btn btn-primary">Register</button>
+
+                                </div>
+                            </form>
+                            <div class="form-footer" style="color:white">
+                                <p style="color:white">Already have an account? <a href="/login" style="color:white"><u>Login here</u></a></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="overlay">
+        <div class="loadingBack">
+        </div>
+        <div class="loadingBlock">
+            <label style="text-align:center;font-size:16px;">Registering...</label>
+            <label style="text-align: center; margin-top: 95px; font-size: 16px ">Please Wait</label>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/eMedicine/Registration/UIEntryRegister.js")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
+

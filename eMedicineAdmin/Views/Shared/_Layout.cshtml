@@ -1,0 +1,206 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eMedicineBd</title>    
+   <link href="~/content/bower_components/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/content/dist/css/adminlte.css" rel="stylesheet" />        
+    <script src="~/content/bower_components/raphael/raphael.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.js"></script> 
+    <link href="~/content/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" /> 
+    <link href="~/content/bower_components/datatables.net-bs/datatable/css/jquery.datatables.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/datatables.net-bs/datatable/css/responsive.datatables.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/datatables.net-bs/datatable/css/responsive.bootstrap.css" rel="stylesheet" />
+    <link href="~/content/bower_components/datatables.net-bs/datatable/css/fixedheader.datatables.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/datatables.net-bs/datatable/css/datatables.checkboxes.css" rel="stylesheet" />   
+    <link href="~/content/bower_components/jvectormap/jquery-jvectormap.css" rel="stylesheet" />
+    <link href="~/content/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.css" rel="stylesheet" />    
+    <link href="~/content/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.css" rel="stylesheet" />
+    <link href="~/content/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.standalone.min.css" rel="stylesheet" />
+    <link href="~/content/easyautocomplete-1.3.5/easy-autocomplete.min.css" rel="stylesheet" />   
+    <link href="~/content/easyautocomplete-1.3.5/easy-autocomplete.themes.min.css" rel="stylesheet" />
+    <link href="~/content/easyautocomplete-1.3.5/easy-autocomplete.themes.css" rel="stylesheet" />
+    <link href="~/content/easyautocomplete-1.3.5/easy-autocomplete.css" rel="stylesheet" />   
+    <link href="~/content/plugins/timepicker/bootstrap-timepicker.css" rel="stylesheet" />
+    <link href="~/content/bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
+     <link rel="icon" href="~/images/CC_Blue.png" type="image/x-icon">
+    <link href="~/content/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/ionicons/css/ionicons.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/select2/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="~/content/dist/css/adminlte.min.css" rel="stylesheet" />
+    <link href="~/content/dist/css/skins/_all-skins.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/morris.js/morris.css" rel="stylesheet" />   
+    <link href="~/content/datatables/datatables-1.10.18/css/datatables.bootstrap.min.css" rel="stylesheet" />   
+    <link href="~/content/datatables/responsive-2.2.2/css/responsive.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/content/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/content/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/content/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet" />
+    <link href="~/content/sweetalert/css/sweetalert.css" rel="stylesheet" />
+    <link href="~/content/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" />
+    <script src="~/content/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="~/content/bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/content/bower_components/morris.js/morris.min.js"></script>
+    <script src="~/content/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
+    <script src="~/content/bower_components/select2/dist/js/select2.full.min.js"></script>
+    <script src="~/content/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="~/content/plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="~/content/bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
+    <script src="~/content/bower_components/moment/min/moment.min.js"></script>
+    <script src="~/content/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script src="~/content/bower_components/datatables.net-bs/datatable/js/jquery.dataTables.min.js"></script>
+    <script src="~/content/bower_components/datatables.net-bs/datatable/js/dataTables.bootstrap.min.js"></script>
+    <script src="~/content/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/content/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/content/plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="~/content/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <script src="~/content/bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/content/bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="~/content/sweetalert/js/sweetalert-dev.js"></script>
+    <script src="~/content/dist/js/adminlte.min.js"></script>
+
+
+
+    <style>
+        .select2-results__options {
+            font-size: 11px !important;
+        }
+
+        .datepicker {
+            z-index: 9999 !important;
+        }
+    </style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+    <div class="wrapper">
+        <header class="main-header">
+            <!-- Logo -->
+            <a href="/CommonDashBoard/RequsitionDashBoard" class="logo">
+                <!-- mini logo for sidebar mini 50x50 pixels -->
+                <span class="logo-mini"><b>eMedBd</b></span>
+                <!-- logo for regular state and mobile devices -->
+                <span class="logo-lg"><b>eMedicineBd</b></span>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top">
+                <!-- Sidebar toggle button-->
+                <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">                     
+                        <li class="dropdown user user-menu">                           
+                            <a class="dropdown-toggle" data-toggle="dropdown">@ViewBag.UserName</a>
+
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    @*<img src="@Url.content("~/content/dist/img/user2-160x160.jpg")" class="img-circle" alt="User Image">*@
+                                    <p>
+                                        @ViewBag.UserName
+                                        <small>Login ID: @ViewBag.UserloginId</small>
+                                    </p>
+                                </li>                               
+                                <li class="user-footer">
+                                  
+                                    <div class="pull-right">
+                                        <a href="~/LogIn/LogIn" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>                       
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <!-- Left side column. contains the logo and sidebar -->
+        <aside class="main-sidebar">
+            <!-- sidebar: style can be found in sidebar.less -->
+            <section class="sidebar">
+                <!-- Sidebar user panel -->
+                <div class="user-panel">
+                    <div class="pull-left image">
+                        @*<img src="@Url.content("~/content/dist/img/user2-160x160.jpg")" class="img-circle" alt="User Image">*@
+
+                    </div>                  
+                </div>
+                @{
+                    var menuLists = ViewBag.MenuData as List<MenuViewModel>;
+                    List<MenuViewModel> GetChildMenus(string parentId) =>
+                    menuLists?.Where(m => m.ParentID == parentId)
+                    .OrderBy(m => m.MenuSequenceNo)
+                    .ToList() ?? new List<MenuViewModel>();
+
+                    void RenderMenu(List<MenuViewModel> menus)
+                    {
+                        if (menus == null || !menus.Any())
+                            return;
+
+                        @foreach (var menu in menus)
+                        {
+                            var children = GetChildMenus(menu.MenuID);
+                            <li class="@(children.Any() ? "treeview" : "nav-link")">
+                                <a href="/@menu.PageUrl" class="#">
+                                    <i class="@(children.Any() ? "fa fa-laptop" : "fa fa-circle-o")"></i>
+                                    <span>
+                                        @menu.MenuName
+                                        @if (children.Any())
+                                        {
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        }
+                                    </span>
+                                </a>
+                                <ul class="@(children.Any() ? "treeview-menu" : "")">
+                                    @if (children.Any())
+                                    {
+                                        RenderMenu(children);
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    }
+                }
+                <ul class="sidebar-menu" data-widget="tree">
+                    @if (menuLists != null)
+                    {
+                        var rootMenus = menuLists
+                        .Where(m => m.ParentID == "0")
+                        .OrderBy(m => m.MenuSequenceNo)
+                        .ToList();
+                        RenderMenu(rootMenus);
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <p>No menu items available</p>
+                            </a>
+                        </li>
+                    }
+                </ul>
+
+            </section>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- content Header (Page header) -->
+            <section class="content-header">
+                <h1>
+                    <small>
+                        @ViewBag.Title
+                    </small>
+                </h1>
+            </section>
+            @RenderBody()
+            <hr />
+        </div>
+    </div>
+
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript" language="javascript">
+    </script>
+</body>
+</html>

@@ -1,581 +1,456 @@
-﻿var dataSet = [];
-var rows_selected = [];
-var status;
-var rowId = "";
-var obj1 = new Object();
-var obj2 = new Object();
-$(function () {
-    $("#textExpDate").datepicker({ format: "M-yyyy", autoclose: true, viewMode: "months", minViewMode: "months", 'forceParse': 0, endDate: '+0m', });
-    $("#txtStartDate").datepicker({ format: "M-yyyy", autoclose: true, viewMode: "months", minViewMode: "months", 'forceParse': 0, endDate: '+0m', });
-    $("#txtEndDate").datepicker({ format: "M-yyyy", autoclose: true, viewMode: "months", minViewMode: "months", 'forceParse': 0, endDate: '+0m', });
-
-    $(document).ready(function () {
-        alert();
-        var locale = "en-us";
-        var toDate = new Date(),
-            tday = toDate.getDate(),
-            tyear = toDate.getFullYear(),
-            tmonth = toDate.toLocaleString(locale, { month: "short" });
-        $("#textExpDate").datepicker('setDate', new Date(tmonth + '-' + tyear));
-        $("#txtStartDate").datepicker('setDate', new Date(tmonth + '-' + tyear));
-        $("#txtEndDate").datepicker('setDate', new Date(tmonth + '-' + tyear));
-        $("#rdoDraft").prop("checked", true);
-        MonthlyExpencesHelper.BuildtblExpDetails("");
-    });
-    //this is push
-    $("#cmbProjectId").on("change", function (e) {
-        var projectid = $("#cmbProjectId").val();
-        MonthlyExpencesHelper.GenerateCombo($("#cmbProjectType"), "%", "ERPRENTDB.dbo.SP_SELECT_SERVICE_CHARGE", "GETCATAGORYLIST", projectid, "", "", "", "S");
-        if (projectid != '') {
-            MonthlyExpencesHelper.SearchprojectInformationByProjectCode();
-            MonthlyExpencesHelper.SearchMonthlyExpencesList();
-        }
-        else {
-            $("#txtper").val("0");
-            $("#txtIndvExp").val("0");
-            $("#txttotal").val("0");
-            $('#tblExpencesDetails').DataTable().clear().draw();
+﻿let rowId = "";
+$(document).ready(function () {
+    $(".select2").select2();
+    $("#btnSave").show();
+    $("#btnUpdate").hide();
+    jQuery.ajax({
+        url: "/Common/GetCurrentDate",
+        type: "POST",
+        success: function (result) {
+            $("#hdnDateToday").datepicker({ format: "dd-M-yyyy", autoclose: true });
+            $("#hdnDateToday").datepicker('setDate', new Date(result)); 
         }
     });
 
-    $("#cmbProjectType").on("change", function (e) {
-        var Comcid = $("#cmbProjectId").val();
-        var Catagory = $("#cmbProjectType").val();
-
-        MonthlyExpencesHelper.SearchMonthlyExpencesList();
-        MonthlyExpencesHelper.SearchTotalInfoByProjectCode(Comcid, Catagory);
-
-    });
-
-    $("#btnSubmit").click(function () {
-        if ($("#textExpDate").val() === null || $("#textExpDate").val() === "") {
-            swal({
-                title: "Sorry!",
-                text: "Please Select Month !",
-                type: "error",
-                closeOnConfirm: false
-            });
-        }
-        else {
-            var table = $("#tblExpencesDetails").DataTable();
-            var infoData = table.data();
-            var listitem = MonthlyExpencesHelper.CreateDetailsObject();
-            if ($("#cmbProjectId").val() != null && $("#cmbProjectId").val() != "") {
-                if ($("#cmbProjectType").val() != null && $("#cmbProjectType").val() != "") {
-                    if (infoData.length > 0 && listitem.length > 0) {
-                        swal({
-                            title: "Do you want to save the changes?",
-                            text: "",
-                            type: "info",
-                            showCancelButton: true,
-                            closeOnConfirm: false,
-                            showLoaderOnConfirm: true
-                        }, function () {
-                            setTimeout(function () {
-                                MonthlyExpencesHelper.SaveMonthlyExpencesDetails();
-                                $('.btnTmpEdit').prop("onclick", null).off("click");
-                                $("#cmbProjectId").prop("disabled", true);
-                                $("#txtProjectId").prop("disabled", true);
-                                $("#cmbProjectType").prop("disabled", true);
-                                if ($("#hdnRadiobtn").val() != "N") {
-
-                                    $("#divMaster").find("input,select,textarea").prop("disabled", true);
-                                }
-                                //swal("sdkfjsd");
-                            }, 60);
-                        });
-                    }
-                    else {
-                        swal({
-                            title: "Sorry!",
-                            text: "Please Insert Expences Amount !",
-                            type: "error",
-                            closeOnConfirm: false
-                        });
-                    }
-                }
-                else {
-                    swal({
-                        title: "Sorry!",
-                        text: "Please Select Catagory Information !",
-                        type: "error",
-                        closeOnConfirm: false
-                    });
-                }
-            }
-            else {
-                swal({
-                    title: "Sorry!",
-                    text: "Please Select Project Information !",
-                    type: "error",
-                    closeOnConfirm: false
-                });
-            }
-        }
-    });
-
-    $("#btnNew").click(function () {
-        location.reload();
-
-    });
-
-    $("#btnPrint").click(function () {
-        MonthlyExpencesHelper.objectMonthlyExpences();
-    });
-
-    $("#btnsrch").click(function () {
-        $("#txtper").val("0");
-        $("#txtIndvExp").val("0");
-        $("#txttotal").val("0");
-        $("#txtttlCharge").val("0");
-        $("#modal-default-Search").modal("show");
-    });
-
-    $("#btnSearch").click(function () {
-
-        MonthlyExpencesHelper.SearchExpNoByDate();
-        $("#SrcTable").show();
-    });
-
-    $("#txtper").on("input", function () {
-        if ($("#txtper").val() > 100 || $("#txtper").val() < 0) {
-            $("#txtper").val("0");
-            //$("#txtttlCharge").val("0");           
-
-            //MonthlyExpencesHelper.IndvAmountCalcualte();
-            //$("#txtIndvExp").val("0");
-            //$("#txttotal").val(parseFloat($("#hdnTotal").val()).toFixed(0));
-            //MonthlyExpencesHelper.ProfitCalculate();
-            swal({
-                icon: 'warning',
-                title: 'Warning!',
-                text: 'Service Charge Less Then 100',
-                type: "warning",
-                closeOnConfirm: false,
-                closeOnCancel: false,
-                timer: 2000
-            })
-
-            return;
-        }
-        else {
-            MonthlyExpencesHelper.IndvAmountCalcualte();
-            //MonthlyExpencesHelper.ProfitCalculate();
-        }
-
-
-    });
+    CompanyHelper.GenerateCombo($("#cmbDivisionId"),"SP_SelectGetAllDropDown", "GETALLDIVISION", "0", "0", "0", "0", "0");
+    CompanyHelper.BuildComanyTbl("");
+    CompanyHelper.GetAllCompany();
+    CompanyHelper.ValidateCompany();
+});
+$("#btnSave").click(function (event) {
+    event.preventDefault();
+    CompanyHelper.SaveCollectionData();
+});
+$("#btnUpdate").click(function (event) {
+    event.preventDefault();
+    CompanyHelper.UpdateCollectionData();
+});
+$("#btnClear").click(function (event) {
+    event.preventDefault();
+    location.reload();
 });
 
-var MonthlyExpencesHelper = {
+var CompanyHelper = {
+    GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
-    GenerateCombo: function (objcmb, comCostId, proName, callName, param1, param2, param3, param4, param5) {
         objcmb.empty();
-        if (param5 === "S")
+        var json = { ProcedureName: proName, CallName: callName, Param1: param1, Param2: param2, Param3: param3, Param4: param4, Param5: param5 };
+        jQuery.ajax({
+            type: "POST",
+            url: "/Common/GenerateCombo",
+            data: json,
+            success: function (data) {
+                if (data.length == 1) {
+                    $.each(data, function (key, item) {
+                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                    });
+                }
+                else {
+                    objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
+                    $.each(data, function (key, item) {
+                        objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
+                    });
 
-            $.getJSON("../Common/GenerateComboRealEstate/?comCostID=" + comCostId + '&procedureName=' + proName + '&callName=' + callName + '&Param1=' + param1 + '&Param2=' + param2 + '&Param3=' + param3 + '&Param4=' + param4)
-                .done(function (data) {
-                    var count = data.length;
-                    if (count > 1) {
-                        objcmb.append($("<option></option>").attr("value", "").text("-Select-"));
-                        $.each(data, function (key, item) {
-                            objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
-                        });
-                    }
-                    else {
-                        $.each(data, function (key, item) {
-                            objcmb.append($("<option></option>").attr("value", item.Id).text(item.Name));
-                        });
-                    }
-                    if (objcmb[0].id == 'cmbProjectId') {
-                        objcmb.prop('selectedIndex', 0);
-
-                        objcmb.select2().trigger('change');
-
-                    }
-                    $('#cmbProjectId').select2();
-                    $('#cmbProjectType').select2();
-                    $('#cmbProjectType').select2().trigger('change');
-
-                });
+                }
+                // this is for to work onchange event when only one data is returned
+                objcmb.change();
+            }
+        });
     },
-
-    BuildtblExpDetails: function (tbldata) {
-        $('#tblExpencesDetails').DataTable({
-            "footerCallback": function (row, data, start, end, display) {
-                var api = this.api(), data;
-                var floatval = function (i) {
-                    return typeof i === 'string' ?
-                        i.replace(/[\$,]/g, '') * 1 :
-                        typeof i === 'number' ?
-                            i : 0;
-                };
-
-                // Total over all pages
-                var total = api
-                    .column(4)
-                    .data()
-                    .reduce(function (a, b) {
-                        return floatval(a) + floatval(b);
-                    }, 0);
-
-                total = total.toFixed(2);
-                // Update footer
-                $(api.column(4).footer()).html(
-                    +total
-                );
-                $("#hdnTotal").val(total);
-                MonthlyExpencesHelper.IndvAmountCalcualte();
-            },
+    BuildComanyTbl: function (tbldata) {
+        $('#tblCompany').DataTable({
             data: tbldata,
             "responsive": true,
             "bDestroy": true,
-            "bFilter": false,
-            "bInfo": false,
-            "searching": false,
-            "paging": false,
-            "ordering": false,
             "columns": [
-                { "data": "SL" },
-                { "data": "EXPCODE" },
-                { "data": "EXPNAME" },
-                { "data": "STATUS" },
-                { "data": "AMOUNT" },
-                { "data": "REMARKS" },
-                { "data": null }
-            ],
-
-            "columnDefs": [
-
-                { "className": "dt-right", "targets": [4] },
-                { "className": "dt-center", "targets": [0, 1, 6] },
-                { "width": "50%", "targets": [2] },
-                { "width": "10%", "targets": [4] },
-
+                { "data": "SL" },//0
                 {
-                    "targets": [0],
-                    "width": "2%",
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                },
-                {
-                    "targets": [1, 3, 6],
-                    "visible": false,
-                    "searchable": false
-                },
-                {
-                    "targets": [4],
-                    "render": function (data, type, row, meta) {
-                        var attrDisabled = '';
-                        if ($("#hdnRadiobtn").val() != "N") {
-                            attrDisabled = 'disabled';
-                            //attrDisabled = '';
+                    "data": "ImagePath",
+                    "render": function (data, type, row) {
+                        if (data) {
+                            return '<img src="' + data + '" alt="Company Image" style="width:50px; height:auto;"/>';
                         }
-                        return '<input type="text" maxlength="10" size="16px"' +
-                            'style="text-align: right; height=10px!important" maxlength="10"  id="txtamount" autocomplete="off" class="form-control input-sm" onkeypress="return MonthlyExpencesHelper.isDeciaml(this, event, 2)" ' +
-                            'onchange="MonthlyExpencesHelper.CalculateAmount(this.value, ' + meta.row + ')" +' +
-                            'name="x" value="' + row.AMOUNT + '" ' + attrDisabled + '/>';
-
+                        return '<span>No image</span>';
                     }
-
                 },
+                { data: 'CompanyId' },//1
+                { data: 'CompanyName' },//2
+                { data: 'CompanyAddress' },//3
+                { data: 'CompanyDescription' },//4
+                { data: 'CompanyPhone' },//5               
+                { data: 'IsActive' },//6
                 {
-                    "targets": [5],
-                    "render": function (data, type, row, meta) {
-                        var attrDisabled = '';
-                        if ($("#hdnRadiobtn").val() != "N") {
-                            attrDisabled = 'disabled';
-                        }
-                        return '<input type="text" size="16px"' +
-                            'style="text-align: right; height=10px!important" maxlength="200"  id="" autocomplete="off" class="form-control input-sm"' +
-                            'name="" value="' + row.REMARKS + '" ' + attrDisabled + '/>';
-
-                    }
-
-                },
-                {
-                    "targets": [6],
-                    "render": function (data, type, row, meta) {
-                        var attrDisabled = '';
-                        if ($("#hdnRadiobtn").val() != "N") {
-                            attrDisabled = 'disabled';
-                        }
-                        return '<button  type="button" class="pull-center btnAddition" onclick="MonthlyExpencesHelper.Edit(' + meta.row + ')" style="font-size:10px;" ' + attrDisabled + '>Edit</button>';
+                    data: null,//7
+                    render: function (data, type, row) {
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="CompanyHelper.GetDetailsByCompanyID(\'' + row.CompanyId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
-        });
-    },
-
-    BuildExpSearchDetails: function (tbldata) {
-        $('#tblExpSrcDetails').DataTable({
-            data: tbldata,
-            "responsive": true,
-            "bDestroy": true,
-
-            "columns": [
-                { "data": "SL" },
-                { "data": "EXPNOH" },
-                { "data": "PDESC" },
-                { "data": "EXPNO" },
-                { "data": "EXPDATE" },
-                { "data": "APPROVED" },
-                { "data": "AMOUNT" },
-                { "data": "NOTE" },
-                { "data": null },
-                { "data": "COMCID" },
-                { "data": "CATAGORY" }
-            ],
             "columnDefs": [
-
-                { "className": "dt-right", "targets": [1, 6] },
-                { "className": "dt-center", "targets": [4, 5, 8] },
                 {
-                    "targets": [3, 9, 10],
-                    "visible": false,
-                    "searchable": false
-                }, {
                     "targets": [0],
                     "width": "2%",
-                    render: function (data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                },
-
-                {
-                    "targets": [8],
-                    "render": function (data, type, row, meta) {
-
-                        return '<button id="" type="button" class="pull-center" onclick="MonthlyExpencesHelper.EditExpNo(\'' + row.EXPNO + '\',\'' + row.COMCID + '\',\'' + row.CATAGORY + '\', ' + meta.row + ')" style="font-size:10px;">View</button>';
-                    }
+                    render: function (data, type, row, meta) { return meta.row + meta.settings._iDisplayStart + 1; },
                 }
             ]
 
         });
-    },
 
-    CalculateAmount: function (_amount, rid) {
-        var amount = parseFloat("0" + _amount);
-        var table = $("#tblExpencesDetails").DataTable();
-        table.cell(rid, 4).data(amount).draw();
-    },
 
-    ChkProjctId: function () {
-        $("#cmbProjectId").empty();
-        MonthlyExpencesHelper.GenerateCombo($("#cmbProjectId"), "%", "ERPRENTDB.dbo.SP_SELECT_SERVICE_CHARGE", "RENTEXPPROJECTLIST", $("#txtProjectId").val(), "", "", "", "S");
-    },
-
-    SearchprojectInformationByProjectCode: function () {
-        debugger;
-        var Comcid = $("#cmbProjectId").val();
-
-        //$.getJSON("../SalesInformation/SearchSalesInformationByUnit/?mcomcod=" + "%" + '&unitId=' + unitCode)
-        $.getJSON("../MonthlyExpences/SearchprojectInformationByProjectCode/?Comcid=" + Comcid)
-            .done(function (data) {
-                data = $.parseJSON(data);
-                $("#txtProjectAddress").val(data.Table[0].COMCADD1);
-            });
 
     },
+    GetAllCompany: function () {
+        var serviceUrl = "/Company/GetAllCompany";
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            success: function (result) {
+                if (result.Success) {
+                    CompanyHelper.BuildComanyTbl(result.data);
+                } else {
+                    alert(result.message);
+                }
+            },
+            error: function () {
+                alert("Error retrieving companies.");
+            }
+        });
+    },  
+    //SaveCollectionData: function () {
+    //    if ($("#validateCompany").valid()) {
+    //        var companyData = {
+    //            CompanyId: $('#CompanyId').val() ? "" : "000000000000",
+    //            CompanyName: $('#CompanyName').val(),
+    //            CompanyAddress: $('#CompanyAddress').val(),
+    //            CompanyDescription: $('#CompanyDescription').val(),
+    //            CompanyNameBN: $('#CompanyNameBN').val(),
+    //            CompanyAddressBN: $('#CompanyAddressBN').val(),
+    //            CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
+    //            CompanyPhone: $('#CompanyPhone').val(),
+    //            IsActive: $('#IsActive').val(),
+    //            CreatedBy: $('#hdnUserId').val(),
+    //            CreatedDate: $('#hdnDateToday').val(),
+    //            UpdatedBy: $('#hdnUserId').val(),
+    //            UpdatedDate: $('#hdnDateToday').val()
+    //        };
 
-    SearchTotalInfoByProjectCode: function (Comcid, Catagory) {
-        $.getJSON("../MonthlyExpences/SearchTotalInfoByProjectCode/?Comcid=" + Comcid + '&Catagory=' + Catagory)
-            .done(function (data) {
-                data = $.parseJSON(data);
-                $("#txtttlClint").val(data.Table[0].CLIENTNUM);
-                $("#txtttlSize").val(data.Table[0].TOTALSIZE);
-            });
+    //        $.ajax({
+    //            url: '/Company/CreateCompany', // Your controller action
+    //            type: 'POST',
+    //            contentType: 'application/json',
+    //            data: JSON.stringify(companyData), // Send as JSON
+    //            success: function (response) {
+    //                swal({
+    //                    title: "Congratulations",
+    //                    text: "saved successfully!",
+    //                    type: "success",
+    //                    showConfirmButton: false,
+    //                    allowOutsideClick: false,
+    //                //    timer: 2000
+    //                });
+    //                location.reload();
 
-    },
+    //                CompanyHelper.GetAllCompany();
+    //            },
+    //            error: function (xhr, status, error) {
+    //                swal({
+    //                    title: "Sorry!",
+    //                    text: "Error saving company!" + error,
+    //                    type: "error",
+    //                    closeOnConfirm: false,
+    //                //    timer: 2000
+    //                });
+    //            }
+    //        });
+    //    }
+    //},
 
-    SearchMonthlyExpencesList: function () {
-        var Comcid = $("#cmbProjectId").val();
-        var Catagory = $("#cmbProjectType").val();
+    SaveCollectionData: function () {
+        if ($("#validateCompany").valid()) {
+            var formData = new FormData();
 
-        $.getJSON("../MonthlyExpences/SearchMonthlyExpencesList/?Comcid=" + Comcid + '&Catagory=' + Catagory)
-            .done(function (data) {
-                data = $.parseJSON(data);
-                MonthlyExpencesHelper.BuildtblExpDetails(data.Table);
-            });
+            formData.append("CompanyId", $('#CompanyId').val() || "000000000000");
+            formData.append("CompanyName", $('#CompanyName').val());
+            formData.append("CompanyAddress", $('#CompanyAddress').val());
+            formData.append("CompanyDescription", $('#CompanyDescription').val());
+            formData.append("CompanyNameBN", $('#CompanyNameBN').val());
+            formData.append("CompanyAddressBN", $('#CompanyAddressBN').val());
+            formData.append("CompanyDescriptionBN", $('#CompanyDescriptionBN').val());
+            formData.append("CompanyPhone", $('#CompanyPhone').val());
+            formData.append("IsActive", $('#IsActive').val());
+            formData.append("CreatedBy", $('#hdnUserId').val());
+            formData.append("CreatedDate", $('#hdnDateToday').val());
+            formData.append("UpdatedBy", $('#hdnUserId').val());
+            formData.append("UpdatedDate", $('#hdnDateToday').val());
 
-    },
+            var fileInput = $('#fileUpload')[0];
+            if (fileInput.files.length > 0) {
+                formData.append("imageFile", fileInput.files[0]);
+            }
 
-    SaveMonthlyExpencesDetails: function () {
-        var obj = new Object();
-        obj.COMCID = $("#cmbProjectId").val();
-        obj.CATAGORY = $("#cmbProjectType").val();
-        obj.EXPNO = $("#txtExpNo").val();
-        obj.EXPDATE = $("#textExpDate").val();
-        if ($("#rdoDraft").prop("checked")) {
-            obj.APPROVED = $("#rdoDraft").val();
-        }
-        if ($("#rdoFinal").prop("checked")) {
-            obj.APPROVED = $("#rdoFinal").val();
-        }
-        obj.NOTE = $("#textNote").val();
-        obj.SRVCRG = $("#txtper").val();
-        obj.POSTEDBYID = $("#hdnUserId").val();
-        obj.POSTTRMID = $("#hdnTermID").val().substring(0, 18);
 
-        if (obj.COMCID.length > 0) {
-            var listitem = MonthlyExpencesHelper.CreateDetailsObject();
-            var objDetails = JSON.stringify(obj);
-            var newItemList = JSON.stringify(listitem);
-            var jsonParam = "objDetails:" + objDetails + ',itemList:' + newItemList;
-            var serviceUrl = "/MonthlyExpences/SaveMonthlyExpencesDetails";
-            jQuery.ajax({
-                url: serviceUrl,
-                async: false,
-                type: "POST",
-                data: "{" + jsonParam + "}",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    if (data.status == "Logout") {
-                        location.reload();
-                        return;
-                    }
-                    if (data.data03 == "AI") {
+            $.ajax({
+                url: '/Company/CreateCompany',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
                         swal({
-                            icon: 'warning',
-                            title: 'Warning!',
-                            text: 'Data  already exists for this Month !',
-                            type: "warning",
-                            closeOnConfirm: false,
-                            closeOnCancel: false,
-                            timer: 2000
-                        })
-                        return;
-                    }
-                    if (data.status) {
-                        if ($("#rdoFinal").prop("checked")) {
-                            $("#hdnRadiobtn").val(data.data02);
-                            document.getElementById("btnPrint").hidden=false;
-                        }
-                        else {
-                            $("#hdnRadiobtn").val("N");
-                            $('#btnPrint').hide();
-                            document.getElementById("btnPrint").hidden = true;
-                        }
-                        $("#txtExpNo").val(data.EXPNO);
-                        $("#SrctxtExpno").val(data.data01);
-                        MonthlyExpencesHelper.SearchExpDetailsByExpNo(data.data02, $("#cmbProjectId").val(), $("#cmbProjectType").val(), "")
-
-                        swal({
-                            title: "Congratulation!!",
-                            text: "Save Successfully",
+                            title: "Congratulations",
+                            text: "Saved successfully!",
                             type: "success",
-                            closeOnConfirm: false
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
                         });
+                        location.reload();
+
+                        CompanyHelper.GetAllCompany();
                     } else {
                         swal({
                             title: "Sorry!",
-                            text: "Failed to save!",
+                            text: "Save failed!",
                             type: "error",
-                            closeOnConfirm: false
+                            closeOnConfirm: false,
                         });
                     }
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error occurred: " + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                    });
                 }
             });
         }
     },
+    //UpdateCollectionData: function () {
+    //    if ($("#validateCompany").valid()) {
 
-    CreateDetailsObject: function () {
-        var table = $("#tblExpencesDetails").DataTable();
-        var detaildata = table.data();
-        var datalist = [];
-        for (var i = 0; i < detaildata.length; i++) {
-            var obj = new Object();
-            obj.EXPCODE = table.cell(i, 1).data();
-            obj.AMOUNT = table.cell(i, 4).nodes().to$().find('input').val();
-            obj.REMARKS = table.cell(i, 5).nodes().to$().find('input').val();
-            //datalist.push(obj);
-            if (obj.AMOUNT > 0) {
-                datalist.push(obj);
+    //        var companyData = {
+    //            CompanyId: $('#CompanyId').val(),
+    //            CompanyName: $('#CompanyName').val(),
+    //            CompanyAddress: $('#CompanyAddress').val(),
+    //            CompanyDescription: $('#CompanyDescription').val(),
+    //            CompanyNameBN: $('#CompanyNameBN').val(),
+    //            CompanyAddressBN: $('#CompanyAddressBN').val(),
+    //            CompanyDescriptionBN: $('#CompanyDescriptionBN').val(),
+    //            CompanyPhone: $('#CompanyPhone').val(),
+    //            IsActive: $('#IsActive').val(),
+    //            CreatedBy: $('#hdnUserId').val(),
+    //            CreatedDate: $('#hdnDateToday').val(),
+    //            UpdatedBy: $('#hdnUserId').val(),
+    //            UpdatedDate: $('#hdnDateToday').val()
+    //        };
+
+    //        // Send the form data to the CreateCompany action via AJAX
+    //        $.ajax({
+    //            url: '/Company/UpdateCompanyById', // Your controller action
+    //            type: 'POST',
+    //            contentType: 'application/json',
+    //            data: JSON.stringify(companyData), // Send as JSON
+    //            success: function (response) {
+    //                // Success message
+    //                swal({
+    //                    title: "Congratulations",
+    //                    text: "Update successfully!",
+    //                    type: "success",
+    //                    showConfirmButton: false,
+    //                    allowOutsideClick: false,
+    //                    //timer: 2000
+    //                });
+    //                location.reload();
+
+    //                CompanyHelper.GetAllCompany();
+    //            },
+    //            error: function (xhr, status, error) {
+
+    //                swal({
+    //                    title: "Sorry!",
+    //                    text: "Error Update company!" + error,
+    //                    type: "error",
+    //                    closeOnConfirm: false,
+    //                    //timer: 2000
+    //                });
+    //            }
+    //        });
+    //    }
+    //},
+
+    UpdateCollectionData: function () {
+        if ($("#validateCompany").valid()) {
+            var formData = new FormData();
+
+            formData.append("CompanyId", $('#CompanyId').val() || "000000000000");
+            formData.append("CompanyName", $('#CompanyName').val());
+            formData.append("CompanyAddress", $('#CompanyAddress').val());
+            formData.append("CompanyDescription", $('#CompanyDescription').val());
+            formData.append("CompanyNameBN", $('#CompanyNameBN').val());
+            formData.append("CompanyAddressBN", $('#CompanyAddressBN').val());
+            formData.append("CompanyDescriptionBN", $('#CompanyDescriptionBN').val());
+            formData.append("CompanyPhone", $('#CompanyPhone').val());
+            formData.append("IsActive", $('#IsActive').val());
+            formData.append("CreatedBy", $('#hdnUserId').val());
+            formData.append("CreatedDate", $('#hdnDateToday').val());
+            formData.append("UpdatedBy", $('#hdnUserId').val());
+            formData.append("UpdatedDate", $('#hdnDateToday').val());
+            formData.append("PreImagePath", $('#lblimgPreview').html()); 
+
+            var fileInput = $('#fileUpload')[0];
+            if (fileInput.files.length > 0) {
+                formData.append("imageFile", fileInput.files[0]);
             }
+
+
+            $.ajax({
+                url: '/Company/UpdateCompanyById',
+                type: 'POST',
+                processData: false,
+                contentType: false,
+                data: formData,
+                success: function (response) {
+                    if (response.success) {
+                        swal({
+                            title: "Congratulations",
+                            text: "Update successfully!",
+                            type: "success",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
+                        });
+                        location.reload();
+
+                        CompanyHelper.GetAllCompany();
+                    } else {
+                        swal({
+                            title: "Sorry!",
+                            text: "Update failed!",
+                            type: "error",
+                            closeOnConfirm: false,
+                        });
+                    }
+                },
+                error: function (xhr, status, error) {
+                    swal({
+                        title: "Sorry!",
+                        text: "Error occurred: " + error,
+                        type: "error",
+                        closeOnConfirm: false,
+                    });
+                }
+            });
         }
-        console.log(datalist);
-        return datalist;
-
     },
+    GetCompanyID: function (CompanyId) {
+        $("#btnSave").hide();
+        $("#btnUpdate").show();
+        var jsonParam = { companyId: CompanyId };
+        var serviceUrl = "/Company/GetCompanyById";
 
-    SearchExpNoByDate: function () {
-        var StartDate = $("#txtStartDate").val();
-        var EndDate = $("#txtEndDate").val();
-        $.getJSON("../MonthlyExpences/SearchExpNoByDate/?StartDate=" + StartDate + '&EndDate=' + EndDate)
-            .done(function (data) {
-                $('#tblExpSrcDetails').DataTable().clear().draw();
-                data = $.parseJSON(data);
-                MonthlyExpencesHelper.BuildExpSearchDetails(data.Table);
-            });
-
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (response) {
+                if (response.Success) {
+                    var company = response.data;
+                    $('#CompanyId').val(company.CompanyId);
+                    $('#CompanyName').val(company.CompanyName);
+                    $('#CompanyAddress').val(company.CompanyAddress);
+                    $('#CompanyDescription').val(company.CompanyDescription);
+                    $('#CompanyNameBN').val(company.CompanyNameBN);
+                    $('#CompanyAddressBN').val(company.CompanyAddressBN);
+                    $('#CompanyDescriptionBN').val(company.CompanyDescriptionBN);
+                    $('#CompanyPhone').val(company.CompanyPhone);
+                    $('#IsActive').val(company.IsActive);
+                    $('#lblimgPreview').html(company.ImagePath);
+                    if (company.ImagePath) {
+                        $('#imgPreview').attr('src', company.ImagePath).show();
+                    } else {
+                        $('#imgPreview').hide();
+                    }
+                } else { 
+                    swal({
+                        title: "Sorry!",
+                        text: "No company data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "No company data found.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
+            }
+        });
     },
+    GetDetailsByCompanyID: function (CompanyId) {
+      
+        var jsonParam = { companyId: CompanyId };
+        var serviceUrl = "/Company/GetCompanyById";
 
-    EditExpNo: function (expno, comcid, projecttype, rid) {
-        $("#txtExpNo").val(expno);
-        $('.btnTmpEdit').prop("onclick", null).off("click");
-        $("#cmbProjectId").prop("disabled", true);
-        $("#txtProjectId").prop("disabled", true);
-        $("#cmbProjectType").prop("disabled", true);
-        MonthlyExpencesHelper.SearchExpDetailsByExpNo(expno, comcid, projecttype, rid);
-        $("#modal-default-Search").modal("hide");
-
-    },
-
-    SearchExpDetailsByExpNo: function (expno, comcid, projecttype, rid) {
-        $.getJSON("../MonthlyExpences/SearchExpDetailsByExpNo/?expno=" + expno + '&comcid=' + comcid + '&projecttype=' + projecttype)
-            .done(function (data) {
-                data = $.parseJSON(data);
-                $("#cmbProjectId").empty();
-                $("#cmbProjectType").empty();
-                $("#txtttlClint").val(data.Table[0].CLIENTNUM);
-                $("#txtttlSize").val(data.Table[0].TOTALSIZE);
-                $("#cmbProjectId").append($("<option></option>").attr("value", data.Table[0].COMCID).text(data.Table[0].COMCSNAM));
-                $("#textExpDate").val(data.Table[0].EXPDATE);
-                $("#SrctxtExpno").val(data.Table[0].EXPNOH);
-                $("#txtProjectAddress").val(data.Table[0].COMCADD1);
-                $("#cmbProjectType").append($("<option></option>").attr("value", data.Table[0].CATAGORY).text(data.Table[0].SUBDESC));
-                //$("#cmbProjectType").val(item.CATAGORY); 
-                $("#txtExpMonth").val("");
-
-                if (data.Table[0].STATUS == "N") {
-                    $('#btnSubmit').prop('disabled', false);
-                    $("#rdoDraft").prop("checked", true);
-                    $('#textNote').prop('disabled', false);
-                    $('#rdoFinal').prop('disabled', false);
-                    $('#rdoDraft').prop('disabled', false);
-                    $("#rdoFinal").prop("checked", false);
-                    $("#hdnRadiobtn").val("N");
-                    document.getElementById("btnPrint").style.visibility = "hidden";
-
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (response) {
+                if (response.Success) {
+                    var company = response.data;
+                    CompanyHelper.clrMdl()
+                    $('#mdlTitle').html("Company Details for: " + company.CompanyId + " - " + company.CompanyName + " - " + company.CompanyNameBN);
+                    $('#MdlCompanyName').html("Company Name: " + company.CompanyName);
+                    $('#MdlCompanyNameBN').html("কোম্পানির নাম: " + company.CompanyNameBN);
+                    $('#MdlCompanyAddress').html("Company Address: " + company.CompanyAddress);
+                    $('#MdlCompanyAddressBN').html("কোম্পানির ঠিকানা: " + company.CompanyAddressBN);
+                    $('#MdlICompanyDescription').html("Description: " + company.CompanyDescription);
+                    $('#MdlICompanyDescriptionBN').html("কোম্পানির বিবরণ: " + company.CompanyDescriptionBN);                   
+                    $('#mdlCompanyPhone').html("Company Phone: " + company.CompanyPhone);
+                    if (company.IsActive == "1") {
+                        $('#mdlIsActive').html("Status: Active");
+                    }
+                    else
+                    {
+                        $('#mdlIsActive').html("Status: InActive");
+                    }
+                    if (company.ImagePath) {
+                        $('#MdlImage').attr("src", company.ImagePath).show();
+                    } else {
+                        $('#MdlImage').hide(); // Hide the image element if no image is available
+                    }
+                   
+                    $("#modal-default").modal("show");
                 } else {
-                    $('#btnSubmit').prop('disabled', true);
-                    $("#rdoFinal").prop("checked", true);
-                    $('#rdoDraft').prop('disabled', true);
-                    $('#textNote').prop('disabled', true);
-                    $("#hdnRadiobtn").val("Y");
-                    document.getElementById("btnPrint").style.visibility = "visible";
+                    swal({
+                        title: "Sorry!",
+                        text: "No company data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
                 }
-                $("#textNote").val(data.Table[0].NOTE);
-                $("#btnSubmit").html("Update");
-
-                MonthlyExpencesHelper.BuildtblExpDetails(data.Table1);
-                var totlalArea = $("#txtttlSize").val() == "" ? 1 : $("#txtttlSize").val();
-                if ($("#cmbProjectType").val() == "Residential") {
-                    $("#txtIndvExp").val(parseFloat(data.Table[0].TOTAL / $("#txtttlClint").val()).toFixed(0));
-                }
-                else if ($("#cmbProjectType").val() == "Commercial") {
-                    $("#txtIndvExp").val(parseFloat(data.Table[0].TOTAL / totlalArea).toFixed(0));
-                }
-                //$("#txtIndvExp").val(data.Table[0].NOTE);
-                $("#txtper").val(data.Table[0].SRVCRG);
-                $("#txtttlCharge").val(data.Table[0].TOTALCHARGE);
-                $("#txttotal").val(data.Table[0].TOTAL);
-            });
-
+            }
+        });
     },
-
+    clrMdl: function (o) {       
+        $('#mdlTitle').html("");
+        $('#mdlCompanyId').html("");
+        $('#mdlCompanyName').html("");
+        $('#mdlCompanyAddress').html("");
+        $('#mdlCompanyDescription').html("");
+        $('#mdlCompanyNameBN').html("");
+        $('#mdlCompanyAddressBN').html("");
+        $('#mdlCompanyPhone').html("");
+    },
     getSelectionStart: function (o) {
         if (o.createTextRange) {
             var r = document.selection.createRange().duplicate();
@@ -584,7 +459,6 @@ var MonthlyExpencesHelper = {
             return o.value.lastIndexOf(r.text);
         } else return o.selectionStart;
     },
-
     isDeciaml: function (el, evt, deci_point) {
         var charCode = (evt.which) ? evt.which : event.keyCode;
         var number = el.value.split('.');
@@ -596,111 +470,68 @@ var MonthlyExpencesHelper = {
             return false;
         }
         //get the carat position
-        var caratPos = MonthlyExpencesHelper.getSelectionStart(el);
+        var caratPos = CompanyHelper.getSelectionStart(el);
         var dotPos = el.value.indexOf(".");
         if (caratPos > dotPos && dotPos > -1 && (number[1].length > deci_point - 1)) {
             return false;
         }
         return true;
     },
-
     AllowNumbersOnly: function (e) {
         var code = (e.which) ? e.which : e.keyCode;
         if (code > 31 && (code < 48 || code > 57)) {
             e.preventDefault();
         }
     },
-
-    IndvAmountCalcualte: function () {
-        var totlal = $("#hdnTotal").val();
-        var charge = $("#txtper").val();
-        var totalCharge = parseFloat((totlal * charge) / 100).toFixed(0);
-        $("#txtttlCharge").val(totalCharge);
-        $("#txttotal").val(parseFloat((parseFloat(totalCharge) + parseFloat(totlal))));
-
-        var totlalArea = $("#txtttlSize").val() == "" ? 1 : $("#txtttlSize").val();
-        var txtttlClint = $("#txtttlClint").val() == "" ? 1 : $("#txtttlClint").val();
-        var txttotal = $("#txttotal").val();
-        //if (parseFloat("0" + $("#txtper").val()) > 0) {
-        var cmbval = $("#cmbProjectType option:selected").text();
-        if ($("#cmbProjectType option:selected").text() == "RESIDENTIAL") {
-            var a = parseFloat(txttotal / txtttlClint).toFixed(2);
-            $("#txtIndvExp").val(a);
-        }
-        else if($("#cmbProjectType option:selected").text() == "COMMERCIAL") {
-            var a = parseFloat(txttotal / totlalArea).toFixed(2);
-            $("#txtIndvExp").val(a);
-        }
-        //}
-        //else
-        //{
-        //    $("#txtIndvExp").val("0");
-        //    $("#txtper").val("0");
-        //    $("#txtIndvExp").val("0");
-        //    $("#txtttlCharge").val("0");
-
-        //}
-
-    },
-
-    objectMonthlyExpences: function (Month) {
-        //param for RDLC
-        obj1.PROCNAME = "ERPRENTDB.dbo.SP_SELECT_SERVICE_CHARGE";
-        obj1.CALLTYPE = "GETDETAILSBYEXPNO";
-        obj1.COMC1 = $("#cmbProjectId").val();
-        obj1.DESC1 = $("#txtExpNo").val();
-        obj1.DESC2 = $("#cmbProjectType").val();
-        obj1.DESC3 = "";
-        obj1.DESC4 = "";
-        obj1.DESC5 = "";
-        obj1.DESC6 = $("#hdnUserId").val();
-        obj1.DESC7 = $("#hdnTermID").val();
-        obj1.DESC8 = "";
-        obj1.DESC9 = "";
-        obj1.DESC10 = "";
-
-        //param for DB
-        obj2.DESC1 = "rptMonthlyExpences.rdlc";
-        obj2.DESC2 = "dtMonthlyExpencesB";
-        obj2.DESC3 = "dtMonthlyExpencesA";
-        obj2.DESC4 = "";
-        obj2.DESC5 = "rptRSM";
-        MonthlyExpencesHelper.Report();
-    },
-
-    Report: function () {
-        var objDBParameter = JSON.stringify(obj1);
-        var objReportParameter = JSON.stringify(obj2);
-        var jsonParam = "objDBParameter:" + objDBParameter + ',objReportParameter:' + objReportParameter;
-        var serviceUrl = "/MonthlyExpences/PrintReport/";
-
-        jQuery.ajax({
-            url: serviceUrl,
-            async: false,
-            type: "POST",
-            data: "{" + jsonParam + "}",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                if (data.status == "Logout") {
-                    location.reload();
-                    return;
-                }
-                if (data.status) {
-                    var cmbViewType = "PDF";
-                    window.open('../Reports/ReportViewerRDLC.aspx?exp=' + cmbViewType, '_blank');
-                    //window.open('../Report/ReportViewer.aspx', '_blank');
-                } else {
-                    swal({
-                        title: "Sorry!",
-                        text: "Report Record Not Found",
-                        type: "info",
-                        closeOnConfirm: false,
-                        timer: 2000
-                    });
-                }
+    ValidateCompany: function () {
+        $("#validateCompany").validate({
+            rules: {
+                CompanyName: "required",
+                CompanyAddress: "required",
+                CompanyDescription: "required",
+                CompanyNameBN: "required",
+                CompanyAddressBN: "required",
+                CompanyDescriptionBN: "required",
+                fileUpload: "required", 
+                CompanyPhone: {
+                    required: true,
+                    digits: true,
+                    minlength: 10,
+                    maxlength: 15
+                },
+                IsActive: "required"
+            },
+            messages: {
+                CompanyName: "Company Name is required",
+                CompanyAddress: "Company Address is required",
+                CompanyDescription: "Company Description is required",
+                CompanyNameBN: "কোম্পানির নাম প্রয়োজন",
+                CompanyAddressBN: "কোম্পানির ঠিকানা প্রয়োজন",
+                CompanyDescriptionBN: "কোম্পানির বিবরণ প্রয়োজন",
+                CompanyPhone: {
+                    required: "Company Phone is required",
+                    digits: "Please enter a valid phone number",
+                    minlength: "Phone number must be at least 10 digits",
+                    maxlength: "Phone number must not exceed 15 digits"
+                },
+                fileUpload: "File is  required",
+                IsActive: "Please select the active status"
+            },
+            errorPlacement: function (label, element) {
+                label.addClass('error');
+                element.parent().append(label);
             }
         });
     },
-};
+    AllowPhoneNumbersOnly: function (e) {
+            var code = (e.which) ? e.which : e.keyCode;
 
+            if ((code >= 48 && code <= 57) || code === 43) {
+                return true; 
+            } else if (code === 46) {
+                e.preventDefault(); 
+            } else {
+                e.preventDefault(); 
+            }
+        },
+};

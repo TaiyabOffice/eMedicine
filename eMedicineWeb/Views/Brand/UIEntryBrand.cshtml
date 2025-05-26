@@ -1,0 +1,181 @@
+﻿@{
+    ViewBag.Title = "Entry Brand Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="content">
+    <div class="box box-solid box-primary">
+        <div class="box-body">
+            <input type="hidden" id="hdnUserId" value="@Request.RequestContext.HttpContext.Session["UserID"]">
+            <input type="hidden" id="hdnTermID" value="@Request.RequestContext.HttpContext.Session["TerminalId"]">
+            <input type="hidden" id="hdnDateToday" value="@Request.RequestContext.HttpContext.Session["DateToday"]">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="box box-solid box-primary" style="margin-top:15px;">
+                            <div class="box-header">
+                                <h3 class="box-title">Brand Information</h3>
+                            </div>
+                            <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
+                                <form id="validateBrand">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-2">
+                                                <label for="txtBrandId">Brand Id</label>
+                                                <input type="text" id="txtBrandId" name="txtBrandId" class="form-control input-sm" autocomplete="off" disabled>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label for="txtName">Name</label>
+                                                <input type="text" id="txtName" name="txtName" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="txtDescription">Description</label>
+                                                <input type="text" id="txtDescription" name="txtDescription" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            @*<div class="col-sm-2">
+                                                <label for="txtDosageForm">DosageForm</label>
+                                                <input type="text" id="txtDosageForm" name="txtDosageForm" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="txtStrength">Strength</label>
+                                                <input type="text" id="txtStrength" name="txtStrength" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>*@
+
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <label for="txtNameBN">ব্র্যান্ড নাম </label>
+                                                <input type="text" id="txtNameBN" name="txtNameBN" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label for="txtDescriptionBN">বর্ণনা</label>
+                                                <input type="text" id="txtDescriptionBN" name="txtDescriptionBN" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            @*<div class="col-sm-2">
+                                                <label for="txtDosageFormBN">ডোজ ফর্ম</label>
+                                                <input type="text" id="txtDosageFormBN" name="txtDosageFormBN" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="txtStrengthBN">প্রতিরোধশক্তি</label>
+                                                <input type="text" id="txtStrengthBN" name="txtStrengthBN" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>*@
+                                            <div class="col-sm-2">
+                                                <label for="CmbIsActive">Is Active</label>
+                                                <select id="CmbIsActive" name="CmbIsActive" class="form-control input-sm">
+                                                    <option value="1">Yes</option>
+                                                    <option value="0">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>  
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-sm-3">
+                                                <label for="cmbGenericId">Generic Name</label>
+                                                <select id="cmbGenericId" name="cmbGenericId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label for="cmbCategoryId">Category Name</label>
+                                                <select id="cmbCategoryId" name="cmbCategoryId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label for="cmbCompanyId">Company</label>
+                                                <select id="cmbCompanyId" name="cmbCompanyId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
+                                            <div class="col-sm-3" style="margin-top: 25px;">
+                                                <button id="btnSave" type="button" class="btn btn-success ">Save</button>
+                                                <button id="btnUpdate" type="button" class="btn btn-warning " style="display:none">Update Info</button>
+                                                <button id="btnClear" type="button" class="btn btn-danger ">Clear</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="box box-solid box-primary">
+                            <div class="box-header">
+                                <h3 class="box-title">Brand List</h3>
+                            </div>
+                            <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
+                                <table id="tblBrand" class="table table-striped table-bordered" cellspacing="0" style="width: 100%; font-size: 10px;">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Brand ID</th>
+                                            <th>Brand Name</th>
+                                            <th>Generic Name</th>
+                                            <th>Category Name</th>
+                                            <th>Company Name</th>                                            
+                                            <th>Dosage Form</th>
+                                            <th>Strength</th>                                            
+                                            <th>Description</th>                                            
+                                            <th>Is Active</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Data will be populated here dynamically using jQuery or other data fetching methods -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    @Scripts.Render("~/Scripts/eMedicine/Brand/UIEntryBrand.js")
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+}
+
+<div class="modal fade" id="modal-default">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="mdlTitle"></h4>
+            </div>
+            <div class="modal-body" >
+                <div class="row">
+                    <div class="col-md-12">
+                        <table>
+                            <tr>
+                                <td id="MdlName"></td>
+                                <td id="MdlNameBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlDescription"></td>
+                                <td id="MdlDescriptionBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlDosageForm"></td>
+                                <td id="MdlDosageFormBN"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlStrength"></td>
+                                <td id="MdlCategoryName"></td>
+                            </tr>
+                            <tr>
+                                <td id="MdlCompanyName"></td>
+                                <td id="MdlGenericName"></td>
+                            </tr>                   
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger pull-right" data-dismiss="modal">Close</button>               
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

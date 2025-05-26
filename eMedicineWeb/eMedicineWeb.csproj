@@ -120,16 +120,32 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\BrandController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\DashBoardController.cs" />
+    <Compile Include="Controllers\GenericsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="Controllers\SalesPersonController.cs" />
+    <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CompanyViewModal.cs" />
+    <Compile Include="Models\BrandViewModel.cs" />
+    <Compile Include="Models\CompanyViewModel.cs" />
+    <Compile Include="Models\DropdownListViewModel.cs" />
+    <Compile Include="Models\EntityDefaultParameter.cs" />
+    <Compile Include="Models\GenericsViewModel.cs" />
+    <Compile Include="Models\ItemViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\MenuViewModal.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
+    <Compile Include="Models\RegistrationViewModel.cs" />
+    <Compile Include="Models\SalesPersonViewModel.cs" />
+    <Compile Include="Models\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -6708,7 +6724,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="images\ccBack.jpg" />
-    <Content Include="images\ccBack1.jpg" />
+    <Content Include="images\ccBack2.jpg" />
     <Content Include="images\CC_Blue.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -7337,8 +7353,24 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\cart.js" />
     <Content Include="Scripts\Duplicate.js" />
+    <Content Include="Scripts\eMedicine\Brand\UIEntryBrand.js" />
     <Content Include="Scripts\eMedicine\Company\UIEntryCompany.js" />
+    <Content Include="Scripts\eMedicine\DashBoard\UIDashBoard.js" />
+    <Content Include="Scripts\eMedicine\Item\UIEntryOffer.js" />
+    <Content Include="Scripts\eMedicine\Item\UIEntryItem.js" />
+    <Content Include="Scripts\eMedicine\Item\UIEntryDiseaseWiseMedicine.js" />
+    <Content Include="Scripts\eMedicine\Item\UIOfferDetails.js" />
+    <Content Include="Scripts\eMedicine\Item\UIItemList.js" />
+    <Content Include="Scripts\eMedicine\Order\UIOrderList.js" />
+    <Content Include="Scripts\eMedicine\Order\UIEntryOrder.js" />
+    <Content Include="Scripts\eMedicine\Registration\UIRecoverPassword.js" />
+    <Content Include="Scripts\eMedicine\Registration\UIUserList.js" />
+    <Content Include="Scripts\eMedicine\Registration\UIEntryRegister.js" />
+    <Content Include="Scripts\eMedicine\SalesPerson\UIEntrySalesPerson.js" />
+    <Content Include="Scripts\eMedicine\Supplier\UIEntrySupplier.js" />
+    <Content Include="Scripts\eMedicine\Generics\UIEntryGenerics.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -7365,19 +7397,31 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Company\GetAllCompany.cshtml" />
-    <Content Include="Views\Company\CreateCompany.cshtml" />
-    <Content Include="Views\Company\GetCompanyById.cshtml" />
-    <Content Include="Views\Company\UpdateCompanyById.cshtml" />
     <Content Include="Views\Shared\_Layout_Collapse.cshtml" />
     <Content Include="Views\Shared\_LayoutLogIn.cshtml" />
     <Content Include="Views\Shared\_LayoutLogIn_New.cshtml" />
     <Content Include="Views\LogIn\Login.cshtml" />
     <Content Include="Views\DashBoard\DashBoard.cshtml" />
     <Content Include="Views\Company\UIEntryCompany.cshtml" />
+    <Content Include="Views\SalesPerson\UIEntrySalesPerson.cshtml" />
+    <Content Include="Views\Supplier\UIEntrySupplier.cshtml" />
+    <Content Include="Views\Generics\UIEntryGenerics.cshtml" />
+    <Content Include="Views\Brand\UIEntryBrand.cshtml" />
+    <Content Include="Views\Registration\UIEntryRegister.cshtml" />
+    <Content Include="Views\Registration\UIUserList.cshtml" />
+    <Content Include="Views\Item\UIEntryItem.cshtml" />
+    <Content Include="Views\Order\UIEntryOrder.cshtml" />
+    <Content Include="Views\Item\UIItemList.cshtml" />
+    <Content Include="Views\Order\UIOrderList.cshtml" />
+    <Content Include="Views\Item\UIEntryOffer.cshtml" />
+    <Content Include="Views\Item\ItemDemo.cshtml" />
+    <Content Include="Views\Item\UIOfferDetails.cshtml" />
+    <Content Include="Views\Item\UIEntryDiseaseWiseMedicine.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="OffersImg\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />

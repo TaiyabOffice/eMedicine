@@ -25,5 +25,15 @@
         public string DESC18 { get; set; }
         public string DESC19 { get; set; }
         public string DESC20 { get; set; }
+        public string DESC21 { get; set; }
+        public string DESC22 { get; set; }
+        public string DESC23 { get; set; }
+        public string DESC24 { get; set; }
+        public string DESC25 { get; set; }
+        public string DESC26 { get; set; }
+        public string DESC27 { get; set; }
+        public string DESC28 { get; set; }
+        public string DESC29 { get; set; }
+        public string DESC30 { get; set; }
     }
 }

@@ -54,9 +54,17 @@
               "target": "Package",
               "version": "[2.1.35, )"
             },
+            "FastMember": {
+              "target": "Package",
+              "version": "[1.5.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[7.0.19, )"
+            },
+            "Microsoft.CodeDom.Providers.DotNetCompilerPlatform": {
+              "target": "Package",
+              "version": "[4.1.0, )"
             },
             "Microsoft.Data.SqlClient": {
               "target": "Package",

@@ -14,7 +14,7 @@ namespace eMedicineWeb.Controllers
 {
     public class CommonController : Controller
     {
-        private DataSet ds;
+       
         public DataSet MenuData = new DataSet();
         Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"] + "CommonAPI");
         HttpClient client;

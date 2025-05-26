@@ -140,7 +140,7 @@ namespace eMedicineWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateBrandById(BrandViewModel Brand)
         {
-            bool Satus = false;
+           
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed Insert Brand details." });

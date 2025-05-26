@@ -19,7 +19,7 @@ namespace eMedicineWeb.Controllers
     public class LoginController : Controller
     {
         // GET: Company
-        private DataSet ds;      
+            
         public DataSet MenuData = new DataSet();
         Uri baseAddress = new Uri(ConfigurationManager.AppSettings["ServerURL"]+ "LoginAPI");
         HttpClient client;

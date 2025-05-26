@@ -430,5 +430,143 @@ namespace eMedicine.Controllers
             }
         }
 
+        #region Disease Wise Medicine
+        [HttpGet("GetAllDisease")]
+        public async Task<IActionResult> GetAllDisease()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "GETALLDISEASE");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Disease>(), Message = "No Disease found." });
+                }
+                var GetDiseaseDetails = (from DataRow dr in ds.Tables[0].Rows
+                                          select new Disease()
+                                          {
+                                              DiseaseId = dr["DiseaseId"].ToString(),
+                                              DiseaseName = dr["DiseaseName"].ToString(),
+                                              DiseaseDescriptions = dr["DiseaseDescriptions"].ToString(),
+                                              DiseaseDescriptionsBN = dr["DiseaseDescriptionsBN"].ToString(),
+                                              MedicinesID = dr["MedicinesID"].ToString(),
+                                              Advice = dr["Advice"].ToString(),
+                                              AdviceBN = dr["AdviceBN"].ToString(),
+                                              IsActive = dr["IsActive"].ToString()
+                                          }).ToList();
+                return new JsonResult(new { Success = true, Data = GetDiseaseDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Disease.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("CreateDiseaseData")]
+        public async Task<IActionResult> CreateDiseaseData([FromBody] Disease Disease)
+        {
+            try
+            {
+
+                var ds = await this.repo.GetAll("", "sp_SelectItem", "CREATEDISEASEDATA", Disease.DiseaseId, Disease.DiseaseName, Disease.DiseaseNameBN, Disease.DiseaseDescriptions,
+                    Disease.DiseaseDescriptionsBN, Disease.MedicinesID, Disease.Advice, Disease.AdviceBN, Disease.IsActive, Disease.CreatedBy, Disease.CreatedDate);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Disease>(), Message = "Disease Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Disease>(), Message = "Disease Create Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Disease.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("GetDiseaseById/{DiseaseId}")]
+        public async Task<IActionResult> GetDiseaseById(string DiseaseId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectItem", "GETDISEASEBYID", DiseaseId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Disease>(), Message = "No Disease found." });
+                }
+                var GetDiseaseDetails = (from DataRow dr in ds.Tables[0].Rows
+                                          select new Disease()
+                                          {
+                                              DiseaseId = dr["DiseaseId"].ToString(),
+                                              DiseaseName = dr["DiseaseName"].ToString(),
+                                              DiseaseDescriptions = dr["DiseaseDescriptions"].ToString(),
+                                              DiseaseDescriptionsBN = dr["DiseaseDescriptionsBN"].ToString(),
+                                              MedicinesID = dr["MedicinesID"].ToString(),
+                                              Advice = dr["Advice"].ToString(),
+                                              AdviceBN = dr["AdviceBN"].ToString(),
+                                              IsActive = dr["IsActive"].ToString()
+                                          }).ToList();
+
+                return new JsonResult(new { Success = true, Data = GetDiseaseDetails });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Disease.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
+        [HttpPost("UpdateDiseaseById")]
+        public async Task<IActionResult> UpdateDiseaseById([FromBody] Disease Disease)
+        {
+            try
+            {
+
+                var ds = await this.repo.GetAll("", "sp_SelectItem", "UPDATEDISEASEBYID", Disease.DiseaseId, Disease.DiseaseName, Disease.DiseaseNameBN, Disease.DiseaseDescriptions,
+                    Disease.DiseaseDescriptionsBN, Disease.MedicinesID, Disease.Advice, Disease.AdviceBN, Disease.IsActive, Disease.UpdatedBy, Disease.UpdatedDate);
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Disease>(), Message = "Disease Update Failed." });
+                }
+                else
+                {
+
+                    return new JsonResult(new { Success = true, Data = new List<Disease>(), Message = "Disease Update Successfully." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Disease.",
+                    Details = ex.Message
+                });
+            }
+        }
+        #endregion
+
     }
 }

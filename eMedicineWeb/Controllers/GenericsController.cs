@@ -140,7 +140,7 @@ namespace eMedicineWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateGenericsById(GenericsViewModel Generics)
         {
-            bool Satus = false;
+            
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false, message = "Failed Insert Generics details." });

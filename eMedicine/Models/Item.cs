@@ -56,4 +56,21 @@
         public string MaximumQty { get; set; }        
     }
 
+    public class Disease
+    {
+        public string DiseaseId { get; set; }
+        public string DiseaseName { get; set; }
+        public string DiseaseNameBN { get; set; }
+        public string DiseaseDescriptions { get; set; }
+        public string DiseaseDescriptionsBN { get; set; }
+        public string MedicinesID { get; set; }
+        public string Advice { get; set; }
+        public string AdviceBN { get; set; }
+        public string IsActive { get; set; }
+        public string CreatedBy { get; set; }
+        public string CreatedDate { get; set; }
+        public string UpdatedBy { get; set; }
+        public string UpdatedDate { get; set; }
+    }
+
 }

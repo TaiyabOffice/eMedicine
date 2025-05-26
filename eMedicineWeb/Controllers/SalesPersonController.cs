@@ -128,7 +128,7 @@ namespace eMedicineWeb.Controllers
         [HttpPost]
         public async Task<ActionResult> UpdateSalesPersonById(SalesPersonViewModel salesPerson)
         {
-            bool Satus = false;
+            
             if (!ModelState.IsValid)
             {
                 return View(salesPerson);

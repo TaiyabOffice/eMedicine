@@ -505,5 +505,129 @@ namespace eMedicineWeb.Controllers
             return Json(new { success = true, data = Offer, data1 = ItemList }, JsonRequestBehavior.AllowGet);
         }
         #endregion
+
+        #region Disease Wise Medicine
+        public ActionResult UIEntryDiseaseWiseMedicine()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> GetAllDisease()
+        {
+            List<DiseaseViewModel> DiseaseList = new List<DiseaseViewModel>();
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllDisease");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<DiseaseResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            DiseaseList = Response?.Data ?? new List<DiseaseViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Disease. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = true, data = DiseaseList }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public async Task<ActionResult> CreateDiseaseData(DiseaseViewModel Disease)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed Insert Disease details." });
+            }
+            string data = JsonConvert.SerializeObject(Disease);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateDiseaseData", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Disease create Successfully" });
+            }
+            ModelState.AddModelError("", "Unable to create Disease. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Disease details." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> GetDiseaseById(string DiseaseId)
+        {
+            DiseaseViewModel Disease = null;
+            try
+            {
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetDiseaseById/" + DiseaseId).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<DiseaseResponse>(data);
+                    if (Response.Success)
+                    {
+                        try
+                        {
+                            //Disease = JsonConvert.DeserializeObject<DiseaseViewModel>(data);
+                            //Disease = Response?.Data ?? new DiseaseViewModel();
+
+                            var Diseases = Response?.Data ?? new List<DiseaseViewModel>();
+                            Disease = Diseases.FirstOrDefault();
+                        }
+                        catch (JsonSerializationException)
+                        {
+                            var Diseases = JsonConvert.DeserializeObject<List<DiseaseViewModel>>(data);
+                            Disease = Diseases.FirstOrDefault();
+                        }
+                    }
+                    else
+                    {
+                        return Json(new { success = false, message = "Failed to retrieve Disease details." }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    if (Disease != null)
+                    {
+                        return Json(new { Success = true, data = Disease }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json(new { Success = false, message = "Failed to retrieve Disease details." }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> UpdateDiseaseById(DiseaseViewModel Disease)
+        {
+            bool Satus = false;
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed Insert Disease details." });
+            }
+            string data = JsonConvert.SerializeObject(Disease);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateDiseaseById", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Disease update Successfully" });
+            }
+            ModelState.AddModelError("", "Unable to update Disease. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Disease details." });
+        }
+        #endregion
     }
+
 }

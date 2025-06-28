@@ -36,6 +36,14 @@ $("#btnClear").click(function (event) {
     location.reload();
 });
 
+$("#cmbBrandId").change(function () {
+   
+    if ($("#cmbBrandId").val() != "") {
+        ItemHelper.GetBrandID($("#cmbBrandId").val());
+    }   
+
+});
+
 var ItemHelper = {
     GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
@@ -381,6 +389,45 @@ var ItemHelper = {
                         //timer: 2000
                     });
                 }
+            }
+        });
+    },
+    GetBrandID: function (BrandId) {   
+        
+        var jsonParam = { BrandId: BrandId };
+        var serviceUrl = "/Brand/GetBrandById";
+
+        jQuery.ajax({
+            url: serviceUrl,
+            type: "POST",
+            data: jsonParam,
+            success: function (response) {
+                //console.log(response.data);
+                if (response.Success) {
+                    var Brand = response.data;
+                    $('#txtBrandId').val(Brand.BrandId);
+                    $('#txtName').val(Brand.BrandName);
+                    $('#txtNameBN').val(Brand.BrandNameBN);
+                    $('#txtDescription').val(Brand.BrandDescription);  
+                    $('#txtDescriptionBN').val(Brand.BrandDescriptionBN);
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "No Brand data found.!",
+                        type: "error",
+                        closeOnConfirm: false,
+                        //timer: 2000
+                    });
+                }
+            },
+            error: function () {
+                swal({
+                    title: "Sorry!",
+                    text: "No Brand data found.!",
+                    type: "error",
+                    closeOnConfirm: false,
+                    //timer: 2000
+                });
             }
         });
     },

@@ -38,13 +38,17 @@
                                                 <label for="txtItemId">Item Id</label>
                                                 <input type="text" id="txtItemId" name="txtItemId" class="form-control input-sm" autocomplete="off" disabled>
                                             </div>
+                                            <div class="col-sm-2">
+                                                <label for="cmbBrandId">Brand Name</label>
+                                                <select id="cmbBrandId" name="cmbBrandId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
                                             <div class="col-sm-4">
                                                 <label for="txtName">Name</label>
-                                                <input type="text" id="txtName" name="txtName" value="" class="form-control input-sm" autocomplete="off">
+                                                <input type="text" id="txtName" name="txtName" value="" class="form-control input-sm" autocomplete="off" readonly>
                                             </div>
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-4">
                                                 <label for="txtDescription">Description</label>
-                                                <input type="text" id="txtDescription" name="txtDescription" value="" class="form-control input-sm" autocomplete="off">
+                                                <input type="text" id="txtDescription" name="txtDescription" value="" class="form-control input-sm" autocomplete="off" readonly>
                                             </div>
                                         </div>
                                     </div>
@@ -52,11 +56,11 @@
                                         <div class="form-group">
                                             <div class="col-sm-4">
                                                 <label for="txtNameBN">নাম </label>
-                                                <input type="text" id="txtNameBN" name="txtNameBN" class="form-control input-sm" autocomplete="off">
+                                                <input type="text" id="txtNameBN" name="txtNameBN" class="form-control input-sm" autocomplete="off" readonly>
                                             </div>
                                             <div class="col-sm-4">
                                                 <label for="txtDescriptionBN">বর্ণনা</label>
-                                                <input type="text" id="txtDescriptionBN" name="txtDescriptionBN" value="" class="form-control input-sm" autocomplete="off">
+                                                <input type="text" id="txtDescriptionBN" name="txtDescriptionBN" value="" class="form-control input-sm" autocomplete="off" readonly>
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="cmbCategoryId">Category Name</label>
@@ -77,16 +81,12 @@
                                             <div class="col-sm-2">
                                                 <label for="txtMRP">MRP</label>
                                                 <input type="text" id="txtMRP" name="txtMRP" value="" class="form-control input-sm" autocomplete="off" onkeypress="return ItemHelper.isDeciaml(this, event, 2)">
-                                            </div>
-                                            <div class="col-sm-2">
-                                                <label for="cmbBrandId">Brand Name</label>
-                                                <select id="cmbBrandId" name="cmbBrandId" class="form-control input-sm select2" style="width:100%"></select>
-                                            </div>
+                                            </div>                                           
                                             <div class="col-sm-2">
                                                 <label for="cmbSupplierId">Supplier Name</label>
                                                 <select id="cmbSupplierId" name="cmbSupplierId" class="form-control input-sm select2" style="width:100%"></select>
                                             </div>
-                                            <div class="col-sm-1">
+                                            <div class="col-sm-2">
                                                 <label for="CmbIsActive">Is Active</label>
                                                 <select id="CmbIsActive" name="CmbIsActive" class="form-control input-sm">
                                                     <option value="1">Yes</option>

@@ -65,6 +65,7 @@ namespace eMedicine.Controllers
                                       {
                                           CategoryId = dr["CategoryId"].ToString(),
                                           CategoryName = dr["CategoryName"].ToString(),
+                                          CategoryNameBN = dr["CategoryNameBN"].ToString(),
                                           Description = dr["Description"].ToString(),
                                           ImagePath = dr["ImagePath"].ToString()  
                                       }).ToList();

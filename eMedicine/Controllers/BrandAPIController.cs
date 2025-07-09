@@ -168,5 +168,143 @@ namespace eMedicine.Controllers
                 });
             }
         }
+
+        [HttpGet("GetBrandByGenericId/{GenericId}")]
+        public async Task<IActionResult> GetBrandByGenericId(string GenericId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectBrand", "GETBRANDBYGENERICID", GenericId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "No Brand found." });
+                }
+                var GetBrandDetails = (from DataRow dr in ds.Tables[0].Rows
+                                       select new Brand()
+                                       {
+                                           BrandId = dr["BrandId"].ToString(),
+                                           BrandName = dr["BrandName"].ToString(),
+                                           BrandNameBN = dr["BrandNameBN"].ToString(),
+                                           CompanyId = dr["CompanyId"].ToString(),
+                                           CompanyName = dr["CompanyName"].ToString(),
+                                           CategoryId = dr["CategoryId"].ToString(),
+                                           CategoryName = dr["CategoryName"].ToString(),
+                                           GenericId = dr["GenericId"].ToString(),
+                                           GenericName = dr["GenericsName"].ToString(),
+                                           DosageForm = dr["DosageForm"].ToString(),
+                                           DosageFormBN = dr["DosageFormBN"].ToString(),
+                                           Strength = dr["Strength"].ToString(),
+                                           StrengthBN = dr["StrengthBN"].ToString(),
+                                           BrandDescription = dr["BrandDescription"].ToString(),
+                                           BrandDescriptionBN = dr["BrandDescriptionBN"].ToString(),
+                                           IsActive = dr["IsActive"].ToString()
+                                       }).ToList();
+
+                return new JsonResult(new { Success = true, Data = GetBrandDetails });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Brand.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
+        [HttpGet("GetBrandByCategoryId/{CategoryId}")]
+        public async Task<IActionResult> GetBrandByCategoryId(string CategoryId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectBrand", "GETBRANDBYCATEGORYID", CategoryId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "No Brand found." });
+                }
+                var GetBrandDetails = (from DataRow dr in ds.Tables[0].Rows
+                                       select new Brand()
+                                       {
+                                           BrandId = dr["BrandId"].ToString(),
+                                           BrandName = dr["BrandName"].ToString(),
+                                           BrandNameBN = dr["BrandNameBN"].ToString(),
+                                           CompanyId = dr["CompanyId"].ToString(),
+                                           CompanyName = dr["CompanyName"].ToString(),
+                                           CategoryId = dr["CategoryId"].ToString(),
+                                           CategoryName = dr["CategoryName"].ToString(),
+                                           GenericId = dr["GenericId"].ToString(),
+                                           GenericName = dr["GenericsName"].ToString(),
+                                           DosageForm = dr["DosageForm"].ToString(),
+                                           DosageFormBN = dr["DosageFormBN"].ToString(),
+                                           Strength = dr["Strength"].ToString(),
+                                           StrengthBN = dr["StrengthBN"].ToString(),
+                                           BrandDescription = dr["BrandDescription"].ToString(),
+                                           BrandDescriptionBN = dr["BrandDescriptionBN"].ToString(),
+                                           IsActive = dr["IsActive"].ToString()
+                                       }).ToList();
+
+                return new JsonResult(new { Success = true, Data = GetBrandDetails });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Brand.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
+        [HttpGet("GetBrandByCompanyId/{CompanyId}")]
+        public async Task<IActionResult> GetBrandByCompanyId(string CompanyId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectBrand", "GETBRANDBYCOMPANYID", CompanyId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Brand>(), Message = "No Brand found." });
+                }
+                var GetBrandDetails = (from DataRow dr in ds.Tables[0].Rows
+                                       select new Brand()
+                                       {
+                                           BrandId = dr["BrandId"].ToString(),
+                                           BrandName = dr["BrandName"].ToString(),
+                                           BrandNameBN = dr["BrandNameBN"].ToString(),
+                                           CompanyId = dr["CompanyId"].ToString(),
+                                           CompanyName = dr["CompanyName"].ToString(),
+                                           CategoryId = dr["CategoryId"].ToString(),
+                                           CategoryName = dr["CategoryName"].ToString(),
+                                           GenericId = dr["GenericId"].ToString(),
+                                           GenericName = dr["GenericsName"].ToString(),
+                                           DosageForm = dr["DosageForm"].ToString(),
+                                           DosageFormBN = dr["DosageFormBN"].ToString(),
+                                           Strength = dr["Strength"].ToString(),
+                                           StrengthBN = dr["StrengthBN"].ToString(),
+                                           BrandDescription = dr["BrandDescription"].ToString(),
+                                           BrandDescriptionBN = dr["BrandDescriptionBN"].ToString(),
+                                           IsActive = dr["IsActive"].ToString()
+                                       }).ToList();
+
+                return new JsonResult(new { Success = true, Data = GetBrandDetails });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Brand.",
+                    Details = ex.Message
+                });
+            }
+
+        }
     }
 }

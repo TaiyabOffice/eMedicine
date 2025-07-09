@@ -7,7 +7,7 @@
       "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\commonapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|d:\\emedicine\\emedicineweb\\scripts\\emedicine\\item\\uientryitem.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\emedicineweb\\scripts\\emedicine\\item\\uientryitem.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\scripts\\emedicine\\item\\uientryitem.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
@@ -58,8 +58,7 @@
               "RelativeToolTip": "eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryItem.js",
               "ViewState": "AQIAAIAAAAAAAAAAAAAuwBcAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-06-25T10:41:05.625Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-25T10:41:05.625Z"
             },
             {
               "$type": "Document",
@@ -69,7 +68,7 @@
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\CommonAPIController.cs",
               "ToolTip": "D:\\eMedicine\\eMedicine\\Controllers\\CommonAPIController.cs",
               "RelativeToolTip": "eMedicine\\Controllers\\CommonAPIController.cs",
-              "ViewState": "AQIAAC0AAAAAAAAAAAAowEMAAABVAAAA",
+              "ViewState": "AQIAAEEAAAAAAAAAAAAwwDUAAAA7AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-26T15:49:06.05Z",
               "EditorCaption": ""
@@ -108,8 +107,7 @@
               "RelativeToolTip": "eMedicineWeb\\Controllers\\ItemController.cs",
               "ViewState": "AQIAAAwCAAAAAAAAAAAAACACAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T15:07:53.104Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T15:07:53.104Z"
             },
             {
               "$type": "Document",
@@ -134,8 +132,7 @@
               "RelativeToolTip": "eMedicine\\appsettings.json",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-05-26T15:06:40.518Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-26T15:06:40.518Z"
             }
           ]
         }

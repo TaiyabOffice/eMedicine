@@ -273,5 +273,43 @@ namespace eMedicine.Controllers
             }
 
         }
+
+        [HttpGet("GetDetailsByUserID/{UserId}")]
+        public async Task<IActionResult> GetDetailsByUserID(string UserId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectOrder", "GETDETAILSBYUSERID", UserId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Message = "No Menu found.", Data = new List<OrderList>() });
+                }
+                var GetItemList = (from DataRow dr in ds.Tables[0].Rows
+                                   select new OrderList()
+                                   {
+                                       ItemId = dr["ItemId"].ToString(),
+                                       OrderId = dr["OrderId"].ToString(),
+                                       Name = dr["ItemName"].ToString(),
+                                       UnitPrice = dr["UnitPrice"].ToString(),
+                                       Quantity = dr["Quantity"].ToString(),
+                                       Total = dr["Total"].ToString(),
+                                       IsDelivered = dr["IsDelivered"].ToString(),
+                                       Remarks = dr["ImagePath"].ToString()
+                                   }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemList });
+
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (implement your logging mechanism here)
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the item.",
+                    Details = ex.Message
+                });
+            }
+
+        }
     }
 }

@@ -111,6 +111,7 @@ namespace eMedicine.Controllers
                                       {
                                           MenuID = dr["MenuID"].ToString(),                                         
                                           MenuName = dr["MenuName"].ToString(),
+                                          MenuNameBN = dr["MenuNameBN"].ToString(),
                                           PageName = dr["PageName"].ToString(),
                                           PageUrl = dr["PageUrl"].ToString(),                                        
                                           ImagePath = dr["ImagePath"].ToString()

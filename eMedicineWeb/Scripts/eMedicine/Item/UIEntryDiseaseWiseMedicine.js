@@ -18,6 +18,7 @@ $(document).ready(function () {
     });
 
     DiseaseHelper.GenerateCombo($("#cmbMedicines"), "SP_SelectGetAllDropDown", "GETALLACTIVEITEMS", "0", "0", "0", "0", "0");
+    DiseaseHelper.GenerateCombo($("#mdlcmbMedicines"), "SP_SelectGetAllDropDown", "GETALLACTIVEITEMS", "0", "0", "0", "0", "0");
     DiseaseHelper.BuildTbl("");
     DiseaseHelper.GetAllDisease();
     DiseaseHelper.ValidateDisease();
@@ -65,21 +66,22 @@ var DiseaseHelper = {
         });
     },
     BuildTbl: function (tbldata) {
-        $('#tblDisease').DataTable({
+        $('#tblDisWiseMed').DataTable({
             data: tbldata,
             "responsive": true,
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
                 { data: 'DiseaseId' },
-                { data: 'Disease Name' },
-                { data: 'Disease Descriptions' },
-                { data: 'Medicines' },                
+                { data: 'DiseaseName' },
+                { data: 'DiseaseNameBN' },
+                { data: 'DiseaseDescriptions' },                
                 { data: 'IsActive' },
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="DiseaseHelper.GetDiseaseID(\'' + row.DiseaseId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
+                        
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="DiseaseHelper.GetDiseaseID(\'' + row.DiseaseId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="DiseaseHelper.GetDetailsByDiseaseID(\'' + row.DiseaseId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -103,11 +105,14 @@ var DiseaseHelper = {
             var DiseaseData = {
                 DiseaseId: $('#txtDiseaseId').val() ? "" : "000000000000",
                 DiseaseName: $('#txtDiseaseName').val(),
+                DiseaseNameBN: $('#txtDiseaseNameBN').val(),
                 DiseaseDescriptions: $('#txtDiseaseDescriptions').val(),
                 DiseaseDescriptionsBN: $('#txtDiseaseDescriptionsBN').val(),
                 MedicinesID: $('#cmbMedicines').val() ? $('#cmbMedicines').val().join(',') : '',                
                 Advice: $('#txtAdvice').val(),                
                 AdviceBN: $('#txtAdviceBN').val(),                
+                UsageRules: $('#txtUsageRules').val(),                
+                UsageRulesBN: $('#txtUsageRulesBN').val(),                
                 IsActive: $('#CmbIsActive').val(),
                 CreatedBy: $('#hdnUserId').val(),
                 CreatedDate: $('#hdnDateToday').val(),
@@ -164,11 +169,14 @@ var DiseaseHelper = {
             var DiseaseData = {
                 DiseaseId: $('#txtDiseaseId').val(),
                 DiseaseName: $('#txtDiseaseName').val(),
+                DiseaseNameBN: $('#txtDiseaseNameBN').val(),
                 DiseaseDescriptions: $('#txtDiseaseDescriptions').val(),
                 DiseaseDescriptionsBN: $('#txtDiseaseDescriptionsBN').val(),
-                MedicinesID: $('#cmbMedicines').val(),
+                MedicinesID: $('#cmbMedicines').val() ? $('#cmbMedicines').val().join(',') : '',   
                 Advice: $('#txtAdvice').val(),
                 AdviceBN: $('#txtAdviceBN').val(),
+                UsageRules: $('#txtUsageRules').val(),
+                UsageRulesBN: $('#txtUsageRulesBN').val(),  
                 IsActive: $('#CmbIsActive').val(),
                 CreatedBy: $('#hdnUserId').val(),
                 CreatedDate: $('#hdnDateToday').val(),
@@ -212,7 +220,8 @@ var DiseaseHelper = {
             url: serviceUrl,
             type: "POST",
             success: function (result) {
-                if (result.success) {                 
+                if (result.success) {
+                    //console.log(result.data);
                     DiseaseHelper.BuildTbl(result.data);
                 } else {
                     swal({
@@ -249,19 +258,22 @@ var DiseaseHelper = {
                 //console.log(response.data);
                 if (response.Success)
                 {                   
-                    var Disease = response.data;                    
-                    //$("#cmbCompanyId").empty();
+                    var Disease = response.data;
+                    console.log(response.data);
                     $('#txtDiseaseId').val(Disease.DiseaseId);
                     $('#txtDiseaseName').val(Disease.DiseaseName);
                     $('#txtDiseaseNameBN').val(Disease.DiseaseNameBN);
                     $('#txtDiseaseDescriptions').val(Disease.DiseaseDescriptions);
-                    $('#txtDiseaseDescriptionsBN').val(Disease.DiseaseDescriptionsBN);                    
-                    //$("#cmbMedicines").val(Disease.cmbMedicines).select2();
+                    $('#txtDiseaseDescriptionsBN').val(Disease.DiseaseDescriptionsBN);
                     if (Disease.MedicinesID) {
-                        $("#cmbMedicines").val(Disease.MedicinesID).trigger('change'); // Use trigger to update Select2
+                        var selectedValues = Disease.MedicinesID.split(','); // convert string to array
+                        $("#cmbMedicines").val(selectedValues).trigger('change'); // bind to select2
                     }
+
                     $('#txtAdvice').val(Disease.Advice);                                    
-                    $('#txtAdviceBN').val(Disease.AdviceBN);                                    
+                    $('#txtAdviceBN').val(Disease.AdviceBN);  
+                    $('#txtUsageRules').val(Disease.UsageRules);  
+                    $('#txtUsageRulesBN').val(Disease.UsageRulesBN);
                     $('#CmbIsActive').val(Disease.IsActive);                                    
                 } else {
                     swal({
@@ -327,6 +339,8 @@ var DiseaseHelper = {
                 txtDiseaseDescriptions: "required",
                 txtDiseaseNameBN: "required",
                 txtDiseaseDescriptionsBN: "required",
+                txtUsageRules: "required",
+                txtUsageRulesBN: "required",
                 cmbMedicines: {
                     required: true,
                     notZero: "" 
@@ -341,6 +355,8 @@ var DiseaseHelper = {
                 txtDiseaseDescriptions: "Disease Descriptions is required",
                 txtDiseaseNameBN: "Disease Name is required",
                 txtDiseaseDescriptionsBN: "Disease Descriptions is required", 
+                txtUsageRules: "Usage Rules is required", 
+                txtUsageRulesBN: "Usage Rules is required", 
                 cmbMedicines: "Please select a valid company",
                 CmbIsActive: "Please select if the Disease is active or not"
             },
@@ -364,16 +380,21 @@ var DiseaseHelper = {
                 if (response.Success) {
                     var Item = response.data;
                     DiseaseHelper.clrMdl();
-                    $('#mdlTitle').html("Disease Details for: " + Item.DiseaseId + " - " + Item.DiseaseName + " - " + Item.ItemNameBN);
-                    $('#mdlDiseaseId').val(Disease.DiseaseId);
-                    $('#mdlDiseaseName').val(Disease.DiseaseName);
-                    $('#mdlDiseaseNameBN').val(Disease.DiseaseNameBN);
-                    $('#mdlDiseaseDescriptions').val(Disease.DiseaseDescriptions);
-                    $('#mdlDiseaseDescriptionsBN').val(Disease.DiseaseDescriptionsBN);
-                    $("#mdlMedicines").val(Disease.cmbMedicines).select2();
-                    $('#mdlAdvice').val(Disease.Advice);
-                    $('#mdlAdviceBN').val(Disease.AdviceBN);
-                    $('#CmbIsActive').val(Disease.IsActive); 
+                    $('#mdlTitle').html("Disease Details for: " + Item.DiseaseId + " - " + Item.DiseaseName + " - " + Item.DiseaseNameBN);
+                    $('#mdlDiseaseId').html(Item.DiseaseId);
+                    $('#mdlDiseaseName').html(Item.DiseaseName);
+                    $('#mdlDiseaseNameBN').html(Item.DiseaseNameBN);
+                    $('#mdlDiseaseDescriptions').html(Item.DiseaseDescriptions);
+                    $('#mdlDiseaseDescriptionsBN').html(Item.DiseaseDescriptionsBN);
+                    if (Item.MedicinesID) {
+                        var selectedValues = Item.MedicinesID.split(','); // convert string to array
+                        $("#mdlcmbMedicines").val(selectedValues).trigger('change'); // bind to select2
+                    }                   
+                    $('#mdlAdvice').html(Item.Advice);
+                    $('#mdlAdviceBN').html(Item.AdviceBN);
+                    $('#mdlUsageRules').html(Item.UsageRules);
+                    $('#mdlUsageRulesBN').html(Item.UsageRulesBN);
+                    $('#mdlIsActive').html(Item.IsActive); 
                     $("#modal-default").modal("show");
                 }
                 else {
@@ -398,6 +419,8 @@ var DiseaseHelper = {
         $("#mdlMedicines").html("");
         $('#mdlAdvice').html("");
         $('#mdlAdviceBN').html("");
+        $('#txtUsageRules').html("");
+        $('#txtUsageRulesBN').html("");
         $('#CmbIsActive').html("");
     },
 };

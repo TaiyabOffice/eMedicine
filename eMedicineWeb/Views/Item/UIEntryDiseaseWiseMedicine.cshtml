@@ -46,7 +46,26 @@
                                             </div>
                                             <div class="col-sm-3">
                                                 <label for="cmbMedicines">Medicines</label>
-                                                <select id="cmbMedicines" name="cmbMedicines[]" class="form-control input-sm select2" style="width:100%" multiple></select>                                                
+                                                <select id="cmbMedicines" name="cmbMedicines[]" class="form-control input-sm select2" style="width:100%" multiple></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group">  
+                                            <div class="col-sm-5">
+                                                <label for="txtUsageRules">Usage rules</label>
+                                                <input type="text" id="txtUsageRules" name="txtUsageRules" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <label for="txtUsageRulesBN">সেবন বিধি </label>
+                                                <input type="text" id="txtUsageRulesBN" name="txtUsageRulesBN" value="" class="form-control input-sm" autocomplete="off">
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label for="CmbIsActive">Is Active</label>
+                                                <select id="CmbIsActive" name="CmbIsActive" class="form-control input-sm">
+                                                    <option value="1">Yes</option>
+                                                    <option value="0">No</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
@@ -60,14 +79,7 @@
                                                 <label for="txtAdviceBN">উপদেশ</label>
                                                 <input type="text" id="txtAdviceBN" name="txtAdviceBN" value="" class="form-control input-sm" autocomplete="off">
                                             </div>
-                                            <div class="col-sm-2">
-                                                <label for="CmbIsActive">Is Active</label>
-                                                <select id="CmbIsActive" name="CmbIsActive" class="form-control input-sm">
-                                                    <option value="1">Yes</option>
-                                                    <option value="0">No</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-4" style="margin-top: 25px;">
+                                            <div class="col-sm-2" style="margin-top: 25px;">
                                                 <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
                                                 <button id="btnUpdate" type="button" class="btn btn-danger" style="display:none">Update Info</button>
                                                 <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
@@ -86,12 +98,11 @@
                                 <table id="tblDisWiseMed" class="table table-striped table-bordered" cellspacing="0" style="width: 100%; font-size: 10px;">
                                     <thead>
                                         <tr>
-                                            <th>SL</th>
-                                            //<th>DisWiseMed ID</th>
+                                            <th>SL</th>                                          
                                             <th>Disease ID</th>
                                             <th>Disease Name</th>
-                                            <th>Disease Description</th>
-                                            <th>Medicines</th>
+                                            <th>Disease Name Bangla</th>
+                                            <th>Disease Descriptions</th>
                                             <th>Is Active</th>
                                             <th>Action</th>
                                         </tr>
@@ -128,24 +139,24 @@
                     <div class="col-md-12">
                         <table>
                             <tr>
-                                <td id="MdlName"></td>
-                                <td id="MdlNameBN"></td>
+                                <td id="mdlDiseaseName"></td>
+                                <td id="mdlDiseaseNameBN"></td>
                             </tr>
                             <tr>
-                                <td id="MdlDescription"></td>
-                                <td id="MdlDescriptionBN"></td>
+                                <td id="mdlDiseaseDescriptions"></td>
+                                <td id="mdlDiseaseDescriptionsBN"></td>
                             </tr>
                             <tr>
-                                <td id="MdlBrandName"></td>
-                                <td id="MdlItemCategoryName"></td>
+                                <td> <select id="mdlcmbMedicines" name="mdlcmbMedicines[]" class="form-control input-sm select2" style="width:100%" multiple></select></td>
+                                <td id="mdlAdvice"></td>
                             </tr>
                             <tr>
-                                <td id="MdlUnitPrice"></td>
-                                <td id="MdlMRP"></td>
+                                <td id="mdlAdviceBN"></td>
+                                <td id="mdlUsageRules"></td>
                             </tr>
                             <tr>
-                                <td id="MdlUnitName"></td>
-                                <td id="MdlSupplierName"></td>
+                                <td id="mdlUsageRulesBN"></td>
+                                <td id="mdlIsActive"></td>
                             </tr>
                         </table>
                     </div>

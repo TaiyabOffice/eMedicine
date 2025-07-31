@@ -496,11 +496,14 @@ namespace eMedicine.Controllers
                                           {
                                               DiseaseId = dr["DiseaseId"].ToString(),
                                               DiseaseName = dr["DiseaseName"].ToString(),
+                                              DiseaseNameBN = dr["DiseaseNameBN"].ToString(),
                                               DiseaseDescriptions = dr["DiseaseDescriptions"].ToString(),
                                               DiseaseDescriptionsBN = dr["DiseaseDescriptionsBN"].ToString(),
                                               MedicinesID = dr["MedicinesID"].ToString(),
                                               Advice = dr["Advice"].ToString(),
                                               AdviceBN = dr["AdviceBN"].ToString(),
+                                              UsageRules = dr["UsageRules"].ToString(),
+                                              UsageRulesBN = dr["UsageRulesBN"].ToString(),
                                               IsActive = dr["IsActive"].ToString()
                                           }).ToList();
                 return new JsonResult(new { Success = true, Data = GetDiseaseDetails });
@@ -522,8 +525,8 @@ namespace eMedicine.Controllers
             try
             {
 
-                var ds = await this.repo.GetAll("", "sp_SelectItem", "CREATEDISEASEDATA", Disease.DiseaseId, Disease.DiseaseName, Disease.DiseaseNameBN, Disease.DiseaseDescriptions,
-                    Disease.DiseaseDescriptionsBN, Disease.MedicinesID, Disease.Advice, Disease.AdviceBN, Disease.IsActive, Disease.CreatedBy, Disease.CreatedDate);
+                var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEDISEASEDATA", Disease.DiseaseId, Disease.DiseaseName, Disease.DiseaseNameBN, Disease.DiseaseDescriptions,
+                    Disease.DiseaseDescriptionsBN, Disease.MedicinesID, Disease.Advice, Disease.AdviceBN, Disease.UsageRules, Disease.UsageRulesBN, Disease.IsActive, Disease.CreatedBy, Disease.CreatedDate);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -561,11 +564,14 @@ namespace eMedicine.Controllers
                                           {
                                               DiseaseId = dr["DiseaseId"].ToString(),
                                               DiseaseName = dr["DiseaseName"].ToString(),
+                                              DiseaseNameBN = dr["DiseaseNameBN"].ToString(),
                                               DiseaseDescriptions = dr["DiseaseDescriptions"].ToString(),
                                               DiseaseDescriptionsBN = dr["DiseaseDescriptionsBN"].ToString(),
                                               MedicinesID = dr["MedicinesID"].ToString(),
                                               Advice = dr["Advice"].ToString(),
                                               AdviceBN = dr["AdviceBN"].ToString(),
+                                              UsageRules = dr["UsageRules"].ToString(),
+                                              UsageRulesBN = dr["UsageRulesBN"].ToString(),
                                               IsActive = dr["IsActive"].ToString()
                                           }).ToList();
 
@@ -590,8 +596,8 @@ namespace eMedicine.Controllers
             try
             {
 
-                var ds = await this.repo.GetAll("", "sp_SelectItem", "UPDATEDISEASEBYID", Disease.DiseaseId, Disease.DiseaseName, Disease.DiseaseNameBN, Disease.DiseaseDescriptions,
-                    Disease.DiseaseDescriptionsBN, Disease.MedicinesID, Disease.Advice, Disease.AdviceBN, Disease.IsActive, Disease.UpdatedBy, Disease.UpdatedDate);
+                var ds = await this.repo.GetAll("", "sp_EntryItem", "UPDATEDISEASEBYID", Disease.DiseaseId, Disease.DiseaseName, Disease.DiseaseNameBN, Disease.DiseaseDescriptions,
+                    Disease.DiseaseDescriptionsBN, Disease.MedicinesID, Disease.Advice, Disease.AdviceBN, Disease.UsageRules, Disease.UsageRulesBN, Disease.IsActive, Disease.UpdatedBy, Disease.UpdatedDate);
 
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)

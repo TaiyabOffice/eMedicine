@@ -66,6 +66,8 @@
         public string MedicinesID { get; set; }
         public string Advice { get; set; }
         public string AdviceBN { get; set; }
+        public string UsageRules { get; set; }
+        public string UsageRulesBN { get; set; }
         public string IsActive { get; set; }
         public string CreatedBy { get; set; }
         public string CreatedDate { get; set; }

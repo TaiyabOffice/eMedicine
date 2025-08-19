@@ -88,6 +88,8 @@ namespace eMedicineWeb.Models
         public string DiseaseDescriptions { get; set; }
         public string DiseaseDescriptionsBN { get; set; }
         public string MedicinesID { get; set; }
+        public string MedicineNames { get; set; }
+        public string MedicineNamesBN { get; set; }
         public string Advice { get; set; }
         public string AdviceBN { get; set; }
         public string UsageRules { get; set; }

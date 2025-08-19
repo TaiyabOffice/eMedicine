@@ -109,6 +109,8 @@ var DiseaseHelper = {
                 DiseaseDescriptions: $('#txtDiseaseDescriptions').val(),
                 DiseaseDescriptionsBN: $('#txtDiseaseDescriptionsBN').val(),
                 MedicinesID: $('#cmbMedicines').val() ? $('#cmbMedicines').val().join(',') : '',                
+                MedicineNames:'0',                
+                MedicineNamesBN:'0',                
                 Advice: $('#txtAdvice').val(),                
                 AdviceBN: $('#txtAdviceBN').val(),                
                 UsageRules: $('#txtUsageRules').val(),                
@@ -172,7 +174,9 @@ var DiseaseHelper = {
                 DiseaseNameBN: $('#txtDiseaseNameBN').val(),
                 DiseaseDescriptions: $('#txtDiseaseDescriptions').val(),
                 DiseaseDescriptionsBN: $('#txtDiseaseDescriptionsBN').val(),
-                MedicinesID: $('#cmbMedicines').val() ? $('#cmbMedicines').val().join(',') : '',   
+                MedicinesID: $('#cmbMedicines').val() ? $('#cmbMedicines').val().join(',') : '',
+                MedicineNames: '0',
+                MedicineNamesBN: '0',
                 Advice: $('#txtAdvice').val(),
                 AdviceBN: $('#txtAdviceBN').val(),
                 UsageRules: $('#txtUsageRules').val(),
@@ -357,7 +361,7 @@ var DiseaseHelper = {
                 txtDiseaseDescriptionsBN: "Disease Descriptions is required", 
                 txtUsageRules: "Usage Rules is required", 
                 txtUsageRulesBN: "Usage Rules is required", 
-                cmbMedicines: "Please select a valid company",
+                cmbMedicines: "Please select a valid Medicines",
                 CmbIsActive: "Please select if the Disease is active or not"
             },
             errorPlacement: function (label, element) {
@@ -381,20 +385,22 @@ var DiseaseHelper = {
                     var Item = response.data;
                     DiseaseHelper.clrMdl();
                     $('#mdlTitle').html("Disease Details for: " + Item.DiseaseId + " - " + Item.DiseaseName + " - " + Item.DiseaseNameBN);
-                    $('#mdlDiseaseId').html(Item.DiseaseId);
-                    $('#mdlDiseaseName').html(Item.DiseaseName);
-                    $('#mdlDiseaseNameBN').html(Item.DiseaseNameBN);
-                    $('#mdlDiseaseDescriptions').html(Item.DiseaseDescriptions);
-                    $('#mdlDiseaseDescriptionsBN').html(Item.DiseaseDescriptionsBN);
-                    if (Item.MedicinesID) {
-                        var selectedValues = Item.MedicinesID.split(','); // convert string to array
-                        $("#mdlcmbMedicines").val(selectedValues).trigger('change'); // bind to select2
-                    }                   
-                    $('#mdlAdvice').html(Item.Advice);
-                    $('#mdlAdviceBN').html(Item.AdviceBN);
-                    $('#mdlUsageRules').html(Item.UsageRules);
-                    $('#mdlUsageRulesBN').html(Item.UsageRulesBN);
-                    $('#mdlIsActive').html(Item.IsActive); 
+                    $('#mdlDiseaseId').html("Disease Id: " + Item.DiseaseId);
+                    $('#mdlDiseaseName').html("Disease Name: " + Item.DiseaseName);
+                    $('#mdlDiseaseNameBN').html("রোগের নাম: " + Item.DiseaseNameBN);
+                    $('#mdlDiseaseDescriptions').html("Disease Descriptions: " + Item.DiseaseDescriptions);
+                    $('#mdlDiseaseDescriptionsBN').html("রোগের বর্ণনা: " + Item.DiseaseDescriptionsBN);
+                    $('#mdlMedicineNames').html("Medicines: " + Item.MedicineNames);
+                    $('#mdlMedicineNamesBN').html("ওষুধগুলো: " + Item.MedicineNamesBN);
+                    //if (Item.MedicinesID) {
+                    //    var selectedValues = Item.MedicinesID.split(','); // convert string to array
+                    //    $("#mdlcmbMedicines").val(selectedValues).trigger('change'); // bind to select2
+                    //}                   
+                    $('#mdlAdvice').html("Name: " + Item.Advice);
+                    $('#mdlAdviceBN').html("Name: " + Item.AdviceBN);
+                    $('#mdlUsageRules').html("Name: " + Item.UsageRules);
+                    $('#mdlUsageRulesBN').html("Name: " + Item.UsageRulesBN);
+                    //$('#mdlIsActive').html("Name: " + Item.IsActive); 
                     $("#modal-default").modal("show");
                 }
                 else {

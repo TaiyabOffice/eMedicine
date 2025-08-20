@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -10,6 +11,16 @@ namespace eMedicineWeb.Models
         public string COMC1 { get; set; }
         public string PROCNAME { get; set; }
         public string CALLTYPE { get; set; }
+        public string RptFileName { get; set; }
+        public string DataSetName { get; set; }
+        public string DataSetName02 { get; set; }
+        public string DataSetName03 { get; set; }
+        public string DataSetName04 { get; set; }
+        public string DataSetName05 { get; set; }
+        public string RptFolder { get; set; }
+
+        public DataSet DataSetSource { get; set; }
+        public DataTable DataTableSource { get; set; }
         public string DESC1 { get; set; }
         public string DESC2 { get; set; }
         public string DESC3 { get; set; }

@@ -84,8 +84,10 @@ var OrderListHelper = {
                     data: null,
                     render: function (data, type, row, meta) {
                         return '<button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.GetDetailsByOrderID(\'' + row.OrderId + '\',' + meta.row + ')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>' +
-                            '<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'D\')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button>' +
-                            '<button id="btnReject" name="btnReject" type="button" title="Reject" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'R\')" > <i class="fa fa-close" style="font-size:15px;color:red;padding:0px;"></i></button>';
+                            '&nbsp;&nbsp;<button id="btnConfirmed" name="btnConfirmed" type="button" title="Confirmd" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'D\')"> <i style="font-size:15px; padding:0px; color: green" class="fa fa-check"></i></button>' +
+                            '&nbsp;&nbsp;<button id="btnReject" name="btnReject" type="button" title="Reject" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.ChangeStatusByOrderID(\'' + row.OrderId + '\',' + meta.row + ', \'R\')" > <i class="fa fa-close" style="font-size:15px;color:red;padding:0px;"></i></button>'+
+                            '&nbsp;&nbsp;<button id="btnPrint" name="btnReject" type="button" title="Print" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="OrderListHelper.PrintByID(\'' + row.OrderId + '\',' + meta.row + ', \'P\')" > <i class="fa fa-print" style="font-size:15px;color:Green;padding:0px;"></i></button>';
+
                     }
                 }
             ],
@@ -410,6 +412,48 @@ var OrderListHelper = {
         });
 
     },
+    PrintByID: function (OrderId, rowId, statusType) {
+        var obj = new Object();
+
+            obj.COMC1 = "",
+            obj.DESC8 = OrderId,            
+            obj.DESC9 = statusType,            
+                obj.PROCNAME = "sp_SelectItem",
+                obj.CALLTYPE = "GETALLITEM",
+                obj.RptFileName = "RptOrderMemo.rdlc",
+                obj.DataSetName = "DsItems",
+            obj.DataSetName02 = "",
+            obj.DataSetName03 = "",
+            obj.DataSetName04 = "",
+            obj.DataSetName05 = "",
+                obj.RptFolder = "";
+
+
+        var objDetails = JSON.stringify(obj);
+        var jsonParam = "objReportParameter:" + objDetails;
+        var serviceUrl = "/Report/PrintReportData";
+        jQuery.ajax({
+            url: serviceUrl,
+            async: false,
+            type: "POST",
+            data: "{" + jsonParam + "}",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                if (data.success) {
+                    var cmbViewType = "PDF";
+                    window.open('../Reports/ReportViewerRDLCDS05.aspx?exp=' + cmbViewType, '_blank');
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "No Data Found!",
+                        type: "info",
+                        closeOnConfirm: false
+                    });
+                }
+            }
+        });
+    }
 };
 
 

@@ -476,6 +476,82 @@ namespace eMedicine.Controllers
                 });
             }
         }
+
+        [HttpGet("GetTopItems")]
+        public async Task<IActionResult> GetTopItems()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "GETTOPSELLITEMS");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Item>(), Message = "No Item found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Item()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          ItemName = dr["ItemName"].ToString(),
+                                          ItemNameBN = dr["ItemNameBN"].ToString(),
+                                          ItemDescription = dr["ItemDescription"].ToString(),
+                                          ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                          UnitPrice = dr["UnitPrice"].ToString(),
+                                          MRP = dr["MRP"].ToString(),                                          
+                                          UnitName = dr["UnitName"].ToString(), 
+                                          ImagePath = dr["ImagePath"].ToString()                                          
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+
+        [HttpGet("GetItemsByItemId/{ItemId}")]
+        public async Task<IActionResult> GetItemsByItemId(string ItemId)
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "GETRELATEDITEMBYITEMID", ItemId);
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Item>(), Message = "No Item found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Item()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          ItemName = dr["ItemName"].ToString(),
+                                          ItemNameBN = dr["ItemNameBN"].ToString(),
+                                          ItemDescription = dr["ItemDescription"].ToString(),
+                                          ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                          UnitPrice = dr["UnitPrice"].ToString(),
+                                          MRP = dr["MRP"].ToString(),                                        
+                                          ImagePath = dr["ImagePath"].ToString()                                          
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
         #endregion
 
         #region Disease Wise Medicine

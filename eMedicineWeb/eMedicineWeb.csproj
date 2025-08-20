@@ -46,6 +46,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.Common, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.ProcessingObjectModel.DLL</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Report.Viewer.11.0.0.0\lib\net\Microsoft.ReportViewer.WebForms.DLL</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -130,6 +139,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\RegistrationController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SalesPersonController.cs" />
     <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="Global.asax.cs">
@@ -139,6 +149,7 @@
     <Compile Include="Models\CompanyViewModel.cs" />
     <Compile Include="Models\DropdownListViewModel.cs" />
     <Compile Include="Models\EntityDefaultParameter.cs" />
+    <Compile Include="Models\EntityReportsParamsViewModel.cs" />
     <Compile Include="Models\GenericsViewModel.cs" />
     <Compile Include="Models\ItemViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -147,6 +158,18 @@
     <Compile Include="Models\SalesPersonViewModel.cs" />
     <Compile Include="Models\SupplierViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reports\ReportViewerRDLCDS05.aspx.cs">
+      <DependentUpon>ReportViewerRDLCDS05.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReportViewerRDLCDS05.aspx.designer.cs">
+      <DependentUpon>ReportViewerRDLCDS05.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RptDataSet\DsOrders.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DsOrders.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-datetimepicker\css\bootstrap-datetimepicker.css" />
@@ -6726,6 +6749,7 @@
     <Content Include="images\ccBack.jpg" />
     <Content Include="images\ccBack2.jpg" />
     <Content Include="images\CC_Blue.png" />
+    <Content Include="Reports\ReportViewerRDLCDS05.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\bootstrap-theme.css.map" />
@@ -7352,6 +7376,17 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="RptDataSet\DsOrders.xsc">
+      <DependentUpon>DsOrders.xsd</DependentUpon>
+    </Content>
+    <None Include="RptDataSet\DsOrders.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DsOrders.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="RptDataSet\DsOrders.xss">
+      <DependentUpon>DsOrders.xsd</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\cart.js" />
     <Content Include="Scripts\Duplicate.js" />
@@ -7422,11 +7457,15 @@
     <Folder Include="App_Data\" />
     <Folder Include="OffersImg\" />
     <Folder Include="Uploads\" />
+    <Folder Include="Views\Report\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\RptOrderMemo.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

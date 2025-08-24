@@ -17,13 +17,19 @@ $(document).ready(function () {
         }
     });
 
-    DiseaseHelper.GenerateCombo($("#cmbMedicines"), "SP_SelectGetAllDropDown", "GETALLACTIVEITEMS", "0", "0", "0", "0", "0");
+    DiseaseHelper.GenerateCombo($("#cmbMedicines"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
     DiseaseHelper.GenerateCombo($("#mdlcmbMedicines"), "SP_SelectGetAllDropDown", "GETALLACTIVEITEMS", "0", "0", "0", "0", "0");
+    //BrandHelper.GenerateCombo($("#mdlcmbMedicines"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
     DiseaseHelper.BuildTbl("");
     DiseaseHelper.GetAllDisease();
     DiseaseHelper.ValidateDisease();
 
 });
+// THIS EVENT IS USED TO CLICK MEDECINE TO POPUP MEDECINE ID
+//$(document).on("click", ".medicine", function () {
+//    let id = $(this).data("id");
+//    alert("You clicked Medicine ID: " + id);
+//});
 $("#btnSave").click(function (event) {
     event.preventDefault();
     DiseaseHelper.SaveCollectionData();
@@ -396,10 +402,10 @@ var DiseaseHelper = {
                     //    var selectedValues = Item.MedicinesID.split(','); // convert string to array
                     //    $("#mdlcmbMedicines").val(selectedValues).trigger('change'); // bind to select2
                     //}                   
-                    $('#mdlAdvice').html("Name: " + Item.Advice);
-                    $('#mdlAdviceBN').html("Name: " + Item.AdviceBN);
-                    $('#mdlUsageRules').html("Name: " + Item.UsageRules);
-                    $('#mdlUsageRulesBN').html("Name: " + Item.UsageRulesBN);
+                    $('#mdlAdvice').html("Advice: " + Item.Advice);
+                    $('#mdlAdviceBN').html("পরামর্শ: " + Item.AdviceBN);
+                    $('#mdlUsageRules').html("UsageRules: " + Item.UsageRules);
+                    $('#mdlUsageRulesBN').html("ব্যবহারের নিয়ম: " + Item.UsageRulesBN);
                     //$('#mdlIsActive').html("Name: " + Item.IsActive); 
                     $("#modal-default").modal("show");
                 }

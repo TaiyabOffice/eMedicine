@@ -26,10 +26,10 @@ $(document).ready(function () {
 
 });
 // THIS EVENT IS USED TO CLICK MEDECINE TO POPUP MEDECINE ID
-//$(document).on("click", ".medicine", function () {
-//    let id = $(this).data("id");
-//    alert("You clicked Medicine ID: " + id);
-//});
+$(document).on("click", ".medicine", function () {
+    let id = $(this).data("id");
+    alert("You clicked Medicine ID: " + id);
+});
 $("#btnSave").click(function (event) {
     event.preventDefault();
     DiseaseHelper.SaveCollectionData();

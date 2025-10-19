@@ -648,6 +648,8 @@ namespace eMedicine.Controllers
                                               MedicinesID = dr["MedicinesID"].ToString(),
                                               MedicineNames = dr["MedicineNames"].ToString(),
                                               MedicineNamesBN = dr["MedicineNamesBN"].ToString(),
+                                              AllMedicineNames = dr["AllMedicineNames"].ToString(),
+                                              AllMedicineNamesBN = dr["AllMedicineNamesBN"].ToString(),
                                               Advice = dr["Advice"].ToString(),
                                               AdviceBN = dr["AdviceBN"].ToString(),
                                               UsageRules = dr["UsageRules"].ToString(),

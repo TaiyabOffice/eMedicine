@@ -75,6 +75,8 @@
         public string CreatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public string UpdatedDate { get; set; }
+        public string? AllMedicineNames { get; set; }
+        public string? AllMedicineNamesBN { get; set; }
     }
 
 }

@@ -28,7 +28,7 @@ namespace eMedicine.Controllers
                 string UserPass = EncodeMD5(Registration.Password);
 
                 var ds = await this.repo.GetAll("", "sp_EntryRegistration", "CREATEREGISTRATION", Registration.PhoneNumber, Registration.UserName, Registration.Email, UserPass,
-                Registration.DistrictId, Registration.UpazilasId, Registration.IsActive);
+                Registration.DistrictId, Registration.UpazilasId, Registration.IsActive, Registration.Profession);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -70,7 +70,8 @@ namespace eMedicine.Controllers
                                            PhoneNumber = dr["PhoneNumber"].ToString(),
                                            Email = dr["Email"].ToString(),
                                            DistrictName = dr["DistrictName"].ToString(),
-                                           UpazilasName = dr["UpazilasName"].ToString(),                                         
+                                           UpazilasName = dr["UpazilasName"].ToString(),
+                                           Profession = dr["Profession"].ToString(),                                         
                                            IsActive = dr["IsActive"].ToString()
                                        }).ToList();
                 return new JsonResult(new { Success = true, Data = GetUserDetails });
@@ -166,6 +167,48 @@ namespace eMedicine.Controllers
                 {
                     Success = false,
                     Message = "An error occurred while retrieving the Password.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+
+        [HttpGet("GetContactDetails")]
+        public async Task<IActionResult> GetContactDetails()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectLogin", "GETCONTACTDETAILS");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Contact>(), Message = "No user found." });
+                }
+                var GetContactDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Contact()
+                                      {
+                                          ShopName = dr["ShopName"].ToString(),
+                                          ShopNameBN = dr["ShopNameBN"].ToString(),
+                                          ContactPerson = dr["ContactPerson"].ToString(),
+                                          ShopAddress = dr["ShopAddress"].ToString(),
+                                          ShopAddressBN = dr["ShopAddressBN"].ToString(),
+                                          PhoneNumber = dr["PhoneNumber"].ToString(),
+                                          Email = dr["Email"].ToString(),
+                                          DistrictName = dr["DistrictName"].ToString(),
+                                          DistrictNameBN = dr["DistrictNameBN"].ToString(),
+                                          UpazilaName = dr["UpazilaName"].ToString(),
+                                          UpazilaNameBN = dr["UpazilaNameBN"].ToString(),
+                                          IsActive = dr["IsActive"].ToString()
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetContactDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Contact.",
                     Details = ex.Message
                 });
             }

@@ -289,6 +289,10 @@ namespace eMedicine.Controllers
                                    {
                                        ItemId = dr["ItemId"].ToString(),
                                        OrderId = dr["OrderId"].ToString(),
+                                       OrderDate = dr["OrderDate"].ToString(),
+                                       OrderBy = dr["OrderBy"].ToString(),
+                                       CustomerName = dr["CustomerName"].ToString(),
+                                       CustomerAddress = dr["CustomerAddress"].ToString(),
                                        Name = dr["ItemName"].ToString(),
                                        UnitPrice = dr["UnitPrice"].ToString(),
                                        Quantity = dr["Quantity"].ToString(),

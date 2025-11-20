@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Change Password";
+    Layout = "~/Views/Shared/_NewLayout.cshtml";
+    ViewBag.UserName = Context.Session.GetString("UserName");
+    ViewBag.UserloginId = Context.Session.GetString("UserloginId");
+    ViewBag.UserId = Context.Session.GetString("UserID");
+}
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" style="padding:10px">
+                    <form id="BonusInfoform">
+                        <input type="hidden" id="hdnUserId" value="@ViewBag.UserName">
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Login Id:</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input id="txtloginId" type="text" class="form-control" placeholder="Login Id" value="@ViewBag.UserloginId" readonly="readonly" tabindex=-1 />
+                            </div>
+                            <div class="col-sm-3">
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Old Password:</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input id="txtoldpassword" type="password" class="form-control" placeholder="Old Password" maxlength="15" />
+                            </div>
+                            <div class="col-sm-3">
+                                <i onclick="ChangeProfileHelper.ShowPassword('txtoldpassword', this)" class="fa fa-eye-slash fa-lg" id="display"></i>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Password:</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input id="txtpassword" type="password" class="form-control" placeholder="Password" maxlength="15" />
+                            </div>
+                            <div class="col-sm-3">
+                                <i onclick="ChangeProfileHelper.ShowPassword('txtpassword', this)" class="fa fa-eye-slash fa-lg" id="display"></i>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-3">
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Confirm Password:</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input id="txtconpassword" type="password" class="form-control" placeholder="Confirm Password" maxlength="15" />
+                            </div>
+                            <div class="col-sm-3">
+                                <i onclick="ChangeProfileHelper.ShowPassword('txtconpassword', this)" class="fa fa-eye-slash fa-lg" id="display"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                            </div>
+                            <div class="col-sm-4">
+                                <button id="btnSave" type="button" class="btn btn-info"> Save</button>
+                            </div>
+                            <div class="col-sm-2">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section scripts {
+    <script src="~/js/LogIn/ChangeProfile.js"></script>
+    <script src="~/js/apiconnection/api_config.js"></script>
+}

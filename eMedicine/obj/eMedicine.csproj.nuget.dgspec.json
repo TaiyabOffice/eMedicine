@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\eMedicine\\eMedicine\\eMedicine.csproj": {}
+    "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj": {}
   },
   "projects": {
-    "D:\\eMedicine\\eMedicine\\eMedicine.csproj": {
+    "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\eMedicine\\eMedicine\\eMedicine.csproj",
+        "projectUniqueName": "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj",
         "projectName": "eMedicine",
-        "projectPath": "D:\\eMedicine\\eMedicine\\eMedicine.csproj",
+        "projectPath": "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "D:\\eMedicine\\eMedicine\\obj\\",
+        "outputPath": "D:\\eMedicine\\eMedicine\\eMedicine\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

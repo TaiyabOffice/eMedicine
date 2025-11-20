@@ -199,8 +199,8 @@ var SupplierHelper = {
     GetAllSupplier: function () {
         var serviceUrl = "/Supplier/GetAllSupplier";
         jQuery.ajax({
-            url: serviceUrl,
-            type: "POST",
+            url: ApiLink.GetAllSupplier,
+            type: "GET",
             success: function (result) {
                 if (result.success) {                 
                     SupplierHelper.BuildTbl(result.data);
@@ -228,27 +228,25 @@ var SupplierHelper = {
     GetSupplierID: function (SupplierId) {
         $("#btnSave").hide();
         $("#btnUpdate").show();
-        var jsonParam = { SupplierId: SupplierId };
-        var serviceUrl = "/Supplier/GetSupplierById";
+        var jsonParam = ApiLink.GetSupplierById + "/" + SupplierId;
 
         jQuery.ajax({
-            url: serviceUrl,
-            type: "POST",
-            data: jsonParam,
+            url: jsonParam,
+            type: "GET",            
             success: function (response) {
-                //console.log(response.data);
-                if (response.Success)
-                {
-                    var Supplier = response.data;                    
-                    //$("#cmbCompanyId").empty();
+                console.log(response.data);
+                if (response.data && response.data.length > 0) {
+
+                    var Supplier = response.data[0];   // <-- FIXED
+
                     $('#txtSupplierId').val(Supplier.supplierId);
                     $('#txtSupplierName').val(Supplier.supplierName);
                     $('#txtContactPerson').val(Supplier.contactPerson);
                     $('#txtPhone').val(Supplier.supplierPhone);
                     $('#CompanyPhone').val(Supplier.supplierPhone);
-                    $("#cmbCompanyId").val(Supplier.companyId).select2();
-                    $('#txtEmail').val(Supplier.email);                                    
-                    $('#CmbIsActive').val(Supplier.isActive);                                    
+                    $("#cmbCompanyId").val(Supplier.companyId).trigger('change');
+                    $('#txtEmail').val(Supplier.email);
+                    $('#CmbIsActive').val(Supplier.isActive);
                 } else {
                     swal({
                         title: "Sorry!",
@@ -302,7 +300,6 @@ var SupplierHelper = {
             e.preventDefault();
         }
     },
-
     AllowPhoneNumbersOnly: function (e) {
         var code = (e.which) ? e.which : e.keyCode;
 
@@ -314,7 +311,6 @@ var SupplierHelper = {
             e.preventDefault();
         }
     },
-
     ValidateSupplier: function () {
         $.validator.addMethod("notZero", function (value, element) {
             return this.optional(element) || value != "";

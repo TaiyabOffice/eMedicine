@@ -90,29 +90,29 @@ var SupplierHelper = {
     SaveCollectionData: function () {
         if ($("#validateCompany").valid()) {
 
-            var SupplierData = {
-                SupplierId: $('#txtSupplierId').val() ? "" : "000000000000",
-                SupplierName: $('#txtSupplierName').val(),
-                ContactPerson: $('#txtContactPerson').val(),
-                SupplierPhone: $('#txtPhone').val(),
-                CompanyId: $('#cmbCompanyId').val(),
-                CompanyName: $('#cmbCompanyId').val(),
-                Email: $('#txtEmail').val(),
-                IsActive: $('#CmbIsActive').val(),
-                CreatedBy: $('#hdnUserId').val(),
-                CreatedDate: $('#hdnDateToday').val(),
-                UpdatedBy: $('#hdnUserId').val(),
-                UpdatedDate: $('#hdnDateToday').val()
+            var Supplier = {
+                SupplierId: $('#txtSupplierId').val() || "000000000000",
+                SupplierName: $('#txtSupplierName').val() || "",
+                ContactPerson: $('#txtContactPerson').val() || "",
+                SupplierPhone: $('#txtPhone').val() || "",
+                CompanyId: $('#cmbCompanyId').val() || "",
+                CompanyName: $('#cmbCompanyId').val() || "",
+                Email: $('#txtEmail').val() || "",
+                IsActive: $('#CmbIsActive').val() || "",
+                CreatedBy: $('#hdnUserId').val() || "",
+                CreatedDate: $('#hdnDateToday').val() || "",
+                UpdatedBy: $('#hdnUserId').val() || "",
+                UpdatedDate: $('#hdnDateToday').val() || ""
             };
-            $.ajax({
-                url: '/Supplier/CreateSupplier', // Your controller action
-                type: 'POST',
+            jQuery.ajax({
+                url: ApiLink.CreateSupplier,
+                type: "POST",
                 contentType: 'application/json',
-                data: JSON.stringify(SupplierData), // Send as JSON
-                success: function (response) {
+                data: JSON.stringify(Supplier),
+                success: function (data) {
                     // Success message
                     //console.log(response);
-                    if (response.success) {
+                    if (data.success) {
                         swal({
                             title: "Congratulations",
                             text: "Saved successfully!",
@@ -153,17 +153,17 @@ var SupplierHelper = {
 
             var SupplierData = {
                 SupplierId: $('#txtSupplierId').val(),
-                SupplierName: $('#txtSupplierName').val(),
-                ContactPerson: $('#txtContactPerson').val(),
-                SupplierPhone: $('#txtPhone').val(),
-                CompanyId: $('#cmbCompanyId').val(),
-                CompanyName: $('#cmbCompanyId').val(),
-                Email: $('#txtEmail').val(),
-                IsActive: $('#CmbIsActive').val(),
-                CreatedBy: $('#hdnUserId').val(),
-                CreatedDate: $('#hdnDateToday').val(),
-                UpdatedBy: $('#hdnUserId').val(),
-                UpdatedDate: $('#hdnDateToday').val()
+                SupplierName: $('#txtSupplierName').val() || "",
+                ContactPerson: $('#txtContactPerson').val() || "",
+                SupplierPhone: $('#txtPhone').val() || "",
+                CompanyId: $('#cmbCompanyId').val() || "",
+                CompanyName: $('#cmbCompanyId').val() || "",
+                Email: $('#txtEmail').val() || "",
+                IsActive: $('#CmbIsActive').val() || "",
+                CreatedBy: $('#hdnUserId').val() || "",
+                CreatedDate: $('#hdnDateToday').val() || "",
+                UpdatedBy: $('#hdnUserId').val() || "",
+                UpdatedDate: $('#hdnDateToday').val() || ""
             };
             $.ajax({
                 url: '/Supplier/UpdateSupplierById', // Your controller action

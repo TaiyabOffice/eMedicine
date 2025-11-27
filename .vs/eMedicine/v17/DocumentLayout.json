@@ -7,8 +7,8 @@
       "RelativeMoniker": "D:0:0:{BAADF84E-EFDF-4C40-A4B7-E5279DE3DFBF}|eMedicineAdmin\\eMedicineAdmin.csproj|solutionrelative:emedicineadmin\\wwwroot\\scripts\\emedicine\\supplier\\uientrysupplier.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BAADF84E-EFDF-4C40-A4B7-E5279DE3DFBF}|eMedicineAdmin\\eMedicineAdmin.csproj|d:\\emedicine\\emedicine\\emedicineadmin\\wwwroot\\scripts\\emedicine\\brand\\uientrybrand.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{BAADF84E-EFDF-4C40-A4B7-E5279DE3DFBF}|eMedicineAdmin\\eMedicineAdmin.csproj|solutionrelative:emedicineadmin\\wwwroot\\scripts\\emedicine\\brand\\uientrybrand.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\commonapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\commonapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\supplierapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,19 +23,8 @@
       "RelativeMoniker": "D:0:0:{BAADF84E-EFDF-4C40-A4B7-E5279DE3DFBF}|eMedicineAdmin\\eMedicineAdmin.csproj|solutionrelative:emedicineadmin\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BAADF84E-EFDF-4C40-A4B7-E5279DE3DFBF}|eMedicineAdmin\\eMedicineAdmin.csproj|d:\\emedicine\\emedicine\\emedicineadmin\\controllers\\suppliercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BAADF84E-EFDF-4C40-A4B7-E5279DE3DFBF}|eMedicineAdmin\\eMedicineAdmin.csproj|solutionrelative:emedicineadmin\\controllers\\suppliercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\commonapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\commonapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Admin\\AppData\\Local\\Temp\\.vsdbgsrc\\c5a97e4e2bf154308543b519e39df69d65a6673c44714367671dc8a2d4ce1213\\ManualResetEventSlim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{BAADF84E-EFDF-4C40-A4B7-E5279DE3DFBF}|eMedicineAdmin\\eMedicineAdmin.csproj|d:\\emedicine\\emedicine\\emedicineadmin\\views\\supplier\\uientrysupplier.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -49,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Bookmark",
@@ -66,43 +55,19 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "UIEntryBrand.js",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineAdmin\\wwwroot\\Scripts\\eMedicine\\Brand\\UIEntryBrand.js",
-              "RelativeDocumentMoniker": "eMedicineAdmin\\wwwroot\\Scripts\\eMedicine\\Brand\\UIEntryBrand.js",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineAdmin\\wwwroot\\Scripts\\eMedicine\\Brand\\UIEntryBrand.js",
-              "RelativeToolTip": "eMedicineAdmin\\wwwroot\\Scripts\\eMedicine\\Brand\\UIEntryBrand.js",
-              "ViewState": "AQIAAOoAAAAAAAAAAAAgwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
-              "WhenOpened": "2025-11-18T10:45:15.357Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
               "Title": "CommonAPIController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\CommonAPIController.cs",
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\CommonAPIController.cs",
               "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\CommonAPIController.cs",
               "RelativeToolTip": "eMedicine\\Controllers\\CommonAPIController.cs",
-              "ViewState": "AQIAADUAAAAAAAAAAAA9wAAAAAAAAAAA",
+              "ViewState": "AQIAADYAAAAAAAAAAAAowAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-18T09:30:47.185Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "ManualResetEventSlim.cs",
-              "DocumentMoniker": "C:\\Users\\Admin\\AppData\\Local\\Temp\\.vsdbgsrc\\c5a97e4e2bf154308543b519e39df69d65a6673c44714367671dc8a2d4ce1213\\ManualResetEventSlim.cs",
-              "ToolTip": "C:\\Users\\Admin\\AppData\\Local\\Temp\\.vsdbgsrc\\c5a97e4e2bf154308543b519e39df69d65a6673c44714367671dc8a2d4ce1213\\ManualResetEventSlim.cs [Read Only]",
-              "ViewState": "AQIAAN4AAAAAAAAAAAAcwAQBAAAHAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T09:26:14.722Z",
-              "EditorCaption": " [Read Only]"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Program.cs",
               "RelativeDocumentMoniker": "eMedicine\\Program.cs",
@@ -110,8 +75,7 @@
               "RelativeToolTip": "eMedicine\\Program.cs",
               "ViewState": "AQIAAAwAAAAAAAAAAAAAABkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T09:01:51.439Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-18T09:01:51.439Z"
             },
             {
               "$type": "Document",
@@ -121,22 +85,9 @@
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\SupplierAPIController.cs",
               "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\SupplierAPIController.cs",
               "RelativeToolTip": "eMedicine\\Controllers\\SupplierAPIController.cs",
-              "ViewState": "AQIAAFEAAAAAAAAAAAAcwFgAAAAPAAAA",
+              "ViewState": "AQIAACQAAAAAAAAAAAAowDUAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-18T08:56:19.944Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "SupplierController.cs",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineAdmin\\Controllers\\SupplierController.cs",
-              "RelativeDocumentMoniker": "eMedicineAdmin\\Controllers\\SupplierController.cs",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineAdmin\\Controllers\\SupplierController.cs",
-              "RelativeToolTip": "eMedicineAdmin\\Controllers\\SupplierController.cs",
-              "ViewState": "AQIAADsAAAAAAAAAAAAIwE4AAABwAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-18T08:54:50.015Z",
               "EditorCaption": ""
             },
             {
@@ -147,7 +98,7 @@
               "RelativeDocumentMoniker": "eMedicineAdmin\\wwwroot\\js\\ApiConnection\\api_config.js",
               "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineAdmin\\wwwroot\\js\\ApiConnection\\api_config.js",
               "RelativeToolTip": "eMedicineAdmin\\wwwroot\\js\\ApiConnection\\api_config.js",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAA7AAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAA6AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-18T08:51:49.849Z",
               "EditorCaption": ""
@@ -173,14 +124,14 @@
               "RelativeDocumentMoniker": "eMedicineAdmin\\wwwroot\\Scripts\\eMedicine\\Supplier\\UIEntrySupplier.js",
               "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineAdmin\\wwwroot\\Scripts\\eMedicine\\Supplier\\UIEntrySupplier.js",
               "RelativeToolTip": "eMedicineAdmin\\wwwroot\\Scripts\\eMedicine\\Supplier\\UIEntrySupplier.js",
-              "ViewState": "AQIAANIAAAAAAAAAAAAIwOsAAAAqAAAA",
+              "ViewState": "AQIAAHUAAAAAAAAAAAAuwJYAAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
               "WhenOpened": "2025-11-18T08:49:29.727Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 6,
               "Title": "UIEntrySupplier.cshtml",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineAdmin\\Views\\Supplier\\UIEntrySupplier.cshtml",
               "RelativeDocumentMoniker": "eMedicineAdmin\\Views\\Supplier\\UIEntrySupplier.cshtml",
@@ -188,8 +139,7 @@
               "RelativeToolTip": "eMedicineAdmin\\Views\\Supplier\\UIEntrySupplier.cshtml",
               "ViewState": "AQIAADAAAAAAAAAAAAAAAEIAAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-11-18T08:33:18.11Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-18T08:33:18.11Z"
             }
           ]
         }

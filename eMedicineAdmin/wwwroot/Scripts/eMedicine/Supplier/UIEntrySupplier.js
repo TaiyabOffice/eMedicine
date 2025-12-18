@@ -151,7 +151,7 @@ var SupplierHelper = {
     UpdateCollectionData: function () {
         if ($("#validateCompany").valid()) {
 
-            var SupplierData = {
+            var Supplier = {
                 SupplierId: $('#txtSupplierId').val(),
                 SupplierName: $('#txtSupplierName').val() || "",
                 ContactPerson: $('#txtContactPerson').val() || "",
@@ -165,25 +165,38 @@ var SupplierHelper = {
                 UpdatedBy: $('#hdnUserId').val() || "",
                 UpdatedDate: $('#hdnDateToday').val() || ""
             };
-            $.ajax({
-                url: '/Supplier/UpdateSupplierById', // Your controller action
-                type: 'POST',
+            jQuery.ajax({
+                url: ApiLink.UpdateSupplierById,
+                type: "POST",
                 contentType: 'application/json',
-                data: JSON.stringify(SupplierData), // Send as JSON
-                success: function (response) {
-                    // Success message               
-                    swal({
-                        title: "Congratulations",
-                        text: "saved successfully!",
-                        type: "success",
-                        showConfirmButton: false,
-                        allowOutsideClick: false,
-                        timer: 2000
-                    });
-                    location.reload();
+                data: JSON.stringify(Supplier),
 
-                    SupplierHelper.GetAllSupplier();
+                success: function (data) {
+                    // Success message
+                    //console.log(response);
+                    if (data.success) {
+                        swal({
+                            title: "Congratulations",
+                            text: "Saved successfully!",
+                            type: "success",
+                            showConfirmButton: false,
+                            allowOutsideClick: false,
+                            timer: 2000
+                        });
+                        location.reload();
+
+                        SupplierHelper.GetAllSupplier();
+                    } else {
+                        swal({
+                            title: "Sorry!",
+                            text: "Saved Failde!",
+                            type: "error",
+                            closeOnConfirm: false,
+                            //timer: 2000
+                        });
+                    }
                 },
+                
                 error: function (xhr, status, error) {
                     swal({
                         title: "Sorry!",

@@ -1,81 +1,67 @@
-# Ignore Visual Studio temporary files, build results, and
-# user-specific files
-
-# User-specific files
-*.rsuser
+# ========================
+# Visual Studio / IDE
+# ========================
+.vs/
+.vscode/
+.idea/
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
 
-# User-specific folders
-.vscode/
-.idea/
-.vs/
-
-# Auto-generated files from VS Code, JetBrains IDEs, etc.
-.vscode/
-.idea/
-
-# Build folders
+# ========================
+# Build Output
+# ========================
 bin/
 obj/
-debug/
-release/
+Debug/
+Release/
 x64/
 x86/
 ARM/
 ARM64/
+publish/
+out/
 
-# ASP.NET Core Specific
-wwwroot/**/*.min.js
-wwwroot/**/*.min.css
-wwwroot/**/*.bundle.*
-wwwroot/**/*.map
-wwwroot/vendor/
+# ========================
+# .NET Artifacts
+# ========================
+*.dll
+*.exe
+*.pdb
+*.cache
 
+# ========================
 # NuGet
+# ========================
 *.nupkg
 *.snupkg
 packages/
 
-# Ignore compiled assemblies
-bin/
-obj/
-*.dll
-*.pdb
-*.exe
-
-
-# Environment and Configuration Files
-.env
-appsettings.Development.json
-appsettings.Local.json
-appsettings.Production.json
-appsettings.Staging.json
-
-# Optional: Provide a template for appsettings
-appsettings.json.example
-
-# Log files
+# ========================
+# Logs & Temp
+# ========================
 *.log
-
-# Publish results
-publish/
-out/
-
-# Entity Framework migrations (optional)
-Migrations/
-
-# Rider projects
-.idea/
-
-# Crash Reports
-*.crash
-
-# Temporary files
 *.tmp
 *.temp
+*.crash
 
-# Exclude compiled views (Razor)
-*.dll.config
+# ========================
+# Environment / Secrets
+# ========================
+.env
+appsettings.*.json
+!appsettings.json
+!appsettings.Development.json.example
+
+# ========================
+# Frontend (optional)
+# ========================
+wwwroot/**/*.map
+wwwroot/vendor/
+
+# ========================
+# OS Files
+# ========================
+Thumbs.db
+.DS_Store

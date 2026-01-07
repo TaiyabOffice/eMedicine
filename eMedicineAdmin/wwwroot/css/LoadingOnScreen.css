@@ -1,0 +1,218 @@
+﻿
+    .field-icon {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .field-icon2 {
+        position: absolute;
+        top: 50%;
+        right: 35px;
+        -webkit-transform: translateY(-50%);
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .TestBody {
+        min-height: calc(100vh - 20px);
+    }
+
+    .form-group {
+        position: relative;
+        margin-bottom: 1.25rem;
+    }
+
+    .overlay {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 999;
+    }
+
+    body.loading {
+        overflow: hidden;
+    }
+
+        body.loading .overlay {
+            display: block;
+        }
+
+    .loadingBack {
+        /*width: 140px;
+        height: 140px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -75px;
+        margin-left: -75px;*/
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        opacity: .6;
+        background: center no-repeat;
+        background-color: white;
+        text-align: center;
+    }
+
+    .loadingBlock {
+        width: 140px;
+        height: 140px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-top: -75px;
+        margin-left: -75px;
+        text-align: center;
+    }
+
+        .loadingBlock .block {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+        }
+
+            .loadingBlock .block:nth-child(1) {
+                animation: top-left 3s infinite;
+                background-color: #00aacf;
+            }
+
+            .loadingBlock .block:nth-child(2) {
+                animation: top-right 3s infinite;
+                background-color: #f6c574;
+            }
+
+            .loadingBlock .block:nth-child(3) {
+                animation: bottom-left 3s infinite;
+                background-color: #fc5652;
+            }
+
+            .loadingBlock .block:nth-child(4) {
+                animation: bottom-right 3s infinite;
+                background-color: #00b3a0;
+            }
+
+    @-webkit-keyframes top-left {
+        0% {
+            left: 25px;
+            top: 25px;
+        }
+
+        25% {
+            left: 75px;
+            top: 25px;
+            transform: rotate(90deg);
+        }
+
+        50% {
+            left: 75px;
+            top: 75px;
+            transform: rotate(180deg);
+        }
+
+        75% {
+            left: 25px;
+            top: 75px;
+            transform: rotate(270deg);
+        }
+
+        100% {
+            left: 25px;
+            top: 25px;
+            transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes top-right {
+        0% {
+            left: 75px;
+            top: 25px;
+        }
+
+        25% {
+            left: 75px;
+            top: 75px;
+        }
+
+        50% {
+            left: 25px;
+            top: 75px;
+        }
+
+        75% {
+            left: 25px;
+            top: 25px;
+        }
+
+        100% {
+            left: 75px;
+            top: 25px;
+        }
+    }
+
+    @-webkit-keyframes bottom-left {
+        0% {
+            left: 75px;
+            top: 75px;
+        }
+
+        25% {
+            left: 25px;
+            top: 75px;
+            transform: rotate(90deg);
+        }
+
+        50% {
+            left: 25px;
+            top: 25px;
+            transform: rotate(180deg);
+        }
+
+        75% {
+            left: 75px;
+            top: 25px;
+            transform: rotate(270deg);
+        }
+
+        100% {
+            left: 75px;
+            top: 75px;
+            transform: rotate(360deg);
+        }
+    }
+
+    @-webkit-keyframes bottom-right {
+        0% {
+            left: 25px;
+            top: 75px;
+        }
+
+        25% {
+            left: 25px;
+            top: 25px;
+        }
+
+        50% {
+            left: 75px;
+            top: 25px;
+        }
+
+        75% {
+            left: 75px;
+            top: 75px;
+        }
+
+        100% {
+            left: 25px;
+            top: 75px;
+        }
+    }

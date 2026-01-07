@@ -1,0 +1,285 @@
+﻿@using System.Data
+@using Newtonsoft.Json
+@using eMedicineAdmin.Models
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="icon" href="@Url.Content("~/images/CC_Blue1.png")" type="image/gif" sizes="20x20" />
+    <link rel="stylesheet" href="~/css/site.min.css" />
+    <title>CPM</title>
+    <style>
+        .form-control {
+            font-size: 11px !important;
+            height: 28px;
+            padding: 2px;
+        }
+
+        .box-body {
+            font-size: 11px !important;
+        }
+
+        .select2-results__options {
+            font-size: 11px !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+            padding: 2px;
+        }
+
+        .card-header {
+            padding: 8px 8px 0px 8px;
+        }
+
+        .dataTables_wrapper.form-inline {
+            display: block !important;
+            flex-direction: column !important;
+        }
+
+        /* Target the search input */
+        .dataTables_filter input.form-control {
+            /* Example overrides to remove form-control effects */
+            height: auto !important; /* Reset height */
+            padding: 0rem 0rem !important; /* Reset padding */
+            display: inline-block !important; /* Reset display */
+            /* Add any other necessary overrides */
+        }
+
+        /* Target the length menu select dropdown */
+        .dataTables_length select.form-control {
+            /* Example overrides */
+            height: auto !important;
+            padding: 0rem 0rem !important;
+            display: inline-block !important;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 2px 3px;
+        }
+
+        label {
+            margin-bottom: 4px;
+        }
+
+        .navbar-nav .nav-link {
+            background-color: transparent;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .navbar-nav .nav-link:hover {
+                background-color: #79cdec; /* deep blue background on hover */
+                text-decoration: none;
+                border-radius: 10px;
+            }
+
+/*             .navbar-nav .nav-link p {
+                color: white;
+                transition: color 0.3s ease;
+            } */
+
+            .navbar-nav .nav-link:hover p {
+                color: black;
+            }
+
+    </style>
+</head>
+@{
+            var userName = Context.Session.GetString("UserName");
+            var menuDataJson = Context.Session.GetString("MenuData");
+            var base64Image = Context.Session.GetString("Hrimg");
+
+            if (string.IsNullOrEmpty(userName) || userName == "null" || string.IsNullOrEmpty(menuDataJson))
+            {
+                        IgnoreSection("Scripts"); // Prevent Razor section error
+                        Context.Response.Redirect(Url.Action("LogIn", "LogIn"));
+                        return;
+
+            }
+
+            ViewBag.UserName = userName;
+            ViewBag.UserId = Context.Session.GetString("UserID");
+            ViewBag.UserloginId = Context.Session.GetString("UserloginId");
+            ViewBag.UserDesig = Context.Session.GetString("UserDesig");
+            ViewBag.Terminal = Context.Session.GetString("TermID");
+            ViewBag.MenuData = menuDataJson;
+
+            string imageSrc = string.IsNullOrEmpty(base64Image)
+                            ? "/images/UserIcon.png"
+                            : $"data:image/jpeg;base64,{base64Image}";
+
+            DataTable MenuData = JsonConvert.DeserializeObject<DataTable>(menuDataJson);
+}
+<body class="layout-top-nav">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand-md navbar-light navbar-white">
+            @* <div class="container"> *@
+            <a href="@Url.Action("Dashboard", "Dashboard")" class="navbar-brand">
+                <img src="@Url.Content("~/images/Concord_Group_of_Companies.jpg")" class="brand-image img-circle elevation-3"
+                     style="opacity: .8">
+                <span class="brand-text" style="text-align:center; font-size:16px">  CPM</span>
+            </a>
+            <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                <!-- Left navbar links -->
+                @{
+                    foreach (DataRow item in MenuData.Rows)
+                    {
+                        if (item[1].ToString() == "0")
+                        {
+            if (item[1].ToString() == "0" && item[4].ToString() == "")
+            {
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown dropdown-hover">
+                                    <a id="@item[2].ToString()" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle">@item[2].ToString()</a>
+                                    <ul aria-labelledby="@item[2].ToString()" class="dropdown-menu border-0 shadow" style="left: 0px; right: inherit;">
+                                        @foreach (DataRow firstItem in MenuData.Rows)
+                                        {
+                                            if (firstItem[1].ToString() == item[0].ToString())
+                                            {
+                                                if (firstItem[4].ToString() != "")
+                                                {
+                                                    <li><a href="~/@firstItem[4].ToString()" class="dropdown-item">@firstItem[2].ToString()</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li class="dropdown-submenu dropdown-hover">
+                                                        <a id="@firstItem[2].ToString()" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">@firstItem[2].ToString()</a>
+                                                        <ul aria-labelledby="@firstItem[2].ToString()" class="dropdown-menu border-0 shadow">
+                                                            @foreach (DataRow secondItem in MenuData.Rows)
+                                                            {
+                                                                if (secondItem[1].ToString() == firstItem[0].ToString())
+                                                                {
+                                                                    if (secondItem[4].ToString() != "")
+                                                                    {
+                                                                        <li><a href="~/@secondItem[4].ToString()" class="dropdown-item">@secondItem[2].ToString()</a></li>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <li class="dropdown-submenu">
+                                                                            <a id="@secondItem[2].ToString()" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">@secondItem[2].ToString()</a>
+                                                                            <ul aria-labelledby="@secondItem[2].ToString()" class="dropdown-menu border-0 shadow">
+                                                                                @foreach (DataRow ThirdItem in MenuData.Rows)
+                                                                                {
+                                                                                    if (ThirdItem[1].ToString() == secondItem[0].ToString())
+                                                                                    {
+                                                                                        <li><a href="~/@ThirdItem[4].ToString()" class="dropdown-item">@ThirdItem[2].ToString()</a></li>
+                                                                                    }
+                                                                                }
+                                                                            </ul>
+                                                                        </li>
+                                                                    }
+                                                                }
+                                                            }
+                                                        </ul>
+                                                    </li>
+                                                }
+                                            }
+
+                                        }
+                                    </ul>
+                                </li>
+                                </ul>
+                            }
+                            else
+                            {
+                                if (item[1].ToString() == "0" && item[4].ToString() != "")
+                                {
+                                    <ul class="navbar-nav" href="~/@item[4].ToString()" style="border-radius: 10px; cursor: pointer; margin-left:2px;margin-right:2px;">
+                                        <li class="nav-item">
+                                            <a href="~/@item[4].ToString()" class="nav-link">
+                                                <p style="font-size:13px;color:black"><i class="fa fa-cube nav-icon"></i>@item[2].ToString()</p>
+                                            </a>
+                                            </li>
+                                    </ul>
+                                }
+                            }
+                        }
+                    }
+                }
+            </div>
+            <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto pull-right">
+                <li class="nav-item">
+                    <a  data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <small>@ViewBag.UserName</small>
+                        <img src="@imageSrc" class="img-circle" alt="User Image" style="height:30px;width:30px;"><small><b> </b></small>
+                    </a>
+                </li>
+            </ul>
+
+            @* </div> *@
+        </nav>
+
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+
+        <div class="content-wrapper" id="mainBody">
+            <div class="content" style="padding:0px;">
+                @* <div class="container"> *@
+                <div class="box box-default">
+                    <div class="box-body">
+                        <div class="col-sm-12">
+                            <label>@ViewBag.Title</label>
+                        </div>
+                        <div style="margin:0px">
+                            <div class="card">
+                                <div class="card-body">
+                                    @RenderBody()
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* </div> *@
+            </div>
+        </div>
+        <!-- Content Wrapper. Contains page content -->
+        <!-- /.content-wrapper -->
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-light">
+            <center>
+                <img src="@imageSrc" style="height:100px;width:100px;" id="ImgUser">
+                <p style="margin-top:1px;margin-bottom:1px">@ViewBag.UserName</p>
+                <p style="margin-top:1px;margin-bottom:1px"><small>@ViewBag.UserDesig</small></p>
+                <p style="margin-top:1px;margin-bottom:1px">
+                    <small>
+                        <i class="fa fa-address-card" aria-hidden="true"></i> @ViewBag.UserloginId
+                        <i class="fa fa-desktop" aria-hidden="true"></i> @ViewBag.Terminal
+                    </small>
+                </p>
+                <div class="pull-left" style=" margin-left:5px">
+                    <a href="@Url.Action("ChangeProfile", "LogIn")" class="btn btn-sm bg-teal" title="Change Password">
+                        <i class="fa fa-key" aria-hidden="true"></i> Change Passward
+                    </a>
+                </div>
+                <div class="pull-right" style=" margin-right:5px">
+                    <a href="@Url.Action("LogIn", "LogIn")" class="btn btn-sm btn-primary"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign out</a>
+                </div>
+            </center>
+        </aside>
+        <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong><a href="http://www.concordgroup.net">&copy;@DateTime.Now.Year - Powered By MIS, Concord Group of Companies</a></strong>
+        </footer>
+    </div>
+    <script src="~/js/site.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        document.getElementById("mainBody").addEventListener("click", function () {
+          // Close main sidebar
+          document.body.classList.remove("sidebar-open");
+          document.body.classList.add("sidebar-collapse");
+
+          // Close control sidebar
+          document.body.classList.remove("control-sidebar-slide-open");
+        });
+    </script>
+</body>
+</html>

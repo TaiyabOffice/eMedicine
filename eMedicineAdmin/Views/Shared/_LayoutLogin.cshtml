@@ -1,43 +1,25 @@
 ﻿<!DOCTYPE html>
-<style>
-    .body-content {
-        margin: 0;
-        height: 100%;
-        width: 100%;
-        font-family: 'Open Sans', sans-serif;
-        background-image: url(/images/ccBack.jpg);
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-    }
-</style>
 <html>
 <head>
+    <style>
+        .body-content {
+            margin: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Open Sans', sans-serif;
+            background-image: url(/images/ccBack.jpg);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+    <link href="~/css/loginstyle.css" rel="stylesheet" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <link rel="icon" href="~/images/CC_Blue1.png" type="image/x-icon">
-    <title>PIMS</title>
-    <script type="text/javascript">
-        function preventBack() { window.history.forward(); }
-        setTimeout("preventBack()", 0);
-        window.onunload = function () { null };
-        sessionStorage.clear();
-    </script>
-    <script src="~/Content/css"></script>
-    <script src="~/bundles/modernizr"></script>   
-    <link rel="stylesheet" href="~/Content/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/Content/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <script src="~/content/bower_components/jquery/dist/jquery.min.js"></script>
-    <link href="~/content/sweetalert/css/sweetalert.css" rel="stylesheet" />   
-    <script src="~/content/sweetalert/js/sweetalert-dev.js"></script>
-    <link href="~/content/bower_components/select2/dist/css/select2.min.css" rel="stylesheet" />
-    <script src="~/content/bower_components/select2/dist/js/select2.full.min.js"></script>
-    <script src="~/content/bower_components/select2/dist/js/select2.full.js"></script>
-    <script src="~/content/bower_components/select2/dist/js/select2.min.js"></script>
-    <script src="~/content/bower_components/select2/dist/js/select2.js"></script>
+    <link rel="stylesheet" href="~/css/site.min.css" />
 
-
+    <title>CPM</title>
 </head>
 <body>
     <div class="body-content">
@@ -47,10 +29,10 @@
         <div class="pull-right hidden-xs">
             <b>Version</b> 1.0.0
         </div>
-        <strong><a style="color:white" href="">&copy;@DateTime.Now.Year - Powered By eMedicineBd,</a></strong>
+        <strong><a style="color:white" href="http://www.concordgroupbd.com">&copy;@DateTime.Now.Year - Powered By MIS, Concord Group of Companies</a></strong>
     </div>
-    <script src="~/bundles/jquery"></script>
-    <script src="~/bundles/bootstrap"></script>   
-    @RenderSection("scripts", required: false)
 </body>
 </html>
+
+<script src="~/js/site.min.js"></script>
+@await RenderSectionAsync("Scripts", required: false)

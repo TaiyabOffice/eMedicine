@@ -23,16 +23,11 @@ namespace eMedicineAdmin.Controllers
             return View();
         }       
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody] LoginViewModel loginData)
-        {
-            if (loginData == null || string.IsNullOrWhiteSpace(loginData.UserName) || string.IsNullOrWhiteSpace(loginData.Password))
-            {
-                return Json(new { success = false, message = "Invalid login data." });
-            }
+        public async Task<IActionResult> LoginData(string UserName, string Password) {                           
 
             try
             {                
-                var requestUrl = $"{_httpClient.BaseAddress}LoginAPI/LogIn?UserName={Uri.EscapeDataString(loginData.UserName)}&UserPassword={Uri.EscapeDataString(loginData.Password)}";
+                var requestUrl = $"{_httpClient.BaseAddress}LoginAPI/LogIn?UserName={Uri.EscapeDataString(UserName)}&UserPassword={Uri.EscapeDataString(Password)}";
                                
                 var response = await _httpClient.GetAsync(requestUrl);
                 if (!response.IsSuccessStatusCode)
@@ -55,7 +50,7 @@ namespace eMedicineAdmin.Controllers
                 HttpContext.Session.SetString("PhoneNumber", loginModel.PhoneNumber);
                 HttpContext.Session.SetString("DateToday", DateTime.Now.ToString("dd-MM-yyyy"));
                 
-                var menuResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}LoginAPI/GetMenuById/{Uri.EscapeDataString(loginData.UserName)}");
+                var menuResponse = await _httpClient.GetAsync($"{_httpClient.BaseAddress}LoginAPI/GetMenuById/{Uri.EscapeDataString(UserName)}");
                 if (!menuResponse.IsSuccessStatusCode)
                 {
                     return Json(new { success = false, message = "Login successful, but menu data could not be retrieved." });

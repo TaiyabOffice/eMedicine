@@ -168,6 +168,35 @@ namespace eMedicine.Controllers
             }
         }
 
+        [HttpPost("CreateItemPrice")]
+        public async Task<IActionResult> CreateItemPrice([FromBody] ItemUnitPrices Item)
+        {
+            try
+            {
+
+                var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEITEMPRICE", Item.ItemId, Item.UnitId, Item.UnitQty, Item.SalePrice, Item.PurchasePrice, Item.IsActive);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<ItemUnitPrices>(), Message = "Item Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<ItemUnitPrices>(), Message = "Item Create Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
+
         [HttpPost("CreateOffer")]
         public async Task<IActionResult> CreateOffer([FromBody] Offers offer)
         {

@@ -195,4 +195,55 @@
 
 </div>
 
+<div class="modal fade" id="modal-ItemPrice">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Add Item Prices</h4>
+                @*<img id="MdlImage" src="" alt="Item Image" style="width:50px; height:auto;" height: auto; margin-bottom: 15px; display: none;" hidden>*@
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-sm-2">
+                            <label for="cmbPriceUnitId">Unit</label>
+                            <select id="cmbPriceUnitId" name="cmbPriceUnitId" class="form-control input-sm select2" style="width:100%"></select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="txtUnitQty">Unit Qty</label>
+                            <input type="text" id="txtUnitQty" name="txtUnitQty" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="txtSalePrice">Sale Price</label>
+                            <input type="text" id="txtSalePrice" name="txtSalePrice" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="txtPurchasePrice">Purchase Price</label>
+                            <input type="text" id="txtPurchasePrice" name="txtPurchasePrice" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
+                        </div>
+                        <div class="col-sm-2">
+                            <label for="CmbIsActivePrice">Is Active</label>
+                            <select id="CmbIsActivePrice" name="CmbIsActivePrice" class="form-control input-sm">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2" style="margin-top:25px">
+                            <button id="btnSavePrice" type="button" class="btn btn-success pull-right">Save Info</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-danger pull-right" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
 

@@ -78,5 +78,13 @@
         public string? AllMedicineNames { get; set; }
         public string? AllMedicineNamesBN { get; set; }
     }
-
+    public class ItemUnitPrices
+    {
+        public string ItemId { get; set; }
+        public string UnitId { get; set; }
+        public string UnitQty { get; set; }
+        public string SalePrice { get; set; }
+        public string PurchasePrice { get; set; }
+        public string IsActive { get; set; }
+    }
 }

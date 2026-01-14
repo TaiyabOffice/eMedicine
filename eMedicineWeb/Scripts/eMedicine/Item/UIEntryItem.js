@@ -1,9 +1,10 @@
 ﻿let rowId = "";
+let hdnItemId = "";
 $(document).ready(function () {
 
     $(".select2").select2();
     $("#btnSave").show();
-    $("#btnUpdate").hide();  
+    $("#btnUpdate").hide();
 
     jQuery.ajax({
         url: "/Common/GetCurrentDate",
@@ -15,6 +16,7 @@ $(document).ready(function () {
     });
 
     ItemHelper.GenerateCombo($("#cmbUnitId"), "SP_SelectGetAllDropDown", "GETALLUNIT", "0", "0", "0", "0", "0");
+    ItemHelper.GenerateCombo($("#cmbPriceUnitId"), "SP_SelectGetAllDropDown", "GETALLUNIT", "0", "0", "0", "0", "0");
     ItemHelper.GenerateCombo($("#cmbBrandId"), "SP_SelectGetAllDropDown", "GETALLBRAND", "0", "0", "0", "0", "0");
     ItemHelper.GenerateCombo($("#cmbSupplierId"), "SP_SelectGetAllDropDown", "GETALLSUPPLIER", "0", "0", "0", "0", "0");
     ItemHelper.GenerateCombo($("#cmbCategoryId"), "SP_SelectGetAllDropDown", "GETALLITEMCATEGORY", "0", "0", "0", "0", "0");
@@ -27,6 +29,11 @@ $("#btnSave").click(function (event) {
     event.preventDefault();
     ItemHelper.SaveCollectionData();
 });
+
+$("#btnSavePrice").click(function (event) {
+    event.preventDefault();
+    ItemHelper.SavePriceData();
+});
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
     ItemHelper.UpdateCollectionData();
@@ -37,10 +44,10 @@ $("#btnClear").click(function (event) {
 });
 
 $("#cmbBrandId").change(function () {
-   
+
     if ($("#cmbBrandId").val() != "") {
         ItemHelper.GetBrandID($("#cmbBrandId").val());
-    }   
+    }
 
 });
 
@@ -91,16 +98,16 @@ var ItemHelper = {
                 { data: 'ItemName' },
                 { data: 'ItemDescription' },
                 { data: 'ItemCategoryName' },
-                { data: 'UnitName' },                
-                { data: 'UnitPrice' },                
-                { data: 'MRP' },                
+                { data: 'UnitName' },
+                { data: 'UnitPrice' },
+                { data: 'MRP' },
                 { data: 'BrandName' },
-                { data: 'SupplierName' },                              
-                { data: 'IsActive' },                
+                { data: 'SupplierName' },
+                { data: 'IsActive' },
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetItemID(\'' + row.ItemId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetDetailsByItemID(\'' + row.ItemId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetItemID(\'' + row.ItemId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button><button id="btnDetails" name="btnDetails" type="button" title="Details" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.GetDetailsByItemID(\'' + row.ItemId + '\')" class="btn btn-sm btn-warning"> <i class="fa fa-eye" style="font-size:15px; padding:0px;"></i></button><button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ItemHelper.ViewItemPrice(\'' + row.ItemId + '\')" class="btn btn-sm btn-success"> <i class="fa fa-plus" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -114,7 +121,7 @@ var ItemHelper = {
                 { "className": "dt-center", "targets": [0, 10] },
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [] },
-                { "targets": [], "visible": false, "searchable": false },
+                { "targets": [2], "visible": false, "searchable": false },
 
             ]
         });
@@ -122,7 +129,7 @@ var ItemHelper = {
     SaveCollectionData: function () {
         if ($("#validateItem").valid()) {
             var formData = new FormData();
-           
+
             formData.append("ItemId", $('#txtItemId').val() || "000000000000");
             formData.append("ItemName", $('#txtName').val());
             formData.append("ItemNameBN", $('#txtNameBN').val());
@@ -147,17 +154,17 @@ var ItemHelper = {
             formData.append("UpdatedBy", $('#hdnUserId').val());
             formData.append("UpdatedDate", $('#hdnDateToday').val());
 
-            
+
             var fileInput = $('#fileUpload')[0];
             if (fileInput.files.length > 0) {
                 formData.append("imageFile", fileInput.files[0]);
             }
 
-            
+
             $.ajax({
-                url: '/Item/CreateItem', 
+                url: '/Item/CreateItem',
                 type: 'POST',
-                processData: false, 
+                processData: false,
                 contentType: false,
                 data: formData,
                 success: function (response) {
@@ -193,8 +200,55 @@ var ItemHelper = {
             });
         }
     },
-    UpdateCollectionData: function ()
-    {
+    SavePriceData: function () {
+        var formData = new FormData();
+        formData.append("ItemId", hdnItemId || "000000000000");
+        formData.append("UnitId", $('#cmbPriceUnitId').val() || "0");
+        formData.append("UnitQty", $('#txtUnitQty').val() || "0");
+        formData.append("SalePrice", $('#txtSalePrice').val() || "0");
+        formData.append("PurchasePrice", $('#txtPurchasePrice').val() || "0");
+        formData.append("IsActive", $('#CmbIsActivePrice').val() || "A");
+
+        $.ajax({
+            url: '/Item/CreateItemPrice',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            success: function (response) {
+                if (response.success) {
+                    swal({
+                        title: "Congratulations",
+                        text: "Saved successfully!",
+                        type: "success",
+                        showConfirmButton: false,
+                        allowOutsideClick: false,
+                        timer: 2000
+                    });
+                    //location.reload();
+
+                    //ItemHelper.GetAllItem();
+                } else {
+                    swal({
+                        title: "Sorry!",
+                        text: "Save failed!",
+                        type: "error",
+                        closeOnConfirm: false,
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                swal({
+                    title: "Sorry!",
+                    text: "Error occurred: " + error,
+                    type: "error",
+                    closeOnConfirm: false,
+                });
+            }
+        });
+
+    },
+    UpdateCollectionData: function () {
         if ($("#validateItem").valid()) {
             var formData = new FormData();
             // Collect form data
@@ -220,13 +274,13 @@ var ItemHelper = {
             formData.append("CreatedBy", $('#hdnUserId').val());
             formData.append("CreatedDate", $('#hdnDateToday').val());
             formData.append("UpdatedBy", $('#hdnUserId').val());
-            formData.append("UpdatedDate", $('#hdnDateToday').val());          
-            formData.append("PreImagePath", $('#lblimgPreview').html());          
+            formData.append("UpdatedDate", $('#hdnDateToday').val());
+            formData.append("PreImagePath", $('#lblimgPreview').html());
             var fileInput = $('#fileUpload')[0];
             if (fileInput.files.length > 0) {
                 formData.append("imageFile", fileInput.files[0]);
             }
-           
+
             $.ajax({
                 url: '/Item/UpdateItemById',
                 type: 'POST',
@@ -315,11 +369,11 @@ var ItemHelper = {
                     $('#txtDescription').val(Item.ItemDescription);
                     $('#txtDescriptionBN').val(Item.ItemDescriptionBN);
                     $('#txtUnitPrice').val(Item.UnitPrice);
-                    $('#txtMRP').val(Item.MRP);                    
+                    $('#txtMRP').val(Item.MRP);
                     $("#cmbBrandId").val(Item.BrandId).select2();
                     $("#cmbUnitId").val(Item.UnitId).select2();
                     $("#cmbSupplierId").val(Item.SupplierId).select2();
-                    $('#cmbCategoryId').val(Item.ItemCategoryId).select2();                   
+                    $('#cmbCategoryId').val(Item.ItemCategoryId).select2();
                     $('#CmbIsActive').val(Item.IsActive).select2();
                     $('#lblimgPreview').html(Item.ImagePath);
                     if (Item.ImagePath) {
@@ -362,7 +416,7 @@ var ItemHelper = {
                 if (response.Success) {
                     var Item = response.data;
                     ItemHelper.clrMdl();
-                    $('#mdlTitle').html("Item Details for: " + Item.ItemId + " - " + Item.ItemName + " - " + Item.ItemNameBN);                    
+                    $('#mdlTitle').html("Item Details for: " + Item.ItemId + " - " + Item.ItemName + " - " + Item.ItemNameBN);
                     $('#MdlName').html("Name: " + Item.ItemName);
                     $('#MdlNameBN').html("নাম: " + Item.ItemNameBN);
                     $('#MdlDescription').html("Description: " + Item.ItemDescription);
@@ -371,8 +425,8 @@ var ItemHelper = {
                     $('#MdlMRP').html("MRP: " + Item.MRP);
                     $('#MdlBrandName').html("Brand Name: " + Item.BrandName);
                     $('#MdlItemCategoryName').html("Category Name: " + Item.ItemCategoryName);
-                    $('#MdlUnitName').html("Unit: " + Item.UnitName);                   
-                    $('#MdlSupplierName').html("Supplier Name: " + Item.SupplierName);  
+                    $('#MdlUnitName').html("Unit: " + Item.UnitName);
+                    $('#MdlSupplierName').html("Supplier Name: " + Item.SupplierName);
                     if (Item.ImagePath) {
                         $('#MdlImage').attr("src", Item.ImagePath).show();
                     } else {
@@ -392,8 +446,8 @@ var ItemHelper = {
             }
         });
     },
-    GetBrandID: function (BrandId) {   
-        
+    GetBrandID: function (BrandId) {
+
         var jsonParam = { BrandId: BrandId };
         var serviceUrl = "/Brand/GetBrandById";
 
@@ -408,7 +462,7 @@ var ItemHelper = {
                     $('#txtBrandId').val(Brand.BrandId);
                     $('#txtName').val(Brand.BrandName);
                     $('#txtNameBN').val(Brand.BrandNameBN);
-                    $('#txtDescription').val(Brand.BrandDescription);  
+                    $('#txtDescription').val(Brand.BrandDescription);
                     $('#txtDescriptionBN').val(Brand.BrandDescriptionBN);
                 } else {
                     swal({
@@ -431,8 +485,7 @@ var ItemHelper = {
             }
         });
     },
-    clrMdl: function (o)
-    {
+    clrMdl: function (o) {
         $('#mdlTitle').html("");
         $('#MdlItemId').html("");
         $('#MdlName').html("");
@@ -445,7 +498,7 @@ var ItemHelper = {
         $('#MdlUnitName').html("");
         $('#MdlSupplierName').html("");
         $('#MdlBrandName').html("");
-           
+
     },
     getSelectionStart: function (o) {
         if (o.createTextRange) {
@@ -481,25 +534,25 @@ var ItemHelper = {
     },
     ValidateItem: function () {
         $.validator.addMethod("notZero", function (value, element) {
-            return this.optional(element) || value != ""; 
+            return this.optional(element) || value != "";
         }, "Please select a valid option");
 
         $("#validateItem").validate({
             rules: {
                 txtName: "required",
-                txtDescription: "required",                
+                txtDescription: "required",
                 txtNameBN: "required",
-                txtDescriptionBN: "required",                
-                txtUnitPrice: "required",                
-                txtMRP: "required",                
-                fileUpload: "required",                
+                txtDescriptionBN: "required",
+                txtUnitPrice: "required",
+                txtMRP: "required",
+                fileUpload: "required",
                 cmbBrandId: {
                     required: true,
-                    notZero: "" 
+                    notZero: ""
                 },
                 cmbCategoryId: {
                     required: true,
-                    notZero: "" 
+                    notZero: ""
                 },
                 cmbUnitId: {
                     required: true,
@@ -508,17 +561,17 @@ var ItemHelper = {
                 cmbSupplierId: {
                     required: true,
                     notZero: ""
-                },                
+                },
                 CmbIsActive: "required"
             },
             messages: {
                 txtName: "Item Name is required",
-                txtDescription: "Item Description is required",                
-                txtUnitPrice: "Item Unit Price is required",                
-                txtMRP: "Item MRP is required",                
-                fileUpload: "File is  required",                
+                txtDescription: "Item Description is required",
+                txtUnitPrice: "Item Unit Price is required",
+                txtMRP: "Item MRP is required",
+                fileUpload: "File is  required",
                 txtNameBN: "নাম প্রয়োজন",
-                txtDescriptionBN: "বর্ণনা প্রয়োজন",               
+                txtDescriptionBN: "বর্ণনা প্রয়োজন",
                 cmbSupplierId: "Please select a Supplier company",
                 cmbBrandId: "Please select a valid Brand name",
                 cmbUnitId: "Please select a valid Unit name",
@@ -530,6 +583,10 @@ var ItemHelper = {
                 element.parent().append(label);
             }
         });
+    },
+    ViewItemPrice: function (ItemId) {
+        hdnItemId = ItemId;
+        $("#modal-ItemPrice").modal("show");
     },
 
 };

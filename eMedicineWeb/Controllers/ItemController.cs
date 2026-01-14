@@ -232,7 +232,26 @@ namespace eMedicineWeb.Controllers
                 return Json(new { success = false, message = "An error occurred.", error = ex.Message });
             }
         }
+        [HttpPost]
+        public async Task<ActionResult> CreateItemPrice(ItemUnitPricesViewModel Item)
+        {
 
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false, message = "Failed Insert Item details." });
+            }
+            string data = JsonConvert.SerializeObject(Item);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateItemPrice", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Item create Successfully" });
+            }
+            ModelState.AddModelError("", "Unable to create Item. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve item details." });
+        }
         #endregion
 
         #region Offers

@@ -106,4 +106,20 @@ namespace eMedicineWeb.Models
         public string Message { get; set; }
         public List<DiseaseViewModel> Data { get; set; }
     }
+
+    public class ItemUnitPricesViewModel
+    {
+        public string ItemId { get; set; }
+        public string UnitId { get; set; }
+        public string UnitQty { get; set; }
+        public string SalePrice { get; set; }
+        public string PurchasePrice { get; set; }
+        public string IsActive { get; set; }
+    }
+    public class ItemUnitPricesResponse
+    {
+        public bool Success { get; set; }
+        public string Message { get; set; }
+        public List<ItemUnitPricesViewModel> Data { get; set; }
+    }
 }

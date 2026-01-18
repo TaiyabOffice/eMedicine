@@ -185,6 +185,32 @@
                         </table>
                     </div>
                 </div>
+                <br>
+                <div class="box box-solid box-primary">
+                    <div class="box-header">
+                        <h3 class="box-title">Item Price List</h3>
+                    </div>
+                    <div class="box-body" style="border-left: 1px solid #d2d6de; border-right: 1px solid #d2d6de;">
+                        <table id="tblItemRate" class="table table-striped table-bordered" cellspacing="0" style="width: 100%; font-size: 10px;">
+                            <thead>
+                                <tr>
+                                    <th>SL</th>
+                                    <th>ItemId</th>
+                                    <th>Unit</th>
+                                    <th>Unit Name</th>
+                                    <th>Unit Qty</th>
+                                    <th>Sale Price</th>
+                                    <th>Purchase Price</th>
+                                    <th>Is Active</th>                                    
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated here dynamically using jQuery or other data fetching methods -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-danger pull-right" data-dismiss="modal">Close</button>
@@ -206,36 +232,38 @@
                 @*<img id="MdlImage" src="" alt="Item Image" style="width:50px; height:auto;" height: auto; margin-bottom: 15px; display: none;" hidden>*@
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-sm-2">
-                            <label for="cmbPriceUnitId">Unit</label>
-                            <select id="cmbPriceUnitId" name="cmbPriceUnitId" class="form-control input-sm select2" style="width:100%"></select>
-                        </div>
-                        <div class="col-sm-2">
-                            <label for="txtUnitQty">Unit Qty</label>
-                            <input type="text" id="txtUnitQty" name="txtUnitQty" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
-                        </div>
-                        <div class="col-sm-2">
-                            <label for="txtSalePrice">Sale Price</label>
-                            <input type="text" id="txtSalePrice" name="txtSalePrice" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
-                        </div>
-                        <div class="col-sm-2">
-                            <label for="txtPurchasePrice">Purchase Price</label>
-                            <input type="text" id="txtPurchasePrice" name="txtPurchasePrice" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
-                        </div>
-                        <div class="col-sm-2">
-                            <label for="CmbIsActivePrice">Is Active</label>
-                            <select id="CmbIsActivePrice" name="CmbIsActivePrice" class="form-control input-sm">
-                                <option value="1">Yes</option>
-                                <option value="0">No</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2" style="margin-top:25px">
-                            <button id="btnSavePrice" type="button" class="btn btn-success pull-right">Save Info</button>
+                <form id="validateItemPrice">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-sm-2">
+                                <label for="cmbPriceUnitId">Unit</label>
+                                <select id="cmbPriceUnitId" name="cmbPriceUnitId" class="form-control input-sm select2" style="width:100%"></select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="txtUnitQty">Unit Qty</label>
+                                <input type="text" id="txtUnitQty" name="txtUnitQty" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="txtSalePrice">Sale Price</label>
+                                <input type="text" id="txtSalePrice" name="txtSalePrice" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="txtPurchasePrice">Purchase Price</label>
+                                <input type="text" id="txtPurchasePrice" name="txtPurchasePrice" style="text-align:right" value="" class="form-control input-sm" autocomplete="off">
+                            </div>
+                            <div class="col-sm-2">
+                                <label for="CmbIsActivePrice">Is Active</label>
+                                <select id="CmbIsActivePrice" name="CmbIsActivePrice" class="form-control input-sm">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2" style="margin-top:25px">
+                                <button id="btnSavePrice" type="button" class="btn btn-success pull-right">Save Info</button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-danger pull-right" data-dismiss="modal">Close</button>

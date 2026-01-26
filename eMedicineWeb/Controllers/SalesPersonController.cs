@@ -37,6 +37,8 @@ namespace eMedicineWeb.Controllers
             }
 
         }
+
+        #region SalesPerson
         public ActionResult UIEntrySalesPerson()
         {
             return View();
@@ -144,5 +146,116 @@ namespace eMedicineWeb.Controllers
             ModelState.AddModelError("", "Unable to Update Sales Person. Please try again.");
             return Json(new { success = false, message = "Failed to retrieve Sales Person details." });
         }
+        #endregion
+
+        #region Shop      
+        public ActionResult UIEntryShop()
+        {
+            return View();
+        }
+
+        public async Task<ActionResult> GetAllShop()
+        {
+            List<ShopViewModel> shopList = new List<ShopViewModel>();
+
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(client.BaseAddress + "/GetAllShop");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    var Response = JsonConvert.DeserializeObject<ShopResponse>(data);
+                    if (Response.Success)
+                    {
+                        if (!string.IsNullOrEmpty(data))
+                        {
+                            shopList = Response?.Data ?? new List<ShopViewModel>();
+                        }
+                    }
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to retrieve Shop. Please try again later." }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { success = true, data = shopList }, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public async Task<ActionResult> CreateShop(ShopViewModel shop)
+        {
+            bool Satus = false;
+            if (!ModelState.IsValid)
+            {
+                return View(shop);
+            }
+            string data = JsonConvert.SerializeObject(shop);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/CreateShop", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Shop create Successfully" });
+            }
+            ModelState.AddModelError("", "Unable to create Shop. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Shop details." });
+        }
+        [HttpPost]
+        public async Task<JsonResult> GetShopById(string shopId)
+        {
+            ShopViewModel shop = null;
+            try
+            {
+                HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/GetShopById/" + shopId).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
+                    try
+                    {
+                        shop = JsonConvert.DeserializeObject<ShopViewModel>(data);
+                    }
+                    catch (JsonSerializationException)
+                    {
+                        var shops = JsonConvert.DeserializeObject<List<ShopViewModel>>(data);
+                        shop = shops.FirstOrDefault();
+                    }
+
+                    if (shop != null)
+                    {
+                        return Json(new { success = true, data01 = new List<ShopViewModel> { shop } });
+                    }
+                }
+                return Json(new { success = false, message = "Failed to retrieve shop details." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"An error occurred: {ex.Message}" });
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult> UpdateShopById(ShopViewModel shop)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return View(shop);
+            }
+            string data = JsonConvert.SerializeObject(shop);
+            StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateShopById", content);
+            if (response.IsSuccessStatusCode)
+            {
+                return Json(new { success = true, message = "Shop Update Successfully" });
+            }
+            ModelState.AddModelError("", "Unable to Update Shop. Please try again.");
+            return Json(new { success = false, message = "Failed to retrieve Shop details." });
+        }
+        #endregion
     }
 }

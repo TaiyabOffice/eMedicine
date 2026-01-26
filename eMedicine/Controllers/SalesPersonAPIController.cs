@@ -16,6 +16,8 @@ namespace eMedicine.Controllers
         {
             this.repo = repo;
         }
+
+        #region Sales Person
         [HttpGet("GetAllSalesPerson")]
         public async Task<IActionResult> GetAll()
         {
@@ -37,6 +39,8 @@ namespace eMedicine.Controllers
                                                SalesPersonPhone = dr["SalesPersonPhone"].ToString(),
                                                CompanyId = dr["CompanyId"].ToString(),
                                                CompanyName = dr["CompanyName"].ToString(),
+                                               AreaId = dr["AreaId"].ToString(),
+                                               AreaName = dr["AreaName"].ToString(),
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();               
                 return new JsonResult(new { Success = true, Data = GetSalesPersonDetails });
@@ -58,7 +62,7 @@ namespace eMedicine.Controllers
             {  
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "CREATESALESPERSON", salesPerson.SalesPersonId, salesPerson.SalesPersonName, salesPerson.SalesPersonDescription,
-                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.IsActive, salesPerson.CompanyId);
+                salesPerson.SalesPersonPhone, salesPerson.CreatedBy, salesPerson.CreatedDate, salesPerson.IsActive, salesPerson.CompanyId, salesPerson.AreaId);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -99,6 +103,8 @@ namespace eMedicine.Controllers
                                                SalesPersonPhone = dr["SalesPersonPhone"].ToString(),
                                                CompanyId = dr["CompanyId"].ToString(),
                                                CompanyName = dr["CompanyName"].ToString(),                                                                                            
+                                               AreaId = dr["AreaId"].ToString(),                                                                                            
+                                               AreaName = dr["AreaName"].ToString(),                                                                                            
                                                IsActive = dr["IsActive"].ToString()
                                            }).ToList();
 
@@ -123,7 +129,7 @@ namespace eMedicine.Controllers
             {
                 bool status = false;
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "UPDATESALESPERSONBYID", salesPerson.SalesPersonId, salesPerson.SalesPersonName, salesPerson.SalesPersonDescription,
-                salesPerson.SalesPersonPhone, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId);
+                salesPerson.SalesPersonPhone, salesPerson.UpdatedBy, salesPerson.UpdatedDate, salesPerson.IsActive, salesPerson.CompanyId, salesPerson.AreaId);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -144,5 +150,145 @@ namespace eMedicine.Controllers
                 });
             }
         }
+        #endregion
+
+
+        #region Shop
+        [HttpGet("GetAllShop")]
+        public async Task<IActionResult> GetAllShop()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectSalesPerson", "GETALLSHOP");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Shop>(), Message = "No shop found." });
+                }
+                var GetShopDetails = (from DataRow dr in ds.Tables[0].Rows
+                                             select new Shop()
+                                             {
+                                                 ShopId = dr["ShopId"].ToString(),
+                                                 ShopName = dr["ShopName"].ToString(),
+                                                 OwnerName = dr["OwnerName"].ToString(),
+                                                 ContactNo = dr["ContactNo"].ToString(),
+                                                 Address = dr["Address"].ToString(),
+                                                 AreaId = dr["AreaId"].ToString(),
+                                                 AreaName = dr["AreaName"].ToString(),
+                                                 CreditLimit = dr["CreditLimit"].ToString(),
+                                                 DueAmount = dr["DueAmount"].ToString(),
+                                                 IsActive = dr["IsActive"].ToString()                                                
+                                             }).ToList();
+                return new JsonResult(new { Success = true, Data = GetShopDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Shop.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("CreateShop")]
+        public async Task<IActionResult> CreateShop([FromBody] Shop shop)
+        {
+            try
+            {
+                bool status = false;
+                var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "CREATESHOP", shop.ShopId, shop.ShopName, shop.OwnerName,
+                shop.ContactNo, shop.Address, shop.AreaId, shop.CreditLimit, shop.DueAmount, shop.IsActive, shop.CreatedBy, shop.CreatedDate);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Shop>(), Message = "shop Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Shop>(), Message = "shop Create Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Shop.",
+                    Details = ex.Message
+                });
+            }
+        }
+        [HttpGet("GetShopById/{shopId}")]
+        public async Task<IActionResult> GetShopById(string shopId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectSalesPerson", "GETSHOPBYID", shopId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return Ok(new { Success = true, Data = new List<Shop>(), Message = "No Shop found." });
+                }
+                var GetShopDetails = (from DataRow dr in ds.Tables[0].Rows
+                                             select new Shop()
+                                             {
+                                                 ShopId = dr["ShopId"].ToString(),
+                                                 ShopName = dr["ShopName"].ToString(),
+                                                 OwnerName = dr["OwnerName"].ToString(),
+                                                 ContactNo = dr["ContactNo"].ToString(),
+                                                 Address = dr["Address"].ToString(),
+                                                 AreaId = dr["AreaId"].ToString(),
+                                                 AreaName = dr["AreaName"].ToString(),
+                                                 CreditLimit = dr["CreditLimit"].ToString(),
+                                                 DueAmount = dr["DueAmount"].ToString(),
+                                                 IsActive = dr["IsActive"].ToString()
+                                             }).ToList();
+
+                return new JsonResult(GetShopDetails);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Shop.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+        [HttpPost("UpdateShopById")]
+        public async Task<IActionResult> UpdateShopById([FromBody] Shop shop)
+        {
+            try
+            {
+                bool status = false;
+                var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "UPDATESHOPBYID", shop.ShopId, shop.ShopName, shop.OwnerName,
+                shop.ContactNo, shop.Address, shop.AreaId, shop.CreditLimit, shop.DueAmount, shop.IsActive,  shop.UpdatedBy, shop.UpdatedDate);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Shop>(), Message = "Shop Update Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Shop>(), Message = "Shop Update Successfully." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Shop.",
+                    Details = ex.Message
+                });
+            }
+        }
+        #endregion
     }
 }

@@ -7403,6 +7403,7 @@
     <Content Include="Scripts\eMedicine\Registration\UIRecoverPassword.js" />
     <Content Include="Scripts\eMedicine\Registration\UIUserList.js" />
     <Content Include="Scripts\eMedicine\Registration\UIEntryRegister.js" />
+    <Content Include="Scripts\eMedicine\SalesPerson\UIEntryShop.js" />
     <Content Include="Scripts\eMedicine\SalesPerson\UIEntrySalesPerson.js" />
     <Content Include="Scripts\eMedicine\Supplier\UIEntrySupplier.js" />
     <Content Include="Scripts\eMedicine\Generics\UIEntryGenerics.js" />
@@ -7452,6 +7453,7 @@
     <Content Include="Views\Item\ItemDemo.cshtml" />
     <Content Include="Views\Item\UIOfferDetails.cshtml" />
     <Content Include="Views\Item\UIEntryDiseaseWiseMedicine.cshtml" />
+    <Content Include="Views\SalesPerson\UIEntryShop.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

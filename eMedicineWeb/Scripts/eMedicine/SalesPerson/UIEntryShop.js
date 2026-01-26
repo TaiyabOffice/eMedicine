@@ -12,29 +12,27 @@ $(document).ready(function () {
             $("#hdnDateToday").datepicker('setDate', new Date(result));            
         }
     });
-
-    SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "100000000099", "0", "0", "0", "0");
-    SalesPersonHelper.GenerateCombo($("#cmbAreaId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
-    SalesPersonHelper.BuildTbl("");
-    SalesPersonHelper.GetAllSalesPerson();
-    SalesPersonHelper.ValidateSalesPerson();
+  
+    ShopHelper.GenerateCombo($("#cmbAreaId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
+    ShopHelper.BuildTbl("");
+    ShopHelper.GetAllShop();
+    ShopHelper.ValidateShop();
 
 });
 $("#btnSave").click(function (event) {
     event.preventDefault();
-    SalesPersonHelper.SaveCollectionData();
+    ShopHelper.SaveCollectionData();
 });
-
 $("#btnUpdate").click(function (event) {
     event.preventDefault();
-    SalesPersonHelper.UpdateCollectionData();
+    ShopHelper.UpdateCollectionData();
 });
 $("#btnClear").click(function (event) {
     event.preventDefault();
     location.reload();
 });
 
-var SalesPersonHelper = {
+var ShopHelper = {
     GenerateCombo: function (objcmb, proName, callName, param1, param2, param3, param4, param5) {
 
         objcmb.empty();
@@ -62,25 +60,24 @@ var SalesPersonHelper = {
         });
     },
     BuildTbl: function (tbldata) {
-        $('#tblSalesPerson').DataTable({
+        $('#tblShop').DataTable({
             data: tbldata,
             "responsive": true,
             "bDestroy": true,
             columns: [
                 { "data": "SL" },
-                { data: 'SalesPersonId' },
-                { data: 'SalesPersonName' },
-                { data: 'SalesPersonDescription' },
-                { data: 'SalesPersonPhone' },
+                { data: 'ShopId' },
+                { data: 'ShopName' },
+                { data: 'OwnerName' },
+                { data: 'ContactNo' },
                 { data: 'AreaId' },
                 { data: 'AreaName' },
-                { data: 'CompanyId' },
-                { data: 'CompanyName' },                
+                { data: 'Address' },                          
                 { data: 'IsActive' },
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="SalesPersonHelper.GetSalesPersonID(\'' + row.SalesPersonId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
+                        return '<button id="btnEdit" name="btnEdit" type="button" title="Edit" style="margin-right:2px; width:20px; height:20px; padding:0px;" onclick="ShopHelper.GetShopID(\'' + row.ShopId + '\')" class="btn btn-sm btn-danger"> <i class="fa fa-pencil" style="font-size:15px; padding:0px;"></i></button>';
                     }
                 }
             ],
@@ -92,7 +89,7 @@ var SalesPersonHelper = {
                 },                
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [] },
-                { "targets": [5,7,8], "visible": false, "searchable": false },
+                { "targets": [5], "visible": false, "searchable": false },
 
             ]
 
@@ -103,15 +100,15 @@ var SalesPersonHelper = {
         if ($("#validateCompany").valid()) {
 
             var companyData = {
-                SalesPersonId: $('#txtSalesPersonId').val() ? "" : "000000000000",
-                SalesPersonName: $('#txtSalesPersonName').val(),
-                SalesPersonDescription: $('#txtDescription').val(),
-                SalesPersonPhone: $('#txtPhone').val(),
+                ShopId: $('#txtShopId').val() ? "" : "0",
+                ShopName: $('#txtShopName').val(),
+                OwnerName: $('#txtOwnerName').val(),
+                ContactNo: $('#txtPhone').val(),
                 AreaId: $('#cmbAreaId').val(),
                 AreaName: $('#cmbAreaId').val(),
-                SalesPersonPhone: $('#txtPhone').val(),
-                CompanyId: $('#cmbCompanyId').val(),
-                CompanyName: $('#cmbCompanyId').val(),
+                Address: $('#txtAddress').val(),
+                CreditLimit: '5000',
+                DueAmount: '0',
                 IsActive: $('#CmbIsActive').val(),
                 CreatedBy: $('#hdnUserId').val(),
                 CreatedDate: $('#hdnDateToday').val(),
@@ -121,7 +118,7 @@ var SalesPersonHelper = {
 
             // Send the form data to the CreateCompany action via AJAX
             $.ajax({
-                url: '/SalesPerson/CreateSalesPerson', // Your controller action
+                url: '/SalesPerson/CreateShop', // Your controller action
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(companyData), // Send as JSON
@@ -137,7 +134,7 @@ var SalesPersonHelper = {
                     });
                     location.reload();
 
-                    SalesPersonHelper.GetAllSalesPerson();
+                    ShopHelper.GetAllShop();
                 },
                 error: function (xhr, status, error) {
                     // Handle errors
@@ -149,15 +146,16 @@ var SalesPersonHelper = {
     UpdateCollectionData: function () {
         if ($("#validateCompany").valid()) {
 
-            var SalesPersonData = {
-                SalesPersonId: $('#txtSalesPersonId').val(),
-                SalesPersonName: $('#txtSalesPersonName').val(),
-                SalesPersonDescription: $('#txtDescription').val(),
-                SalesPersonPhone: $('#txtPhone').val(),
+            var ShopData = {
+                ShopId: $('#txtShopId').val(),
+                ShopName: $('#txtShopName').val(),
+                OwnerName: $('#txtOwnerName').val(),
+                ContactNo: $('#txtPhone').val(),
                 AreaId: $('#cmbAreaId').val(),
                 AreaName: $('#cmbAreaId').val(),
-                CompanyId: $('#cmbCompanyId').val(),
-                CompanyName: $('#cmbCompanyId').val(),
+                Address: $('#txtAddress').val(),
+                CreditLimit: '5000',
+                DueAmount: '0',
                 IsActive: $('#CmbIsActive').val(),
                 CreatedBy: $('#hdnUserId').val(),
                 CreatedDate: $('#hdnDateToday').val(),
@@ -167,10 +165,10 @@ var SalesPersonHelper = {
 
             // Send the form data to the CreateCompany action via AJAX
             $.ajax({
-                url: '/SalesPerson/UpdateSalesPersonById', // Your controller action
+                url: '/SalesPerson/UpdateShopById', // Your controller action
                 type: 'POST',
                 contentType: 'application/json',
-                data: JSON.stringify(SalesPersonData), // Send as JSON
+                data: JSON.stringify(ShopData), // Send as JSON
                 success: function (response) {
                     // Success message               
                     swal({
@@ -182,7 +180,7 @@ var SalesPersonHelper = {
                     });
                     location.reload();
 
-                    SalesPersonHelper.GetAllSalesPerson();
+                    ShopHelper.GetAllShop();
                 },
                 error: function (xhr, status, error) {
                     // Handle errors
@@ -191,15 +189,15 @@ var SalesPersonHelper = {
             });
         }
     },
-    GetAllSalesPerson: function () {
-        var serviceUrl = "/SalesPerson/GetAllSalesPerson";
+    GetAllShop: function () {
+        var serviceUrl = "/SalesPerson/GetAllShop";
         jQuery.ajax({
             url: serviceUrl,
             type: "POST",
             success: function (result) {
                 if (result.success) {
                     console.log(result.data);
-                    SalesPersonHelper.BuildTbl(result.data);
+                    ShopHelper.BuildTbl(result.data);
                 } else {
                     swal({
                         title: "Sorry!",
@@ -221,11 +219,11 @@ var SalesPersonHelper = {
             }
         });
     },
-    GetSalesPersonID: function (SalesPersonId) {
+    GetShopID: function (ShopId) {
         $("#btnSave").hide();
         $("#btnUpdate").show();
-        var jsonParam = { salesPersonId: SalesPersonId };
-        var serviceUrl = "/SalesPerson/GetSalesPersonById";
+        var jsonParam = { ShopId: ShopId };
+        var serviceUrl = "/SalesPerson/GetShopById";
 
         jQuery.ajax({
             url: serviceUrl,
@@ -233,16 +231,15 @@ var SalesPersonHelper = {
             data: jsonParam,
             success: function (response) {
                 if (response.success && response.data01 && response.data01.length > 0) {
-                    var SalesPerson = response.data01[0];
+                    var Shop = response.data01[0];
                     //$("#cmbCompanyId").empty();
-                    $('#txtSalesPersonId').val(SalesPerson.SalesPersonId);
-                    $('#txtSalesPersonName').val(SalesPerson.SalesPersonName);
-                    $('#txtDescription').val(SalesPerson.SalesPersonDescription);
-                    $('#txtPhone').val(SalesPerson.SalesPersonPhone);
-                    $('#CompanyPhone').val(SalesPerson.CompanyPhone);
-                    $("#cmbCompanyId").val(SalesPerson.CompanyId).select2();
-                    $("#cmbAreaId").val(SalesPerson.AreaId).select2();
-                    $('#CmbIsActive').val(SalesPerson.IsActive);                                    
+                    $('#txtShopId').val(Shop.ShopId);
+                    $('#txtShopName').val(Shop.ShopName);
+                    $('#txtOwnerName').val(Shop.OwnerName);
+                    $('#txtPhone').val(Shop.ContactNo);                    
+                    $('#txtAddress').val(Shop.Address);                    
+                    $("#cmbAreaId").val(Shop.AreaId).select2();
+                    $('#CmbIsActive').val(Shop.IsActive);                                    
                 } else {
                     swal({
                         title: "Sorry!",
@@ -283,7 +280,7 @@ var SalesPersonHelper = {
             return false;
         }
         //get the carat position
-        var caratPos = SalesPersonHelper.getSelectionStart(el);
+        var caratPos = ShopHelper.getSelectionStart(el);
         var dotPos = el.value.indexOf(".");
         if (caratPos > dotPos && dotPos > -1 && (number[1].length > deci_point - 1)) {
             return false;
@@ -296,23 +293,19 @@ var SalesPersonHelper = {
             e.preventDefault();
         }
     }, 
-    ValidateSalesPerson: function () {
+    ValidateShop: function () {
         $.validator.addMethod("notZero", function (value, element) {
             return this.optional(element) || value != ""; 
         }, "Please select a valid option");
 
         $("#validateCompany").validate({
             rules: {
-                txtSalesPersonName: "required",
+                txtShopName: "required",
                 txtPhone: {
                     required: true,
                     digits: true,
                     minlength: 10,
                     maxlength: 15
-                },
-                cmbCompanyId: {
-                    required: true,
-                    notZero: ""
                 },
                 CmbIsActive: {
                     required: true,
@@ -323,20 +316,21 @@ var SalesPersonHelper = {
                     required: true,
                     notZero: ""
                 },
-                txtDescription: "required"
+                txtOwnerName: "required",
+                txtAddress: "required"
             },
             messages: {
-                txtSalesPersonName: "Sales Person Name is required",
+                txtShopName: "Name is required",
                 txtPhone: {
                     required: "Phone Number is required",
                     digits: "Please enter a valid phone number",
                     minlength: "Phone number must be at least 10 digits",
                     maxlength: "Phone number must not exceed 15 digits"
-                },
-                cmbCompanyId: "Please select a company",
+                },               
                 cmbAreaId: "Please select a Area",
                 CmbIsActive: "Please select if the sales person is active",
-                txtDescription: "Description is required"
+                txtOwnerName: "Description is required",
+                txtAddress: "Address is required"
             },
             errorPlacement: function (label, element) {
                 label.addClass('error');

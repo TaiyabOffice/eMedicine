@@ -38,6 +38,8 @@ namespace eMedicineWeb.Models
         public string Address { get; set; }
         public string AreaId { get; set; }
         public string AreaName { get; set; }
+        public string UpazilasId { get; set; }
+        public string UpazilasName { get; set; }
         public string CreditLimit { get; set; }
         public string DueAmount { get; set; }      
         public string IsActive { get; set; }        

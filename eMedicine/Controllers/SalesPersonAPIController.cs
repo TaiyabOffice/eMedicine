@@ -3,6 +3,8 @@ using eMedicine.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace eMedicine.Controllers
 {
@@ -176,6 +178,8 @@ namespace eMedicine.Controllers
                                                  Address = dr["Address"].ToString(),
                                                  AreaId = dr["AreaId"].ToString(),
                                                  AreaName = dr["AreaName"].ToString(),
+                                                 UpazilasId = dr["UpazilasId"].ToString(),
+                                                 UpazilasName = dr["UpazilasName"].ToString(),
                                                  CreditLimit = dr["CreditLimit"].ToString(),
                                                  DueAmount = dr["DueAmount"].ToString(),
                                                  IsActive = dr["IsActive"].ToString()                                                
@@ -199,8 +203,9 @@ namespace eMedicine.Controllers
             try
             {
                 bool status = false;
+                string UserPass = EncodeMD5(shop.ContactNo);
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "CREATESHOP", shop.ShopId, shop.ShopName, shop.OwnerName,
-                shop.ContactNo, shop.Address, shop.AreaId, shop.CreditLimit, shop.DueAmount, shop.IsActive, shop.CreatedBy, shop.CreatedDate);
+                shop.ContactNo, shop.Address, shop.AreaId, shop.CreditLimit, shop.DueAmount, shop.IsActive, shop.CreatedBy, shop.CreatedDate, shop.UpazilasId, UserPass);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -242,6 +247,8 @@ namespace eMedicine.Controllers
                                                  Address = dr["Address"].ToString(),
                                                  AreaId = dr["AreaId"].ToString(),
                                                  AreaName = dr["AreaName"].ToString(),
+                                                 UpazilasId = dr["UpazilasId"].ToString(),
+                                                 UpazilasName = dr["UpazilasName"].ToString(),
                                                  CreditLimit = dr["CreditLimit"].ToString(),
                                                  DueAmount = dr["DueAmount"].ToString(),
                                                  IsActive = dr["IsActive"].ToString()
@@ -267,8 +274,9 @@ namespace eMedicine.Controllers
             try
             {
                 bool status = false;
+                string UserPass = EncodeMD5(shop.ContactNo);
                 var ds = await this.repo.GetAll("", "sp_EntrySalesPerson", "UPDATESHOPBYID", shop.ShopId, shop.ShopName, shop.OwnerName,
-                shop.ContactNo, shop.Address, shop.AreaId, shop.CreditLimit, shop.DueAmount, shop.IsActive,  shop.UpdatedBy, shop.UpdatedDate);
+                shop.ContactNo, shop.Address, shop.AreaId, shop.CreditLimit, shop.DueAmount, shop.IsActive,  shop.UpdatedBy, shop.UpdatedDate, shop.UpazilasId, UserPass);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
@@ -288,6 +296,15 @@ namespace eMedicine.Controllers
                     Details = ex.Message
                 });
             }
+        }
+        public static string EncodeMD5(string originalStr)
+        {
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalStr);
+            encodedBytes = md5.ComputeHash(originalBytes);
+            return BitConverter.ToString(encodedBytes);
         }
         #endregion
     }

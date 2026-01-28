@@ -13,7 +13,7 @@ $(document).ready(function () {
         }
     });
   
-    ShopHelper.GenerateCombo($("#cmbAreaId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
+    ShopHelper.GenerateCombo($("#cmbAreaId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");  
     ShopHelper.BuildTbl("");
     ShopHelper.GetAllShop();
     ShopHelper.ValidateShop();
@@ -30,6 +30,11 @@ $("#btnUpdate").click(function (event) {
 $("#btnClear").click(function (event) {
     event.preventDefault();
     location.reload();
+});
+
+$("#cmbAreaId").on("change", function (e) {    
+    $("#cmbUpazilasId").empty();
+    ShopHelper.GenerateCombo($("#cmbUpazilasId"), "SP_SelectGetAllDropDown", "GETALLUPAZILA", $("#cmbAreaId").val(), "0", "0", "0", "0");
 });
 
 var ShopHelper = {
@@ -56,6 +61,7 @@ var ShopHelper = {
                 }
                 // this is for to work onchange event when only one data is returned
                 objcmb.change();
+                objcmb.select2().trigger('change');
             }
         });
     },
@@ -106,6 +112,8 @@ var ShopHelper = {
                 ContactNo: $('#txtPhone').val(),
                 AreaId: $('#cmbAreaId').val(),
                 AreaName: $('#cmbAreaId').val(),
+                UpazilasId: $('#cmbUpazilasId').val(),
+                UpazilasName: $('#cmbUpazilasId').val(),
                 Address: $('#txtAddress').val(),
                 CreditLimit: '5000',
                 DueAmount: '0',
@@ -153,6 +161,8 @@ var ShopHelper = {
                 ContactNo: $('#txtPhone').val(),
                 AreaId: $('#cmbAreaId').val(),
                 AreaName: $('#cmbAreaId').val(),
+                UpazilasId: $('#cmbUpazilasId').val(),
+                UpazilasName: $('#cmbUpazilasId').val(),
                 Address: $('#txtAddress').val(),
                 CreditLimit: '5000',
                 DueAmount: '0',
@@ -238,8 +248,10 @@ var ShopHelper = {
                     $('#txtOwnerName').val(Shop.OwnerName);
                     $('#txtPhone').val(Shop.ContactNo);                    
                     $('#txtAddress').val(Shop.Address);                    
-                    $("#cmbAreaId").val(Shop.AreaId).select2();
-                    $('#CmbIsActive').val(Shop.IsActive);                                    
+                    $("#cmbAreaId").val(Shop.AreaId).select2().trigger('change');
+                    $("#cmbUpazilasId").val(Shop.UpazilasId).select2();
+                    $('#CmbIsActive').val(Shop.IsActive);
+                                                    
                 } else {
                     swal({
                         title: "Sorry!",
@@ -316,6 +328,10 @@ var ShopHelper = {
                     required: true,
                     notZero: ""
                 },
+                cmbUpazilasId: {
+                    required: true,
+                    notZero: ""
+                },
                 txtOwnerName: "required",
                 txtAddress: "required"
             },
@@ -328,6 +344,7 @@ var ShopHelper = {
                     maxlength: "Phone number must not exceed 15 digits"
                 },               
                 cmbAreaId: "Please select a Area",
+                cmbUpazilasId: "Please select a Upazilas",
                 CmbIsActive: "Please select if the sales person is active",
                 txtOwnerName: "Description is required",
                 txtAddress: "Address is required"

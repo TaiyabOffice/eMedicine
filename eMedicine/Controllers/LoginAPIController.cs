@@ -102,26 +102,57 @@ namespace eMedicine.Controllers
             try
             {
                 var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETAPPMENUS");
+
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {
-                    return new JsonResult(new { Success = false, Message = "No Menu found.", Data = new List<Menu>() });
+                    return new JsonResult(new
+                    {
+                        Success = false,
+                        Message = "No Menu found."
+                    });
                 }
+
+                // ✅ Table 0 → Menu List
                 var GetMenuDetails = (from DataRow dr in ds.Tables[0].Rows
                                       select new Menu()
                                       {
-                                          MenuID = dr["MenuID"].ToString(),                                         
+                                          MenuID = dr["MenuID"].ToString(),
                                           MenuName = dr["MenuName"].ToString(),
                                           MenuNameBN = dr["MenuNameBN"].ToString(),
                                           PageName = dr["PageName"].ToString(),
-                                          PageUrl = dr["PageUrl"].ToString(),                                        
+                                          PageUrl = dr["PageUrl"].ToString(),
                                           ImagePath = dr["ImagePath"].ToString()
                                       }).ToList();
-                return new JsonResult(new { Success = true, Data = GetMenuDetails });
 
+                // ✅ Table 1 → Summary
+                string totalUser = "0";
+                string totalItem = "0";
+                string totalOrder = "0";
+                string totalDelevary = "0";
+
+                if (ds.Tables.Count > 1 && ds.Tables[1].Rows.Count > 0)
+                {
+                    var summaryRow = ds.Tables[1].Rows[0];
+
+                    totalUser = summaryRow["TotalUser"]?.ToString();
+                    totalItem = summaryRow["TotalItem"]?.ToString();
+                    totalOrder = summaryRow["TotalOrder"]?.ToString();
+                    totalDelevary = summaryRow["TotalDelevary"]?.ToString();
+                }
+
+                var responseData = new
+                {
+                    totalUser = totalUser,
+                    totalItem = totalItem,
+                    totalOrder = totalOrder,
+                    totalDelevary = totalDelevary,
+                    appMenu = GetMenuDetails
+                };
+
+                return new JsonResult(new {Success = true, Data = responseData});
             }
             catch (Exception ex)
             {
-                // Log the exception (implement your logging mechanism here)
                 return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
@@ -129,8 +160,8 @@ namespace eMedicine.Controllers
                     Details = ex.Message
                 });
             }
-
         }
+
 
         public static string EncodeMD5(string originalStr)
         {

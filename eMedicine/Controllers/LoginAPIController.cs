@@ -96,12 +96,12 @@ namespace eMedicine.Controllers
 
         }
 
-        [HttpGet("GetAppMenu")]
-        public async Task<IActionResult> GetAppMenu()
+        [HttpGet("GetAppMenuById/{UserId}")]
+        public async Task<IActionResult> GetAppMenu(string UserId)
         {
             try
             {
-                var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETAPPMENUS");
+                var ds = await this.repo.GetAll("", "sp_SelectLogin", "GETAPPMENUS", UserId);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {

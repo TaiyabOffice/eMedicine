@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\eMedicine\\eMedicine\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|d:\\emedicine\\emedicine\\emedicineweb\\scripts\\emedicine\\item\\uientrydiseasewisemedicine.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\scripts\\emedicine\\item\\uientrydiseasewisemedicine.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\loginapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\loginapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -67,19 +71,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "UIEntryDiseaseWiseMedicine.js",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryDiseaseWiseMedicine.js",
+              "RelativeDocumentMoniker": "eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryDiseaseWiseMedicine.js",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryDiseaseWiseMedicine.js",
+              "RelativeToolTip": "eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryDiseaseWiseMedicine.js",
+              "ViewState": "AQIAAIMBAAAAAAAAAIA9wA8BAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-03-07T07:48:44.258Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "LoginAPIController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\LoginAPIController.cs",
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\LoginAPIController.cs",
               "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\LoginAPIController.cs",
               "RelativeToolTip": "eMedicine\\Controllers\\LoginAPIController.cs",
-              "ViewState": "AQIAACMAAAAAAAAAAAAQwF8AAAAAAAAA",
+              "ViewState": "AQIAACMAAAAAAAAAAAAQwDEAAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-15T11:27:06.851Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "RegistrationAPIController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\RegistrationAPIController.cs",
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\RegistrationAPIController.cs",
@@ -91,7 +108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "RegistrationController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\RegistrationController.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\RegistrationController.cs",
@@ -103,7 +120,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "UIEntryShop.js",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntryShop.js",
               "RelativeDocumentMoniker": "eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntryShop.js",
@@ -115,7 +132,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "UIEntryShop.cshtml",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Views\\SalesPerson\\UIEntryShop.cshtml",
               "RelativeDocumentMoniker": "eMedicineWeb\\Views\\SalesPerson\\UIEntryShop.cshtml",
@@ -127,7 +144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "SalesPersonViewModel.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Models\\SalesPersonViewModel.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Models\\SalesPersonViewModel.cs",
@@ -139,7 +156,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "SalesPersonController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\SalesPersonController.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\SalesPersonController.cs",
@@ -151,7 +168,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "SalesPersonAPIController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\SalesPersonAPIController.cs",
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\SalesPersonAPIController.cs",
@@ -163,7 +180,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "eMedicine.csproj",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj",
               "RelativeDocumentMoniker": "eMedicine\\eMedicine.csproj",
@@ -175,7 +192,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "SalesPerson.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\SalesPerson.cs",
               "RelativeDocumentMoniker": "eMedicine\\Models\\SalesPerson.cs",

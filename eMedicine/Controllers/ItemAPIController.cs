@@ -61,6 +61,54 @@ namespace eMedicine.Controllers
             }
         }
 
+        [HttpGet("GetAllItemWithRate")]
+        public async Task<IActionResult> GetAllItemWithRate()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "GETALLITEMWITHRATE");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<ShopItem>(), Message = "No Item found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new ShopItem()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          ItemName = dr["ItemName"].ToString(),
+                                          ItemNameBN = dr["ItemNameBN"].ToString(),
+                                          ItemDescription = dr["ItemDescription"].ToString(),
+                                          ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),                                          
+                                          ImagePath = dr["ImagePath"].ToString(),                                         
+
+                                          Units = (from DataRow ur in ds.Tables[1].Rows
+                                                   where ur["ItemId"].ToString() == dr["ItemId"].ToString()
+                                                   select new ItemUnitPrices()
+                                                   {
+                                                       ItemId = ur["ItemId"].ToString(),
+                                                       UnitId = ur["UnitId"].ToString(),
+                                                       UnitName = ur["UnitName"].ToString(),
+                                                       UnitQty = ur["UnitQty"].ToString(),
+                                                       SalePrice = ur["SalePrice"].ToString(),
+                                                       PurchasePrice = ur["PurchasePrice"].ToString(),
+                                                       IsActive = ur["IsActive"].ToString()
+                                                   }).ToList()
+                                      }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
+
         [HttpPost("CreateItem")]
         public async Task<IActionResult> CreateItem([FromBody] Item Item)
         {

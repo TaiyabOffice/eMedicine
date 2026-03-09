@@ -26,7 +26,6 @@
         public string CreatedDate { get; set; }
         public string Updatedby { get; set; }
         public string UpdatedDate { get; set; }
-
     }
 
     public class Offers
@@ -77,6 +76,19 @@
         public string UpdatedDate { get; set; }
         public string? AllMedicineNames { get; set; }
         public string? AllMedicineNamesBN { get; set; }
+    }
+
+    public class ShopItem
+    {
+        public string ItemId { get; set; }
+        public string ItemName { get; set; }
+        public string ItemNameBN { get; set; }
+        public string ItemDescription { get; set; }
+        public string ItemDescriptionBN { get; set; }        
+        public string ImagePath { get; set; }        
+
+        public List<ItemUnitPrices> Units { get; set; }
+
     }
     public class ItemUnitPrices
     {

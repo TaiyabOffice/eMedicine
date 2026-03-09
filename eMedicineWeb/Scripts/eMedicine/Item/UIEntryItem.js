@@ -403,7 +403,7 @@ var ItemHelper = {
     },
     GetAllItemRate: function (ItemId) {
         $("#btnSave").hide();
-        $("#btnUpdate").show();
+        //$("#btnUpdate").show();
         var jsonParam = { ItemId: ItemId };
         var serviceUrl = "/Item/GetAllItemRate";
 

@@ -11,6 +11,17 @@
         public string? OrderAddress { get; set; }
         public string OrderdDate { get; set; }
     }
+
+    public class ShopOrder
+    {
+        public string OrderId { get; set; }
+        public string ShopId { get; set; }
+        public string ItemId { get; set; }       
+        public string Quantity { get; set; }
+        public string UnitPriceId { get; set; }
+        public string OrderdBy { get; set; }      
+        public string OrderdDate { get; set; }
+    }
     public class OrderList
     {
         public string OrderId { get; set; }

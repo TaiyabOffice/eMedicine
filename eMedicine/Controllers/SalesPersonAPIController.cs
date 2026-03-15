@@ -306,6 +306,48 @@ namespace eMedicine.Controllers
             encodedBytes = md5.ComputeHash(originalBytes);
             return BitConverter.ToString(encodedBytes);
         }
+
+        [HttpGet("GetShopByUserId/{UserId}")]
+        public async Task<IActionResult> GetShopByUserId(string UserId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectSalesPerson", "GETSHOPBYUSERID", UserId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return Ok(new { Success = true, Data = new List<Shop>(), Message = "No Shop found." });
+                }
+                var GetShopDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new Shop()
+                                      {
+                                          ShopId = dr["ShopId"].ToString(),
+                                          ShopName = dr["ShopName"].ToString(),
+                                          OwnerName = dr["OwnerName"].ToString(),
+                                          ContactNo = dr["ContactNo"].ToString(),
+                                          Address = dr["Address"].ToString(),
+                                          AreaId = dr["AreaId"].ToString(),
+                                          AreaName = dr["AreaName"].ToString(),
+                                          UpazilasId = dr["UpazilasId"].ToString(),
+                                          UpazilasName = dr["UpazilasName"].ToString(),
+                                          CreditLimit = dr["CreditLimit"].ToString(),
+                                          DueAmount = dr["DueAmount"].ToString(),
+                                          IsActive = dr["IsActive"].ToString()
+                                      }).ToList();
+
+                return new JsonResult(GetShopDetails);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Shop.",
+                    Details = ex.Message
+                });
+            }
+
+        }
         #endregion
     }
 }

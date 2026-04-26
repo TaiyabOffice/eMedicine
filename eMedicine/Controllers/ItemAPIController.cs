@@ -612,6 +612,7 @@ namespace eMedicine.Controllers
                                           ItemNameBN = dr["ItemNameBN"].ToString(),
                                           ItemDescription = dr["ItemDescription"].ToString(),
                                           ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                          BrandName = dr["BrandName"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),
                                           MRP = dr["MRP"].ToString(),                                          
                                           UnitName = dr["UnitName"].ToString(), 

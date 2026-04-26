@@ -19,6 +19,7 @@
         public string ItemId { get; set; }       
         public string Quantity { get; set; }
         public string UnitPriceId { get; set; }
+        public string UnitPrice { get; set; }
         public string OrderdBy { get; set; }      
         public string OrderdDate { get; set; }
     }

@@ -3,19 +3,47 @@
   "WorkspaceRootPath": "D:\\eMedicine\\eMedicine\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\itemapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\itemapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\orderapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\orderapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\models\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\registrationapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\registrationapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\scripts\\emedicine\\item\\uientrydiseasewisemedicine.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\scripts\\emedicine\\item\\uientrydiseasewisemedicine.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\salespersonapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\salespersonapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|d:\\emedicine\\emedicine\\emedicineweb\\views\\item\\uientryitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\models\\salesperson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\models\\salesperson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\controllers\\registrationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\registrationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\scripts\\emedicine\\salesperson\\uientrysalesperson.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\scripts\\emedicine\\salesperson\\uientrysalesperson.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\views\\item\\uientryitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\views\\item\\uientryitem.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
@@ -23,44 +51,20 @@
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\scripts\\emedicine\\item\\uientryitem.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\itemapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\itemapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\models\\item.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\controllers\\itemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\itemcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\scripts\\emedicine\\item\\uientrydiseasewisemedicine.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
-      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\scripts\\emedicine\\item\\uientrydiseasewisemedicine.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\emedicine.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\emedicine.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\controllers\\registrationapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\controllers\\registrationapicontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\controllers\\salespersoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\salespersoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\controllers\\registrationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\controllers\\registrationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\scripts\\emedicine\\salesperson\\uientryshop.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
       "RelativeMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|solutionrelative:emedicineweb\\scripts\\emedicine\\salesperson\\uientryshop.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|d:\\emedicine\\emedicine\\emedicine\\models\\salesperson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2A3F18BB-F2D1-4E34-802E-010AE40E28FC}|eMedicine\\eMedicine.csproj|solutionrelative:emedicine\\models\\salesperson.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{32901061-C14B-4F7D-AF68-148B6221E420}|eMedicineWeb\\eMedicineWeb.csproj|D:\\eMedicine\\eMedicine\\emedicineweb\\models\\salespersonviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -78,7 +82,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Bookmark",
@@ -94,15 +98,66 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Order.cs",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Order.cs",
-              "RelativeDocumentMoniker": "eMedicine\\Models\\Order.cs",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Order.cs",
-              "RelativeToolTip": "eMedicine\\Models\\Order.cs",
-              "ViewState": "AQIAAAsAAAAAAAAAAAAgwBMAAAAsAAAA",
+              "DocumentIndex": 3,
+              "Title": "RegistrationAPIController.cs",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\RegistrationAPIController.cs",
+              "RelativeDocumentMoniker": "eMedicine\\Controllers\\RegistrationAPIController.cs",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\RegistrationAPIController.cs",
+              "RelativeToolTip": "eMedicine\\Controllers\\RegistrationAPIController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAHgAAAAjAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-15T08:35:10.194Z",
+              "WhenOpened": "2026-01-28T09:33:19.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "RegistrationController.cs",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\RegistrationController.cs",
+              "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\RegistrationController.cs",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\RegistrationController.cs",
+              "RelativeToolTip": "eMedicineWeb\\Controllers\\RegistrationController.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAADMAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T10:45:51.218Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "SalesPersonAPIController.cs",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\SalesPersonAPIController.cs",
+              "RelativeDocumentMoniker": "eMedicine\\Controllers\\SalesPersonAPIController.cs",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\SalesPersonAPIController.cs",
+              "RelativeToolTip": "eMedicine\\Controllers\\SalesPersonAPIController.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAUwJAAAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T04:12:58.77Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SalesPerson.cs",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\SalesPerson.cs",
+              "RelativeDocumentMoniker": "eMedicine\\Models\\SalesPerson.cs",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\SalesPerson.cs",
+              "RelativeToolTip": "eMedicine\\Models\\SalesPerson.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAIwA8AAAAvAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-26T04:10:14.629Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Item.cs",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Item.cs",
+              "RelativeDocumentMoniker": "eMedicine\\Models\\Item.cs",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Item.cs",
+              "RelativeToolTip": "eMedicine\\Models\\Item.cs",
+              "ViewState": "AQIAAAQAAAAAAAAAAAA1wAIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-09T08:46:18.843Z",
               "EditorCaption": ""
             },
             {
@@ -113,40 +168,27 @@
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\OrderAPIController.cs",
               "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\OrderAPIController.cs",
               "RelativeToolTip": "eMedicine\\Controllers\\OrderAPIController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAqwEwAAAARAAAA",
+              "ViewState": "AQIAABMAAAAAAAAAAAAawEgAAABEAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-15T08:33:48.066Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UIEntryItem.cshtml",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
-              "RelativeDocumentMoniker": "eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
-              "RelativeToolTip": "eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-09T09:26:20.774Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "ItemAPIController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\ItemAPIController.cs",
               "RelativeDocumentMoniker": "eMedicine\\Controllers\\ItemAPIController.cs",
               "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\ItemAPIController.cs",
               "RelativeToolTip": "eMedicine\\Controllers\\ItemAPIController.cs",
-              "ViewState": "AQIAAEAAAAAAAAAAAAA5wHIAAAAPAAAA",
+              "ViewState": "AQIAAIMAAAAAAAAAAAAIwMMAAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-07T07:52:16.695Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
               "Title": "UIEntryDiseaseWiseMedicine.js",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryDiseaseWiseMedicine.js",
               "RelativeDocumentMoniker": "eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryDiseaseWiseMedicine.js",
@@ -158,32 +200,44 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "RegistrationAPIController.cs",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\RegistrationAPIController.cs",
-              "RelativeDocumentMoniker": "eMedicine\\Controllers\\RegistrationAPIController.cs",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\RegistrationAPIController.cs",
-              "RelativeToolTip": "eMedicine\\Controllers\\RegistrationAPIController.cs",
-              "ViewState": "AQIAAAcAAAAAAAAAAAAewBsAAABDAAAA",
+              "DocumentIndex": 2,
+              "Title": "Order.cs",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Order.cs",
+              "RelativeDocumentMoniker": "eMedicine\\Models\\Order.cs",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Order.cs",
+              "RelativeToolTip": "eMedicine\\Models\\Order.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAA4wBUAAAAfAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-28T09:33:19.246Z",
+              "WhenOpened": "2026-04-20T09:41:14.797Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "RegistrationController.cs",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\RegistrationController.cs",
-              "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\RegistrationController.cs",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\RegistrationController.cs",
-              "RelativeToolTip": "eMedicineWeb\\Controllers\\RegistrationController.cs",
-              "ViewState": "AQIAAF4AAAAAAAAAAAAcwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T10:45:51.218Z"
+              "DocumentIndex": 9,
+              "Title": "UIEntrySalesPerson.js",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntrySalesPerson.js",
+              "RelativeDocumentMoniker": "eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntrySalesPerson.js",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntrySalesPerson.js",
+              "RelativeToolTip": "eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntrySalesPerson.js",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-04-07T09:52:53.62Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 10,
+              "Title": "UIEntryItem.cshtml",
+              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
+              "RelativeDocumentMoniker": "eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
+              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
+              "RelativeToolTip": "eMedicineWeb\\Views\\Item\\UIEntryItem.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-09T09:26:20.774Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
               "Title": "UIEntryShop.js",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntryShop.js",
               "RelativeDocumentMoniker": "eMedicineWeb\\Scripts\\eMedicine\\SalesPerson\\UIEntryShop.js",
@@ -195,33 +249,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "SalesPersonAPIController.cs",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\SalesPersonAPIController.cs",
-              "RelativeDocumentMoniker": "eMedicine\\Controllers\\SalesPersonAPIController.cs",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Controllers\\SalesPersonAPIController.cs",
-              "RelativeToolTip": "eMedicine\\Controllers\\SalesPersonAPIController.cs",
-              "ViewState": "AQIAAFkAAAAAAAAAAAA5wDcBAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-26T04:12:58.77Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Item.cs",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Item.cs",
-              "RelativeDocumentMoniker": "eMedicine\\Models\\Item.cs",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\Item.cs",
-              "RelativeToolTip": "eMedicine\\Models\\Item.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAE4AAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-09T08:46:18.843Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "UIEntryItem.js",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryItem.js",
               "RelativeDocumentMoniker": "eMedicineWeb\\Scripts\\eMedicine\\Item\\UIEntryItem.js",
@@ -233,7 +261,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "UIEntryShop.cshtml",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Views\\SalesPerson\\UIEntryShop.cshtml",
               "RelativeDocumentMoniker": "eMedicineWeb\\Views\\SalesPerson\\UIEntryShop.cshtml",
@@ -245,7 +273,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "ItemController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\ItemController.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\ItemController.cs",
@@ -258,7 +286,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 13,
               "Title": "eMedicine.csproj",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\eMedicine.csproj",
               "RelativeDocumentMoniker": "eMedicine\\eMedicine.csproj",
@@ -270,7 +298,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "SalesPersonViewModel.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Models\\SalesPersonViewModel.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Models\\SalesPersonViewModel.cs",
@@ -282,7 +310,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "SalesPersonController.cs",
               "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicineWeb\\Controllers\\SalesPersonController.cs",
               "RelativeDocumentMoniker": "eMedicineWeb\\Controllers\\SalesPersonController.cs",
@@ -291,19 +319,6 @@
               "ViewState": "AQIAALwAAAAAAAAAAAAxwAEBAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-01-26T04:14:58.922Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "SalesPerson.cs",
-              "DocumentMoniker": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\SalesPerson.cs",
-              "RelativeDocumentMoniker": "eMedicine\\Models\\SalesPerson.cs",
-              "ToolTip": "D:\\eMedicine\\eMedicine\\eMedicine\\Models\\SalesPerson.cs",
-              "RelativeToolTip": "eMedicine\\Models\\SalesPerson.cs",
-              "ViewState": "AQIAABAAAAAAAAAAAAAywAIAAAARAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-26T04:10:14.629Z",
-              "EditorCaption": ""
             }
           ]
         }

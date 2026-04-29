@@ -45,7 +45,8 @@ namespace eMedicine.Controllers
                                            UnitName = dr["UnitName"].ToString(),                                          
                                            SupplierName = dr["SupplierName"].ToString(),                                           
                                            ItemCategoryName = dr["ItemCategoryName"].ToString(),                                           
-                                           ImagePath = dr["ImagePath"].ToString(),                                           
+                                           ImagePath = dr["ImagePath"].ToString(),
+                                           OfferType = dr["OfferType"].ToString(),                                           
                                            IsActive = dr["IsActive"].ToString()
                                        }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
@@ -168,6 +169,7 @@ namespace eMedicine.Controllers
                                            ItemCategoryId = dr["ItemCategoryId"].ToString(),
                                            ItemCategoryName = dr["ItemCategoryName"].ToString(),
                                            ImagePath = dr["ImagePath"].ToString(),
+                                           OfferType = dr["OfferType"].ToString(),
                                            IsActive = dr["IsActive"].ToString()
                                        }).ToList();
 
@@ -577,6 +579,7 @@ namespace eMedicine.Controllers
                                           ItemCategoryId = dr["ItemCategoryId"].ToString(),
                                           ItemCategoryName = dr["ItemCategoryName"].ToString(),
                                           ImagePath = dr["ImagePath"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(),
                                           IsActive = dr["IsActive"].ToString()
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
@@ -615,7 +618,8 @@ namespace eMedicine.Controllers
                                           BrandName = dr["BrandName"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),
                                           MRP = dr["MRP"].ToString(),                                          
-                                          UnitName = dr["UnitName"].ToString(), 
+                                          UnitName = dr["UnitName"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(), 
                                           ImagePath = dr["ImagePath"].ToString()                                          
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
@@ -653,7 +657,8 @@ namespace eMedicine.Controllers
                                           ItemDescription = dr["ItemDescription"].ToString(),
                                           ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),
-                                          MRP = dr["MRP"].ToString(),                                        
+                                          MRP = dr["MRP"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(),                                        
                                           ImagePath = dr["ImagePath"].ToString()                                          
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });

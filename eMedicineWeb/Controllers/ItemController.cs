@@ -119,7 +119,7 @@ namespace eMedicineWeb.Controllers
                 string uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(imageFile.FileName);
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                imageFile.SaveAs(filePath);                
+                imageFile.SaveAs(filePath);
                 Item.ImagePath = $"/Uploads/{uniqueFileName}";
 
                 string data = JsonConvert.SerializeObject(Item);
@@ -332,7 +332,7 @@ namespace eMedicineWeb.Controllers
                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
                 imageFile.SaveAs(filePath);
-                Offer.OfferImagePath =  $"/OffersImg/{uniqueFileName}";
+                Offer.OfferImagePath = $"/OffersImg/{uniqueFileName}";
 
                 string data = JsonConvert.SerializeObject(Offer);
                 StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
@@ -427,6 +427,66 @@ namespace eMedicineWeb.Controllers
         }
 
         [HttpPost]
+        //public async Task<ActionResult> UpdateOfferById(OffersViewModel offer, HttpPostedFileBase imageFile)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return Json(new { success = false, message = "Failed Insert Offer details." });
+        //    }
+
+        //    if (imageFile == null || imageFile.ContentLength == 0)
+        //    {
+        //        return Json(new { success = false, message = "Image file is required." });
+        //    }
+        //    try
+        //    {
+        //        // 👉 ONLY when new image uploaded
+        //        if (imageFile != null && imageFile.ContentLength > 0)
+        //        {
+        //            string uploadsFolder = Server.MapPath("~/OffersImg");
+
+        //            if (!Directory.Exists(uploadsFolder))
+        //            {
+        //                Directory.CreateDirectory(uploadsFolder);
+        //            }
+        //            string fileExtension = Path.GetExtension(imageFile.FileName);
+        //            string baseFileName = Guid.NewGuid().ToString();
+
+        //            string uniqueFileName = baseFileName + fileExtension;
+        //            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+        //            string preImagePath = Server.MapPath(offer.PreImagePath);
+        //            if (System.IO.File.Exists(preImagePath))
+        //            {
+        //                System.IO.File.Delete(preImagePath);
+        //            }
+        //            imageFile.SaveAs(filePath);
+        //            offer.OfferImagePath = $"/OffersImg/{uniqueFileName}";
+        //        }
+        //        else
+        //        {
+        //            // 👉 image change হয়নি
+        //            offer.OfferImagePath = offer.PreImagePath; // 🔥 IMPORTANT
+        //        }
+
+        //        string data = JsonConvert.SerializeObject(offer);
+        //        StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
+        //        HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateOfferById", content);
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            return Json(new { success = true, message = "Offer updated successfully" });
+        //        }
+        //        else
+        //        {
+        //            ModelState.AddModelError("", "Unable to update Offer. Please try again.");
+        //            return Json(new { success = false, message = "Failed to retrieve Offer details." });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+        //    }
+        //}
+
         public async Task<ActionResult> UpdateOfferById(OffersViewModel offer, HttpPostedFileBase imageFile)
         {
             if (!ModelState.IsValid)
@@ -434,46 +494,83 @@ namespace eMedicineWeb.Controllers
                 return Json(new { success = false, message = "Failed Insert Offer details." });
             }
 
-            if (imageFile == null || imageFile.ContentLength == 0)
-            {
-                return Json(new { success = false, message = "Image file is required." });
-            }
             try
             {
-                string uploadsFolder = Server.MapPath("~/OffersImg");
+                // 👉 New image uploaded
+                if (imageFile != null && imageFile.ContentLength > 0)
+                {
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
 
-                if (!Directory.Exists(uploadsFolder))
-                {
-                    Directory.CreateDirectory(uploadsFolder);
-                }
-                string fileExtension = Path.GetExtension(imageFile.FileName);
-                string baseFileName = Guid.NewGuid().ToString();
+                    string fileExtension = Path.GetExtension(imageFile.FileName).ToLower();
 
-                string uniqueFileName = baseFileName + fileExtension;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                string preImagePath = Server.MapPath(offer.PreImagePath);
-                if (System.IO.File.Exists(preImagePath))
-                {
-                    System.IO.File.Delete(preImagePath);
-                }
-                imageFile.SaveAs(filePath);
-                offer.OfferImagePath =  $"/OffersImg/{uniqueFileName}";
-                string data = JsonConvert.SerializeObject(offer);
-                StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PostAsync(client.BaseAddress + "/UpdateOfferById", content);
-                if (response.IsSuccessStatusCode)
-                {
-                    return Json(new { success = true, message = "Offer updated successfully" });
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        return Json(new { success = false, message = "Invalid image format." });
+                    }
+
+                    string uploadsFolder = Server.MapPath("~/OffersImg");
+
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + fileExtension;
+
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    // 👉 Delete previous image
+                    if (!string.IsNullOrEmpty(offer.PreImagePath))
+                    {
+                        string preImagePath = Server.MapPath(offer.PreImagePath);
+
+                        if (System.IO.File.Exists(preImagePath))
+                        {
+                            System.IO.File.Delete(preImagePath);
+                        }
+                    }
+
+                    imageFile.SaveAs(filePath);
+
+                    offer.OfferImagePath = "/OffersImg/" + uniqueFileName;
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Unable to update Offer. Please try again.");
-                    return Json(new { success = false, message = "Failed to retrieve Offer details." });
+                    // 👉 Keep previous image
+                    offer.OfferImagePath = offer.PreImagePath;
                 }
+
+                string data = JsonConvert.SerializeObject(offer);
+
+                StringContent content =
+                    new StringContent(data, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response =
+                    await client.PostAsync(client.BaseAddress + "/UpdateOfferById", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Offer updated successfully"
+                    });
+                }
+
+                return Json(new
+                {
+                    success = false,
+                    message = "Failed to update offer."
+                });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "An error occurred.", error = ex.Message });
+                return Json(new
+                {
+                    success = false,
+                    message = "An error occurred.",
+                    error = ex.Message
+                });
             }
         }
 
@@ -482,7 +579,7 @@ namespace eMedicineWeb.Controllers
             List<ItemViewModel> ItemList = new List<ItemViewModel>();
 
             try
-            {               
+            {
                 HttpResponseMessage response = client.GetAsync(client.BaseAddress + "/AddOfferItems/" + OfferId).Result;
 
                 if (response.IsSuccessStatusCode)
@@ -532,7 +629,7 @@ namespace eMedicineWeb.Controllers
         public async Task<ActionResult> GetItemsByOfferId(string OfferId)
         {
             List<ItemViewModel> ItemList = new List<ItemViewModel>();
-            OffersViewModel Offer = null;                    
+            OffersViewModel Offer = null;
             try
             {
                 HttpResponseMessage OfferResponse = client.GetAsync(client.BaseAddress + "/GetOfferById/" + OfferId).Result;

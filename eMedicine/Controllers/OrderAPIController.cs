@@ -193,9 +193,11 @@ namespace eMedicine.Controllers
                                    select new OrderList()
                                    {   
                                        ItemId = dr["ItemId"].ToString(),
+                                       ImagePath = dr["ImagePath"].ToString(),
                                        OrderId = dr["OrderId"].ToString(),
                                        Name = dr["ItemName"].ToString(),
                                        UnitPrice = dr["UnitPrice"].ToString(),
+                                       UnitName = dr["UnitName"].ToString(),
                                        Quantity = dr["Quantity"].ToString(),
                                        Total = dr["Total"].ToString(),
                                        RowId = dr["RowId"].ToString()                                       
@@ -262,11 +264,11 @@ namespace eMedicine.Controllers
         }
 
         [HttpPost("SaveOrderItem")]
-        public async Task<IActionResult> SaveOrderItem([FromBody] Order order)
+        public async Task<IActionResult> SaveOrderItem([FromBody] ShopOrder order)
         {
             try
             {
-                var ds = await this.repo.GetAll("", "sp_EntryOrder", "ITEMORDER", order.OrderId, order.ItemId, order.UnitPrice, order.Quantity, order.OrderdBy, order.OrderdDate);
+                var ds = await this.repo.GetAll("", "sp_EntryOrder", "ITEMORDER", order.OrderId, order.ItemId, order.Quantity, order.UnitPriceId, order.UnitPrice, order.OrderdBy, order.OrderdDate);
 
                 if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
                 {

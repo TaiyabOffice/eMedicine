@@ -671,7 +671,6 @@ var ItemHelper = {
             }
         });
     },
-
     ValidateItemPrice: function () {
         $.validator.addMethod("notZero", function (value, element) {
             return this.optional(element) || value != "";

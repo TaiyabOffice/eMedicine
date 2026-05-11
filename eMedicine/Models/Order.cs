@@ -34,10 +34,12 @@
         public string Remarks { get; set; }
         public string SalesPersonName { get; set; }
         public string IsDelivered { get; set; }
+        public string ImagePath { get; set; }
         public string ItemId { get; set; }
         public string Name { get; set; }
         public string Quantity { get; set; }
         public string UnitPrice { get; set; }
+        public string UnitName { get; set; }
         public string Total { get; set; }
         public string RowId { get; set; }
 

@@ -529,6 +529,7 @@ namespace eMedicine.Controllers
                                           ItemDescription = dr["ItemDescription"].ToString(),
                                           ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),
+                                          UnitName = dr["unitName"].ToString(),
                                           OfferPrice = dr["OfferPrice"].ToString(),
                                           OfferValue = dr["OfferValue"].ToString(),
                                           OfferType = dr["OfferType"].ToString(),

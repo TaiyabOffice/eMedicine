@@ -34,7 +34,7 @@
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="cmbCompanyId">Company</label>
-                                                <select id="cmbCompanyId" name="cmbCompanyId" class="form-control input-sm select2" style="width:100%"></select>
+                                                <select id="cmbCompanyId" name="cmbCompanyId" class="form-control input-sm select2" style="width:100%" disabled></select>
                                             </div>
                                             <div class="col-sm-2">
                                                 <label for="CmbIsActive">Is Active</label>
@@ -47,13 +47,17 @@
                                     </div>
                                     <div class="row">
                                         <div class="form-group">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-2">
+                                                <label for="cmbAreaId">Area</label>
+                                                <select id="cmbAreaId" name="cmbAreaId" class="form-control input-sm select2" style="width:100%"></select>
+                                            </div>
+                                            <div class="col-sm-4">
                                                 <label for="txtDescription">Description</label>
                                                 <input type="text" id="txtDescription" name="txtDescription" class="form-control input-sm" autocomplete="off">
-                                            </div> 
+                                            </div>
                                             <div class="col-sm-4" style="margin-top: 25px;">
-                                                <button id="btnSave" type="button" class="btn btn-success" >Save Info</button>
-                                                <button id="btnUpdate" type="button" class="btn btn-danger" style="display:none" >Update Info</button>
+                                                <button id="btnSave" type="button" class="btn btn-success">Save Info</button>
+                                                <button id="btnUpdate" type="button" class="btn btn-warning" style="display:none">Update Info</button>
                                                 <button id="btnClear" type="button" class="btn btn-danger">Clear</button>
                                             </div>
                                         </div>
@@ -75,6 +79,8 @@
                                             <th>Sales Person Name</th>                                            
                                             <th>Description</th>
                                             <th>Phone</th>
+                                            <th>Area Id</th>
+                                            <th>Area Name</th>
                                             <th>CompanyId</th>
                                             <th>Company Name</th>
                                             <th>Is Active</th>

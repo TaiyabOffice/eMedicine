@@ -17,7 +17,7 @@ $(document).ready(function () {
         }
     });
 
-    DiseaseHelper.GenerateCombo($("#cmbMedicines"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
+    DiseaseHelper.GenerateCombo($("#cmbMedicines"), "SP_SelectGetAllDropDown", "GETALLACTIVEITEMS", "0", "0", "0", "0", "0");
     DiseaseHelper.GenerateCombo($("#mdlcmbMedicines"), "SP_SelectGetAllDropDown", "GETALLACTIVEITEMS", "0", "0", "0", "0", "0");
     //BrandHelper.GenerateCombo($("#mdlcmbMedicines"), "SP_SelectGetAllDropDown", "GETALLGENERIC", "0", "0", "0", "0", "0");
     DiseaseHelper.BuildTbl("");

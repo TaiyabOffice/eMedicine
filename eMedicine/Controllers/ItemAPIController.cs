@@ -45,9 +45,58 @@ namespace eMedicine.Controllers
                                            UnitName = dr["UnitName"].ToString(),                                          
                                            SupplierName = dr["SupplierName"].ToString(),                                           
                                            ItemCategoryName = dr["ItemCategoryName"].ToString(),                                           
-                                           ImagePath = dr["ImagePath"].ToString(),                                           
+                                           ImagePath = dr["ImagePath"].ToString(),
+                                           OfferType = dr["OfferType"].ToString(),                                           
                                            IsActive = dr["IsActive"].ToString()
                                        }).ToList();
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("GetAllItemWithRate")]
+        public async Task<IActionResult> GetAllItemWithRate()
+        {
+            try
+            {
+                var ds = await repo.GetAll("", "sp_SelectItem", "GETALLITEMWITHRATE");
+
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<ShopItem>(), Message = "No Item found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new ShopItem()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          ItemName = dr["ItemName"].ToString(),
+                                          ItemNameBN = dr["ItemNameBN"].ToString(),
+                                          ItemDescription = dr["ItemDescription"].ToString(),
+                                          ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),                                          
+                                          ImagePath = dr["ImagePath"].ToString(),                                         
+
+                                          Units = (from DataRow ur in ds.Tables[1].Rows
+                                                   where ur["ItemId"].ToString() == dr["ItemId"].ToString()
+                                                   select new ItemUnitPrices()
+                                                   {
+                                                       ItemId = ur["ItemId"].ToString(),
+                                                       UnitId = ur["UnitId"].ToString(),
+                                                       UnitName = ur["UnitName"].ToString(),
+                                                       UnitQty = ur["UnitQty"].ToString(),
+                                                       SalePrice = ur["SalePrice"].ToString(),
+                                                       PurchasePrice = ur["PurchasePrice"].ToString(),
+                                                       IsActive = ur["IsActive"].ToString()
+                                                   }).ToList()
+                                      }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
             }
             catch (Exception ex)
@@ -120,8 +169,47 @@ namespace eMedicine.Controllers
                                            ItemCategoryId = dr["ItemCategoryId"].ToString(),
                                            ItemCategoryName = dr["ItemCategoryName"].ToString(),
                                            ImagePath = dr["ImagePath"].ToString(),
+                                           OfferType = dr["OfferType"].ToString(),
                                            IsActive = dr["IsActive"].ToString()
                                        }).ToList();
+
+                return new JsonResult(new { Success = true, Data = GetItemDetails });
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+
+        }
+
+        [HttpGet("GetAllItemRate/{ItemId}")]
+        public async Task<IActionResult> GetAllItemRate(string ItemId)
+        {
+            try
+            {
+                var ds = await this.repo.GetAll("", "sp_SelectItem", "GETALLITEMRATE", ItemId);
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<ItemUnitPrices>(), Message = "No Item found." });
+                }
+                var GetItemDetails = (from DataRow dr in ds.Tables[0].Rows
+                                      select new ItemUnitPrices()
+                                      {
+                                          ItemId = dr["ItemId"].ToString(),
+                                          UnitId = dr["UnitId"].ToString(),
+                                          UnitName = dr["UnitName"].ToString(),
+                                          UnitQty = dr["UnitQty"].ToString(),
+                                          SalePrice = dr["SalePrice"].ToString(),
+                                          PurchasePrice = dr["PurchasePrice"].ToString(),
+                                          IsActive = dr["IsActive"].ToString()
+                                         
+                                      }).ToList();
 
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
 
@@ -156,6 +244,35 @@ namespace eMedicine.Controllers
 
                     return new JsonResult(new { Success = true, Data = new List<Item>(), Message = "Item Update Successfully." });
                 }
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Item.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpPost("CreateItemPrice")]
+        public async Task<IActionResult> CreateItemPrice([FromBody] ItemUnitPrices Item)
+        {
+            try
+            {
+
+                var ds = await this.repo.GetAll("", "sp_EntryItem", "CREATEITEMPRICE", Item.ItemId, Item.UnitId, Item.UnitQty, Item.SalePrice, Item.PurchasePrice, Item.IsActive);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<ItemUnitPrices>(), Message = "Item Create Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<ItemUnitPrices>(), Message = "Item Create Successfully." });
+                }
+
             }
             catch (Exception ex)
             {
@@ -412,6 +529,7 @@ namespace eMedicine.Controllers
                                           ItemDescription = dr["ItemDescription"].ToString(),
                                           ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),
+                                          UnitName = dr["unitName"].ToString(),
                                           OfferPrice = dr["OfferPrice"].ToString(),
                                           OfferValue = dr["OfferValue"].ToString(),
                                           OfferType = dr["OfferType"].ToString(),
@@ -462,6 +580,7 @@ namespace eMedicine.Controllers
                                           ItemCategoryId = dr["ItemCategoryId"].ToString(),
                                           ItemCategoryName = dr["ItemCategoryName"].ToString(),
                                           ImagePath = dr["ImagePath"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(),
                                           IsActive = dr["IsActive"].ToString()
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
@@ -497,9 +616,11 @@ namespace eMedicine.Controllers
                                           ItemNameBN = dr["ItemNameBN"].ToString(),
                                           ItemDescription = dr["ItemDescription"].ToString(),
                                           ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
+                                          BrandName = dr["BrandName"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),
                                           MRP = dr["MRP"].ToString(),                                          
-                                          UnitName = dr["UnitName"].ToString(), 
+                                          UnitName = dr["UnitName"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(), 
                                           ImagePath = dr["ImagePath"].ToString()                                          
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });
@@ -537,7 +658,8 @@ namespace eMedicine.Controllers
                                           ItemDescription = dr["ItemDescription"].ToString(),
                                           ItemDescriptionBN = dr["ItemDescriptionBN"].ToString(),
                                           UnitPrice = dr["UnitPrice"].ToString(),
-                                          MRP = dr["MRP"].ToString(),                                        
+                                          MRP = dr["MRP"].ToString(),
+                                          OfferType = dr["OfferType"].ToString(),                                        
                                           ImagePath = dr["ImagePath"].ToString()                                          
                                       }).ToList();
                 return new JsonResult(new { Success = true, Data = GetItemDetails });

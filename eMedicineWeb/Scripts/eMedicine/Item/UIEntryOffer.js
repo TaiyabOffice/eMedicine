@@ -497,7 +497,7 @@ var OfferHelper = {
                 txtDescriptionBN: "required",                
                 txtOffeFrom: "required",                
                 txtOffeTo: "required",                
-                fileUpload: "required",                
+                //fileUpload: "required",                
                 CmbType: {
                     required: true,
                     notZero: "" 
@@ -509,7 +509,7 @@ var OfferHelper = {
                 txtDescription: "Offer Description is required",                
                 txtOffeFrom: "From date is required",                
                 txtOffeTo: "To date is required",                
-                fileUpload: "File is  required",                
+                //fileUpload: "File is  required",                
                 txtNameBN: "নাম প্রয়োজন",
                 txtDescriptionBN: "বর্ণনা প্রয়োজন",                 
                 CmbIsActive: "Please select the active status"

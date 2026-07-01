@@ -13,7 +13,8 @@ $(document).ready(function () {
         }
     });
 
-    SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "0", "0", "0", "0", "0");
+    SalesPersonHelper.GenerateCombo($("#cmbCompanyId"), "SP_SelectGetAllDropDown", "GETALLCOMPANY", "100000000099", "0", "0", "0", "0");
+    SalesPersonHelper.GenerateCombo($("#cmbAreaId"), "SP_SelectGetAllDropDown", "GETALLDISTRICT", "0", "0", "0", "0", "0");
     SalesPersonHelper.BuildTbl("");
     SalesPersonHelper.GetAllSalesPerson();
     SalesPersonHelper.ValidateSalesPerson();
@@ -71,6 +72,8 @@ var SalesPersonHelper = {
                 { data: 'SalesPersonName' },
                 { data: 'SalesPersonDescription' },
                 { data: 'SalesPersonPhone' },
+                { data: 'AreaId' },
+                { data: 'AreaName' },
                 { data: 'CompanyId' },
                 { data: 'CompanyName' },                
                 { data: 'IsActive' },
@@ -89,6 +92,7 @@ var SalesPersonHelper = {
                 },                
                 { "className": "dt-center", "targets": [] },
                 { "className": "dt-left", "targets": [] },
+                { "targets": [5,7,8], "visible": false, "searchable": false },
 
             ]
 
@@ -102,6 +106,9 @@ var SalesPersonHelper = {
                 SalesPersonId: $('#txtSalesPersonId').val() ? "" : "000000000000",
                 SalesPersonName: $('#txtSalesPersonName').val(),
                 SalesPersonDescription: $('#txtDescription').val(),
+                SalesPersonPhone: $('#txtPhone').val(),
+                AreaId: $('#cmbAreaId').val(),
+                AreaName: $('#cmbAreaId').val(),
                 SalesPersonPhone: $('#txtPhone').val(),
                 CompanyId: $('#cmbCompanyId').val(),
                 CompanyName: $('#cmbCompanyId').val(),
@@ -147,6 +154,8 @@ var SalesPersonHelper = {
                 SalesPersonName: $('#txtSalesPersonName').val(),
                 SalesPersonDescription: $('#txtDescription').val(),
                 SalesPersonPhone: $('#txtPhone').val(),
+                AreaId: $('#cmbAreaId').val(),
+                AreaName: $('#cmbAreaId').val(),
                 CompanyId: $('#cmbCompanyId').val(),
                 CompanyName: $('#cmbCompanyId').val(),
                 IsActive: $('#CmbIsActive').val(),
@@ -232,6 +241,7 @@ var SalesPersonHelper = {
                     $('#txtPhone').val(SalesPerson.SalesPersonPhone);
                     $('#CompanyPhone').val(SalesPerson.CompanyPhone);
                     $("#cmbCompanyId").val(SalesPerson.CompanyId).select2();
+                    $("#cmbAreaId").val(SalesPerson.AreaId).select2();
                     $('#CmbIsActive').val(SalesPerson.IsActive);                                    
                 } else {
                     swal({
@@ -307,6 +317,11 @@ var SalesPersonHelper = {
                 CmbIsActive: {
                     required: true,
                     notZero: "" 
+                }
+                ,
+                cmbAreaId: {
+                    required: true,
+                    notZero: ""
                 },
                 txtDescription: "required"
             },
@@ -319,6 +334,7 @@ var SalesPersonHelper = {
                     maxlength: "Phone number must not exceed 15 digits"
                 },
                 cmbCompanyId: "Please select a company",
+                cmbAreaId: "Please select a Area",
                 CmbIsActive: "Please select if the sales person is active",
                 txtDescription: "Description is required"
             },

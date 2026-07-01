@@ -51,6 +51,37 @@ namespace eMedicine.Controllers
             }
         }
 
+        [HttpPost("UpdateUserInformation")]
+        public async Task<IActionResult> UpdateUserInformation([FromBody] Registration Registration)
+        {
+            try
+            {
+                bool status = false;
+                string UserPass = EncodeMD5(Registration.Password);
+
+                var ds = await this.repo.GetAll("", "sp_EntryRegistration", "UPDATEUSERINFORMATION", Registration.PhoneNumber, Registration.UserName, Registration.Email, UserPass);
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    return new JsonResult(new { Success = false, Data = new List<Registration>(), Message = "Update Failed." });
+                }
+                else
+                {
+                    return new JsonResult(new { Success = true, Data = new List<Registration>(), Message = "Update Successfully." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Registration.",
+                    Details = ex.Message
+                });
+            }
+        }
+
         [HttpGet("GetAllUser")]
         public async Task<IActionResult> GetAll()
         {
@@ -163,6 +194,38 @@ namespace eMedicine.Controllers
             }
             catch (Exception ex)
             {                
+                return new JsonResult(StatusCodes.Status500InternalServerError, new
+                {
+                    Success = false,
+                    Message = "An error occurred while retrieving the Password.",
+                    Details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("DeleteUserById")]
+        public async Task<IActionResult> DeleteUserById(string PhoneNumber, string UserPass)
+        {
+            try
+            {
+                bool status = false;
+                var ds = await repo.GetAll("", "sp_EntryRegistration", "DELETEUSERBYID", PhoneNumber, EncodeMD5(UserPass));
+
+                if (ds == null || ds.Tables.Count == 0 || ds.Tables[0].Rows.Count == 0)
+                {
+                    status = false;
+                    //return new JsonResult(status);
+                    return new JsonResult(new { Success = false, Message = "No user found." });
+                }                
+                else
+                {
+                    status = true;
+                    return new JsonResult(new { Success = true, Message = "Success" });
+                }
+
+            }
+            catch (Exception ex)
+            {
                 return new JsonResult(StatusCodes.Status500InternalServerError, new
                 {
                     Success = false,
